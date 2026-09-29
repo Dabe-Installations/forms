@@ -19,7 +19,8 @@ body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:1
 .wrap{max-width:1000px;margin:0 auto}
 header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px 24px;padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:22px}
 .eyebrow{font-family:var(--f-display);font-weight:600;font-size:.85rem;letter-spacing:.18em;text-transform:uppercase;color:var(--green-text);margin:0 0 6px}
-.brand{font-family:var(--f-display);font-weight:700;font-size:1rem;text-transform:uppercase;color:var(--ink);margin:0 0 8px}
+.brand{display:flex;align-items:baseline;gap:10px;font-family:var(--f-display);font-weight:700;font-size:1.5rem;text-transform:uppercase;color:var(--ink);margin:0 0 8px}
+.brand-update{font-size:1rem;text-transform:none;color:var(--green-text)}
 h1{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:clamp(2rem,6vw,3rem);line-height:1;margin:0;text-wrap:balance}
 .sub{color:var(--muted);margin:8px 0 0}
 .totals{display:flex;gap:26px}
@@ -164,7 +165,7 @@ function card(r){
 }
 function render(){
   var a=count(TODAY);
-  var h='<div class="wrap"><header><div><p class="eyebrow">Dabe Labour &middot; Installations &amp; Maintenance</p><p class="brand">Shark Beauty</p><h1>Store runs, Tuesday 29 September</h1><p class="sub">Install crews for the day. Stops are listed in the order each crew will visit. Tick a store when it is complete.</p></div>';
+  var h='<div class="wrap"><header><div><p class="eyebrow">Dabe Labour &middot; Installations &amp; Maintenance</p><p class="brand"><span>Shark Beauty</span><span class="brand-update">Update</span></p><h1>Store runs, Tuesday 29 September</h1><p class="sub">Install crews for the day. Stops are listed in the order each crew will visit. Tick a store when it is complete.</p></div>';
   h+='<div class="totals"><div><b>4</b><span>Crews</span></div><div><b>'+a[1]+'</b><span>Stores</span></div><div class="doneb"><b>'+a[0]+'</b><span>Done</span></div></div></header>';
   h+='<p class="legend"><span><span class="tag">HN</span> Harvey Norman</span><span><span class="tag">JB</span> JB Hi-Fi</span><span><span class="tag">TGG</span> The Good Guys</span></p>';
   h+='<div class="grid">'+TODAY.map(card).join("")+'</div>';
