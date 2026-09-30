@@ -2,227 +2,28 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>html,body{margin:0;background:#0d0d0d}</style>
-<title>Store Runs 29 Sep</title>
+<title>Store Runs</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700;800&display=swap">
-<style>
-/* Layout: header with day totals, grid of one panel per crew with tick boxes, then the previous day below. Colours and type follow dabelabour.com.au */
-:root{
-  --bg:#0d0d0d; --surface:#161616; --inset:#0d0d0d; --ink:#ffffff; --muted:#a3a3a3; --line:#2a2a2a;
-  --green:#1a6b5a; --green-deep:#145248; --green-text:#3fb99c;
-  --f-display:"Barlow Condensed","Arial Narrow",sans-serif;
-  --f-body:"Barlow","Segoe UI",Arial,sans-serif;
-  color-scheme:dark;
-}
-body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.45;padding-inline:16px;padding-block:28px 40px}
-.wrap{max-width:1000px;margin:0 auto}
-header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px 24px;padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:22px}
-.eyebrow{font-family:var(--f-display);font-weight:600;font-size:.85rem;letter-spacing:.18em;text-transform:uppercase;color:var(--green-text);margin:0 0 6px}
-.brand{display:flex;align-items:baseline;gap:10px;font-family:var(--f-display);font-weight:700;font-size:2rem;text-transform:uppercase;color:var(--ink);margin:0 0 8px}
-.brand-update{font-size:1.5rem;text-transform:none;color:var(--green-text)}
-h1{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:clamp(2rem,6vw,3rem);line-height:1;margin:0;text-wrap:balance}
-.sub{color:var(--muted);margin:8px 0 0}
-.totals{display:flex;gap:26px}
-.totals div{text-align:right}
-.totals b{display:block;font-family:var(--f-display);font-weight:800;font-size:2.4rem;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
-.totals span{font-family:var(--f-display);font-weight:600;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.totals .doneb b{color:var(--green-text)}
-.legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0 0 20px;font-size:.88rem;color:var(--muted)}
-.tag{display:inline-block;min-width:2.7rem;text-align:center;font-family:var(--f-display);font-weight:700;font-size:.8rem;letter-spacing:.08em;padding:1px 6px;border-radius:2px;background:var(--green);color:#fff}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:18px}
-.run{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--green);padding:18px;min-width:0}
-.run-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:2px}
-.run-head h2{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:1.6rem;letter-spacing:.02em;margin:0}
-.run-head .area{font-family:var(--f-display);font-weight:600;font-size:.85rem;letter-spacing:.14em;text-transform:uppercase;color:var(--green-text);white-space:nowrap}
-.crew{color:var(--muted);margin:0 0 12px;display:flex;justify-content:space-between;gap:12px}
-.prog{font-family:var(--f-display);font-weight:600;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
-.prog.full{color:var(--green-text)}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 14px}
-.stats div{background:var(--inset);border:1px solid var(--line);padding:8px 10px;min-width:0}
-.stats b{display:block;font-family:var(--f-display);font-weight:700;font-size:1.3rem;font-variant-numeric:tabular-nums;line-height:1.2}
-.stats span{font-family:var(--f-display);font-weight:600;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.stats .tot{background:var(--green-deep);border-color:var(--green)}
-.stats .tot span{color:#cfeee6}
-ol{list-style:none;margin:0;padding:0}
-li{display:grid;grid-template-columns:1.6rem 1fr auto;gap:0 10px;padding:11px 0;border-top:1px solid var(--line);min-width:0}
-li .n{font-family:var(--f-display);font-weight:700;font-size:1.1rem;color:var(--green-text);font-variant-numeric:tabular-nums}
-.store{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;font-weight:600}
-.addr{color:var(--muted);font-size:.92rem;grid-column:2;overflow-wrap:anywhere}
-.note{grid-column:2;font-size:.85rem;color:var(--green-text);margin-top:2px}
-li .tick{grid-column:3;grid-row:1 / span 3;align-self:center;padding:6px 0 6px 10px;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:var(--f-display);font-weight:600;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-li .tick input{width:22px;height:22px;accent-color:var(--green);cursor:pointer;margin:0}
-li .tick input:focus-visible{outline:2px solid var(--green-text);outline-offset:2px}
-li.done{background:var(--green);border-top-color:var(--green);margin-inline:-18px;padding-inline:18px}
-li.done .n,li.done .tick,li.done .addr,li.done .note{color:#fff}
-li.done .tag{background:#fff;color:var(--green)}
-li.done .tick input{accent-color:#fff}
-li.done + li{border-top-color:var(--green)}
-li.done + li.done{border-top:1px solid #ffffffb3}
-.day-break{margin:34px 0 14px;padding-top:18px;border-top:1px solid var(--line)}
-.day-break h2{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:clamp(1.5rem,4.5vw,2rem);line-height:1;margin:0}
-.more{grid-column:2;justify-self:start;margin-top:6px;background:none;border:1px solid var(--line);color:var(--green-text);font-family:var(--f-display);font-weight:600;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;cursor:pointer}
-.more:hover{border-color:var(--green-text)}
-.more:focus-visible,.btn:focus-within,.panel button:focus-visible,.panel textarea:focus-visible{outline:2px solid var(--green-text);outline-offset:2px}
-li.done .more{color:#fff;border-color:#ffffff88}
-.usernote{grid-column:2;margin-top:6px;padding:6px 10px;background:var(--bg);border-left:3px solid var(--green-text);color:var(--ink);font-size:.92rem;white-space:pre-wrap;overflow-wrap:anywhere}
-.panel{grid-column:1 / -1;margin-top:10px;padding:12px;background:var(--bg);border:1px solid var(--line);color:var(--ink);cursor:auto}
-.panel label.lbl{display:block;font-family:var(--f-display);font-weight:600;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-.panel textarea{width:100%;box-sizing:border-box;min-height:84px;resize:vertical;background:var(--surface);color:var(--ink);border:1px solid var(--line);padding:8px 10px;font:inherit;font-size:.95rem}
-.pbtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.panel button,.btn{background:var(--green);color:#fff;border:0;font-family:var(--f-display);font-weight:700;font-size:.9rem;letter-spacing:.08em;text-transform:uppercase;padding:7px 14px;cursor:pointer;display:inline-block}
-.panel button.ghost{background:none;border:1px solid var(--line);color:var(--muted)}
-.thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.thumbs figure{margin:0;position:relative;width:92px;height:92px}
-.thumbs img{width:92px;height:92px;object-fit:cover;display:block;cursor:zoom-in;border:1px solid var(--line)}
-.thumbs figure button{position:absolute;top:2px;right:2px;padding:0;width:24px;height:24px;line-height:22px;text-align:center;background:#000c;font-size:1rem}
-.lightbox{position:fixed;inset:0;background:#000d;display:flex;align-items:center;justify-content:center;z-index:9;padding:16px;cursor:zoom-out}
-.lightbox img{max-width:100%;max-height:100%;object-fit:contain}
-footer{margin-top:22px;color:var(--muted);font-size:.85rem}
-.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--green-deep);border:1px solid var(--green);color:#fff;padding:9px 16px;font-size:.9rem;z-index:5}
-</style>
+<link rel="stylesheet" href="master.css">
 </head>
 <body>
-<div id="root"></div>
-<script type="application/json" id="state">{"done":["p-1","p-2","p-3","p-4","p-5","p-6","t1-2"],"notes":{"p-7":"Ran out of time to get to this store. "},"photos":{}}</script>
-<script id="app">
-(function(){
-var TODAY=[
-{id:"t1",name:"Team 1",area:"West",crew:"Installer: Vini",stats:["6 hrs","3 hrs 1 min","9 hrs 1 min"],stops:[
-["tgg","Bayswater","2/224-234 Canterbury Rd, Bayswater North VIC 3153"],
-["hn","Sunshine","484 Ballarat Rd, Sunshine North VIC 3020"],
-["jb","Burnside (Caroline Springs)","Cnr Western Hwy & Chisholm Dr, Caroline Springs VIC 3023"],
-["jb","Hoppers Crossing","283 Old Geelong Rd, Hoppers Crossing VIC 3029"],
-["tgg","Hoppers Crossing","153-161 Old Geelong Rd, Hoppers Crossing VIC 3029"],
-["jb","Altona","Millers Road Homemaker Centre, C3/300-330 Millers Rd, Altona North VIC 3025"]]},
-{id:"t2",name:"Team 2",area:"Geelong",crew:"Installer: Steven",stats:["4 hrs","2 hrs 9 min*","6 hrs 9 min"],stops:[
-["hn","Geelong","420 Princes Hwy, Corio VIC 3214"],
-["hn","Geelong South","Unit 1/40-50 Fyans St, South Geelong VIC 3220"],
-["tgg","Geelong","419 Moorabool St, South Geelong VIC 3220"],
-["hn","Waurn Ponds","33 Princes Hwy, Waurn Ponds VIC 3216"]]},
-{id:"t3",name:"Team 3",area:"North West",crew:"Installer: Debora",stats:["5 hrs","1 hr 52 min","6 hrs 52 min"],stops:[
-["jb","Essendon","DFO Essendon, 100 Bulla Rd, Essendon Fields VIC 3041"],
-["tgg","Essendon","Homemaker Hub, Essendon Fields VIC 3041"],
-["tgg","Sunbury","1/85 Vineyard Rd, Sunbury VIC 3429"],
-["tgg","Taylors Lakes","399 Melton Hwy, Taylors Lakes VIC 3038"]]},
-{id:"t4",name:"Team 4",area:"Frankston",crew:"Installer: Leo Lisboa",stats:["4 hrs","1 hr 22 min","5 hrs 22 min"],stops:[
-["jb","Bayside Frankston","Bayside Shopping Centre, 23 Beach St, Frankston VIC 3199","Store moved across from Run VIC 13"],
-["hn","Frankston","87 Cranbourne Rd, Frankston VIC 3199"],
-["jb","Frankston","32 McMahons Rd, Frankston VIC 3199"],
-["tgg","Frankston","Frankston Power Centre, 111 Cranbourne Rd, Frankston VIC 3199"]]}
-];
-var PREV=[
-{id:"p",name:"Team 1",area:"Mon 28 Sep",crew:"Installer: Vini",stops:[
-["hn","Dandenong","141-165 Frankston-Dandenong Rd, Dandenong South VIC 3175","They didn't have SpeedStyle ProFlex in stock, the display was installed without it."],
-["tgg","Dandenong","Tenancy 1, 55-67 Frankston-Dandenong Rd, Dandenong VIC 3175","They didn't have some of the products in stock. One of the stickers that cover the holes was missing."],
-["tgg","Springvale","Tenancy 1, 754-768 Princes Hwy, Springvale VIC 3171","The store didn't have all products in stock."],
-["hn","Springvale","Unit 26, 917 Princes Hwy, Springvale VIC 3171","The manager required us to leave the Speed Style old model on the display because they didn't have Speed Style Pro Flex in stock."],
-["jb","The Glen","The Glen Shopping Centre, 235 Springvale Rd, Glen Waverley VIC 3150","USB didn't work, left the old one in place and brought the new one back."],
-["jb","Knox","Westfield Knox, 509 Burwood Hwy, Wantirna South VIC 3152","Manager complained that the last update was last month when I asked for the new products to set the display."],
-["tgg","Bayswater","Unit 2, 224-234 Canterbury Rd, Bayswater VIC 3153"]]}
-];
-var TAGS={hn:"HN",jb:"JB",tgg:"TGG"};
-var root=document.getElementById("root");
-var state=JSON.parse(document.getElementById("state").textContent);
-var storageKey="store-runs-state";
-try{var stored=localStorage.getItem(storageKey);if(stored)state=JSON.parse(stored);}catch(e){}
-var saved=JSON.stringify(state);
-var timer=null,toastEl=null;
-state.notes=state.notes||{};state.photos=state.photos||{};
-var openId=null;
-try{openId=sessionStorage.getItem("openid")||null;}catch(e){}
-function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
-function okPhoto(u){return typeof u==="string"&&u.indexOf("data:image/jpeg;base64,")===0;}
-function shrink(file){return new Promise(function(res,rej){var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){var k=Math.min(1,1000/Math.max(im.width,im.height));var c=document.createElement("canvas");c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);res(c.toDataURL("image/jpeg",0.72));};im.onerror=rej;im.src=fr.result;};fr.onerror=rej;fr.readAsDataURL(file);});}
-function setOpen(id){openId=id;try{if(id)sessionStorage.setItem("openid",id);else sessionStorage.removeItem("openid");}catch(e){}}
-function isDone(id){return state.done.indexOf(id)>-1;}
-function count(list){var d=0,t=0;list.forEach(function(r){r.stops.forEach(function(s,i){t++;if(isDone(r.id+"-"+(i+1)))d++;});});return[d,t];}
-function card(r){
-  var d=0;r.stops.forEach(function(s,i){if(isDone(r.id+"-"+(i+1)))d++;});
-  var h='<section class="run"><div class="run-head"><h2>'+r.name+'</h2><span class="area">'+r.area+'</span></div>';
-  h+='<p class="crew"><span>'+r.crew+' &middot; '+r.stops.length+' stores</span><span class="prog'+(d===r.stops.length?' full':'')+'">'+d+' of '+r.stops.length+' done</span></p>';
-  if(r.stats){h+='<div class="stats"><div><b>'+r.stats[0]+'</b><span>Install</span></div><div><b>'+r.stats[1]+'</b><span>Driving</span></div><div class="tot"><b>'+r.stats[2]+'</b><span>Est. day</span></div></div>';}
-  h+='<ol>';
-  r.stops.forEach(function(s,i){
-    var id=r.id+"-"+(i+1),on=isDone(id);
-    h+='<li class="'+(on?'done':'')+'"><span class="n">'+(i+1)+'</span><span class="store"><span class="tag">'+TAGS[s[0]]+'</span>'+s[1]+'</span>';
-    h+='<label class="tick"><input type="checkbox" data-id="'+id+'"'+(on?' checked':'')+' aria-label="Completed: '+s[1]+'"><span>'+(on?'Done':'Tick')+'</span></label>';
-    h+='<span class="addr">'+s[2]+'</span>';
-    if(s[3])h+='<span class="note">'+s[3]+'</span>';
-    var nt=state.notes[id]||"",ph=(state.photos[id]||[]).filter(okPhoto),isOpen=openId===id;
-    if(nt&&!isOpen)h+='<span class="usernote">'+esc(nt)+'</span>';
-    var lbl=isOpen?"Close":((nt||ph.length)?("Note"+(ph.length?" &middot; "+ph.length+" photo"+(ph.length>1?"s":""):"")):"Add note or photo");
-    h+='<button type="button" class="more" data-open="'+id+'" aria-expanded="'+isOpen+'">'+lbl+'</button>';
-    if(isOpen){
-      h+='<div class="panel"><label class="lbl" for="nt-'+id+'">Note for '+esc(s[1])+'</label><textarea id="nt-'+id+'" data-note="'+id+'" placeholder="Add a note about this store">'+esc(nt)+'</textarea>';
-      h+='<div class="pbtns"><button type="button" data-save="1">Save note</button><label class="btn">Add photos<input type="file" accept="image/*" multiple hidden data-photo="'+id+'"></label></div>';
-      if(ph.length){h+='<div class="thumbs">'+ph.map(function(u,k){return '<figure><img src="'+u+'" alt="Photo '+(k+1)+'" data-view="'+id+':'+k+'"><button type="button" data-del="'+id+':'+k+'" aria-label="Remove photo '+(k+1)+'">&times;</button></figure>';}).join("")+'</div>';}
-      h+='</div>';
-    }
-    h+='</li>';
-  });
-  return h+'</ol></section>';
-}
-function render(){
-  var a=count(TODAY);
-  var h='<div class="wrap"><header><div><p class="eyebrow">Dabe Labour &middot; Installations &amp; Maintenance</p><p class="brand"><span>Shark Beauty - VIC</span><span class="brand-update">Update</span></p><h1>Store runs, Tuesday 29 September</h1><p class="sub">Install crews for the day. Stops are listed in the order each crew will visit. Tick a store when it is complete.</p></div>';
-  h+='<div class="totals"><div><b>4</b><span>Crews</span></div><div><b>'+a[1]+'</b><span>Stores</span></div><div class="doneb"><b>'+a[0]+'</b><span>Done</span></div></div></header>';
-  h+='<p class="legend"><span><span class="tag">HN</span> Harvey Norman</span><span><span class="tag">JB</span> JB Hi-Fi</span><span><span class="tag">TGG</span> The Good Guys</span></p>';
-  h+='<div class="grid">'+TODAY.map(card).join("")+'</div>';
-  h+='<div class="day-break"><p class="eyebrow">Previous run</p><h2>Monday 28 September</h2></div>';
-  h+='<div class="grid">'+PREV.map(card).join("")+'</div>';
-  h+='<footer>Driving is from the Cranbourne West warehouse through each stop and back to the finish point. *Team 2 driving is to the last Geelong stop only. Order of stops may shift on the day depending on store access and traffic.</footer></div>';
-  root.innerHTML=h;
-}
-function toast(msg){
-  if(toastEl)toastEl.remove();
-  toastEl=document.createElement("div");toastEl.className="toast";toastEl.textContent=msg;document.body.appendChild(toastEl);
-  setTimeout(function(){if(toastEl){toastEl.remove();toastEl=null;}},3200);
-}
-function save(){
-  try{localStorage.setItem(storageKey,JSON.stringify(state));saved=JSON.stringify(state);}
-  catch(e){revert("Could not save. Browser storage may be full.");}
-}
-function revert(msg){state=JSON.parse(saved);render();toast(msg);}
-document.addEventListener("change",function(ev){
-  var el=ev.target;if(!el||!el.getAttribute||!el.getAttribute("data-id"))return;
-  var id=el.getAttribute("data-id"),i=state.done.indexOf(id);
-  if(el.checked&&i<0)state.done.push(id);
-  if(!el.checked&&i>-1)state.done.splice(i,1);
-  render();
-  clearTimeout(timer);timer=setTimeout(save,700);
-});
-document.addEventListener("input",function(ev){
-  var el=ev.target,id=el&&el.getAttribute&&el.getAttribute("data-note");
-  if(id)state.notes[id]=el.value;
-});
-document.addEventListener("click",function(ev){
-  var t=ev.target;if(!t||!t.closest)return;
-  var o=t.closest("[data-open]");
-  if(o){var id=o.getAttribute("data-open");setOpen(openId===id?null:id);render();return;}
-  if(t.closest("[data-save]")){save();toast("Saved on this device.");return;}
-  var d=t.closest("[data-del]");
-  if(d){var p=d.getAttribute("data-del").split(":");state.photos[p[0]].splice(+p[1],1);render();save();return;}
-  var v=t.closest("[data-view]");
-  if(v){var q=v.getAttribute("data-view").split(":"),u=state.photos[q[0]][+q[1]];
-    var lb=document.createElement("div");lb.className="lightbox";var im=document.createElement("img");im.src=u;lb.appendChild(im);
-    lb.addEventListener("click",function(){lb.remove();});document.body.appendChild(lb);}
-});
-document.addEventListener("change",function(ev){
-  var el=ev.target,id=el&&el.getAttribute&&el.getAttribute("data-photo");
-  if(!id||!el.files||!el.files.length)return;
-  var files=Array.prototype.slice.call(el.files);
-  var have=(state.photos[id]||[]).length;
-  if(have+files.length>6){toast("Up to 6 photos per store.");return;}
-  toast("Adding photos...");
-  Promise.all(files.map(shrink)).then(function(list){
-    state.photos[id]=(state.photos[id]||[]).concat(list);
-    if(JSON.stringify(state).length>4000000){state.photos[id]=state.photos[id].slice(0,have);render();toast("The page is full. Remove some photos first.");return;}
-    render();save();
-  }).catch(function(){toast("Could not read that photo.");});
-});
-render();
-})();
-</script>
+<div class="wrap">
+<header>
+  <div>
+    <p class="eyebrow">Dabe Labour &middot; Installations &amp; Maintenance</p>
+    <p class="brand"><span>Shark Beauty - VIC</span><span class="brand-update">Update</span></p>
+    <h1 id="title">Store runs</h1>
+    <p class="sub">Install crews for the day. Stops are listed in the order each crew will visit.</p>
+  </div>
+  <div class="totals" id="totals"></div>
+</header>
+<nav class="days" id="days" aria-label="Choose a day"></nav>
+<p class="legend"><span><span class="tag">HN</span> Harvey Norman</span><span><span class="tag">JB</span> JB Hi-Fi</span><span><span class="tag">TGG</span> The Good Guys</span><span><span class="tag">BETTA</span> Betta</span><span><span class="tag">SEPHORA</span> Sephora</span></p>
+<div class="grid" id="grid"><p class="empty">Loading runs...</p></div>
+<footer>Live from the master sheet. Ticks and notes here update the sheet and each crew's page.</footer>
+</div>
+<script src="master.js"></script>
 </body>
 </html>
