@@ -152,7 +152,12 @@ function loadStores(){
 }
 function start(){
   fillRetailers();
+  var want=''; try{want=new URLSearchParams(location.search).get('store')||''}catch(e){}
   var d=lsGet('cl-draft');
+  if(want){var wi=stores.findIndex(function(s){return s.store===want});
+    if(wi>=0){var dd=null;try{dd=d?JSON.parse(d):null}catch(e){}
+      var keep=dd&&dd.store===want;A=keep?(dd.A||{}):{};$('by').value=keep?(dd.by||''):'';
+      $('ret').value=stores[wi].group;fillPlaces(stores[wi].group);$('plc').value=wi;pick(wi,true);return;}}
   if(d){try{d=JSON.parse(d);var i=stores.findIndex(function(s){return s.store===d.store});
     if(i>=0){$('ret').value=stores[i].group;fillPlaces(stores[i].group);$('plc').value=i;A=d.A||{};$('by').value=d.by||'';pick(i,true);}}catch(e){}}
 }
