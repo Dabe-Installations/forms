@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Store Report – Dabe Labour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#1F1E1D; --ink:#161716; --muted:#5c625f; --line:#e3e5e2; --page:#eef0ed; --card:#fff;
+  --green:#1a6b5a; --green-deep:#145248; --green-soft:#e6f2ee; --green-text:#3fb99c;
+  --amber:#f5b800; --amber-soft:#fff6d6; --amber-ink:#7a5a00;
+  --grey-soft:#f1f2f0;
+  --f-display:"Barlow Condensed","Arial Narrow",sans-serif;
+  --f-body:"Barlow","Segoe UI",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--page);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px 56px}
+.toolbar{max-width:900px;margin:0 auto;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.toolbar a.back{font-family:var(--f-display);font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-size:.85rem;color:var(--green-deep);text-decoration:none}
+.btn{font-family:var(--f-display);font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:.9rem;background:var(--amber);color:#111;border:0;padding:10px 18px;cursor:pointer}
+.btn:hover{filter:brightness(.95)}
+.hero{background:var(--black);color:#fff;padding:28px 28px 26px;border-bottom:4px solid var(--green);position:relative}
+.hero .top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
+.eyebrow{font-family:var(--f-display);font-weight:600;font-size:.82rem;letter-spacing:.2em;text-transform:uppercase;color:var(--green-text)}
+.hero h1{font-family:var(--f-display);font-weight:700;font-size:2.6rem;line-height:1.05;text-transform:uppercase;margin:6px 0 6px}
+.hero .addr{color:#c9ccca;font-size:.98rem}
+.logo{width:92px;height:auto;flex:none}
+.pill{display:inline-block;background:#fff;color:var(--black);font-family:var(--f-display);font-weight:700;letter-spacing:.06em;font-size:.85rem;padding:2px 9px;text-transform:uppercase;margin-right:8px;vertical-align:middle}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);background:var(--card);border:1px solid var(--line);border-top:0}
+.fact{padding:16px 20px;border-right:1px solid var(--line)}
+.fact:last-child{border-right:0}
+.fact .k{font-family:var(--f-display);font-weight:600;font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.fact .v{font-family:var(--f-display);font-weight:700;font-size:1.35rem;line-height:1.2;margin-top:2px}
+.result{display:flex;align-items:center;gap:18px;margin-top:18px;padding:18px 22px;background:var(--green-soft);border:1px solid #bfdcd2;border-left:6px solid var(--green)}
+.result .big{font-family:var(--f-display);font-weight:700;font-size:2.5rem;line-height:1;color:var(--green-deep);white-space:nowrap}
+.result .txt{font-size:1.02rem;color:#1d3d35}
+.result .txt b{font-family:var(--f-display);font-size:1.15rem;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:2px}
+.result.attn{background:var(--amber-soft);border-color:#ecd48a;border-left-color:var(--amber)}
+.result.attn .big{color:var(--amber-ink)} .result.attn .txt{color:#5a4300}
+section{margin-top:22px;background:var(--card);border:1px solid var(--line)}
+section h2{font-family:var(--f-display);font-weight:700;font-size:1.05rem;letter-spacing:.16em;text-transform:uppercase;color:var(--green-deep);padding:14px 22px;border-bottom:1px solid var(--line);background:#fafbfa}
+.row{display:grid;grid-template-columns:1fr auto;gap:6px 18px;padding:13px 22px;border-bottom:1px solid var(--line);align-items:start}
+.row:last-child{border-bottom:0}
+.q{font-size:1rem}
+.why{grid-column:1/-1;font-size:.92rem;color:var(--muted);margin-top:-2px}
+.badge{font-family:var(--f-display);font-weight:700;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 11px;white-space:nowrap;align-self:start}
+.b-ok{background:var(--green);color:#fff}
+.b-na{background:var(--grey-soft);color:var(--muted);border:1px solid var(--line)}
+.b-attn{background:var(--amber);color:#111}
+.b-val{background:#fff;color:var(--ink);border:1px solid var(--line);font-family:var(--f-body);font-weight:600;text-transform:none;letter-spacing:0;font-size:.95rem}
+.note{padding:18px 22px;font-size:1.02rem}
+.note .who{font-family:var(--f-display);font-weight:600;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;padding:18px 22px}
+.ph{position:relative;display:block;aspect-ratio:4/3;background:var(--grey-soft);border:1px solid var(--line);overflow:hidden;text-decoration:none;color:var(--green-deep)}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.ph .fb{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--f-display);font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-size:.9rem;gap:2px}
+.ph .fb span{font-weight:500;font-size:.72rem;color:var(--muted);letter-spacing:.08em}
+.ph .n{position:absolute;left:8px;bottom:8px;background:rgba(31,30,29,.85);color:#fff;font-family:var(--f-display);font-weight:600;font-size:.78rem;letter-spacing:.1em;padding:2px 8px}
+footer{margin-top:26px;text-align:center;color:var(--muted);font-size:.85rem}
+footer b{font-family:var(--f-display);letter-spacing:.14em;text-transform:uppercase;color:var(--green-deep)}
+@media (max-width:640px){
+  .hero{padding:22px 18px}.hero h1{font-size:2rem}.logo{width:68px}
+  .facts{grid-template-columns:1fr 1fr}.fact:nth-child(2){border-right:0}.fact:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .result{flex-direction:column;align-items:flex-start;gap:6px}
+  .row{padding:12px 16px}section h2{padding:12px 16px}.photos,.note{padding:16px}
+  .photos{grid-template-columns:1fr 1fr;gap:10px}
+}
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:#fff;font-size:12.5px}
+  .toolbar{display:none}
+  .wrap{max-width:none;padding:0}
+  section,.row,.ph,.result,.facts{break-inside:avoid}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .hero h1{font-size:2.1rem}
+}
+</style>
+<style>
+.msg{margin-top:22px;background:var(--card);border:1px solid var(--line);padding:28px 22px;text-align:center;color:var(--muted)}
+.msg b{display:block;font-family:var(--f-display);font-size:1.3rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);margin-bottom:6px}
+select.pick{font-family:var(--f-body);font-size:.95rem;padding:8px 10px;border:1px solid var(--line);background:#fff;margin-right:10px;max-width:60vw}
+@media print{select.pick{display:none}}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <a class="back" href="./">&larr; Back to Hub</a>
+  <span><select class="pick" id="pick" style="display:none"></select><button class="btn" onclick="window.print()">Save as PDF</button></span>
+</div>
+
+<div class="wrap" id="app"><div class="msg"><b>Loading report&hellip;</b></div></div>
+
+<script>
+var API="https://script.google.com/macros/s/AKfycbyx2biSIuIalJAlaeIpWtFim6nUGNbXE8d6rpX80UlJYIl_7cHN2zTgAtuZlRnEZouz3A/exec";
+
+/* [question number, plain-English wording, why-column number or null, options] ; good = answer meaning "all fine" */
+var GROUPS=[
+  {title:"Visit",items:[
+    [2,"Signed the store's visitor log",3],
+    [4,"Discussed the install with the store manager",5]
+  ]},
+  {title:"Display installation",items:[
+    [6,"Display location matches the floorplan",null],
+    [7,"Installed according to the instructions",8],
+    [9,"All lights and logos are working",10],
+    [11,"“New to Service” tags applied",12],
+    [19,"Name on the box",null,{value:true}],
+    [20,"New JB graphics used",21],
+    [22,"HN / TGG slogan covered by the topper",23]
+  ]},
+  {title:"Stock and products",items:[
+    [14,"Products match the planogram",15],
+    [16,"Missing or damaged items",18,{good:"No"}],
+    [24,"Asked the store for any missing stock",25]
+  ]},
+  {title:"Finish",items:[
+    [26,"Rubbish removed from site",null]
+  ]}
+];
+
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function pin(){try{return localStorage.getItem("master-pin")||""}catch(e){return ""}}
+function qs(k){var m=new RegExp("[?&]"+k+"=([^&]*)").exec(location.search);return m?decodeURIComponent(m[1].replace(/\+/g," ")):""}
+function msg(t,d){document.getElementById("app").innerHTML='<div class="msg"><b>'+esc(t)+'</b>'+esc(d||"")+'</div>'}
+function get(R,n){var k=Object.keys(R);for(var i=0;i<k.length;i++){if(k[i].split(" ")[0]===String(n)&&!/^\d+ Why/.test(k[i]))return R[k[i]]}return ""}
+function whyOf(R,n){var k=Object.keys(R);for(var i=0;i<k.length;i++){if(k[i].split(" ")[0]===String(n)&&/^\d+ Why/.test(k[i]))return R[k[i]]}return ""}
+function links(txt){return String(txt||"").split(/\s+/).map(function(u){var m=/[-\w]{25,}/.exec(u);return m&&/^https?:/.test(u)?m[0]:null}).filter(Boolean)}
+
+function judge(v,why,opt){
+  var good=(opt&&opt.good)||"Yes";
+  if(v===good)return "ok";
+  if(/not required|n\/a|not applicable/i.test(why))return "na";
+  return "attn";
+}
+
+function build(R,sheetNote){
+  var ok=0,na=0,attn=0,rows="";
+  GROUPS.forEach(function(g){
+    var inner="";
+    g.items.forEach(function(it){
+      var v=String(get(R,it[0])).trim(); if(!v)return;
+      var why=it[2]?String(whyOf(R,it[2])).trim():"", opt=it[3]||{};
+      if(it[0]===16){var miss=String(get(R,17)).trim(); if(miss)why=(miss+(why?" – "+why:""))}
+      if(opt.value){
+        if(v==="Yes"||v==="No"){}else{inner+='<div class="row"><div class="q">'+esc(it[1])+'</div><span class="badge b-val">'+esc(v)+'</span></div>';return}
+      }
+      var st=judge(v,why,opt); if(st==="ok")ok++; else if(st==="na")na++; else attn++;
+      var label=st==="ok"?"Confirmed":st==="na"?"Not required":"Needs attention";
+      if(opt.good==="No")label=(v==="No")?"None reported":"Reported";
+      var cls=st==="ok"?"b-ok":st==="na"?"b-na":"b-attn";
+      var showWhy=why&&!(st==="na"&&/^not required$/i.test(why));
+      inner+='<div class="row"><div class="q">'+esc(it[1])+'</div><span class="badge '+cls+'">'+label+'</span>'+(showWhy?'<div class="why">'+esc(why)+'</div>':'')+'</div>';
+    });
+    if(inner)rows+='<section><h2>'+g.title+'</h2>'+inner+'</section>';
+  });
+  var total=ok+na+attn;
+  var banner=attn===0
+    ?'<div class="result"><div class="big">'+(ok+na)+'/'+total+'</div><div class="txt"><b>Install completed &ndash; no issues</b>Every checklist item was confirmed'+(na?' or marked not required':'')+' by the installer on site.</div></div>'
+    :'<div class="result attn"><div class="big">'+attn+'</div><div class="txt"><b>'+(attn===1?'Item needs':'Items need')+' attention</b>'+ok+' of '+total+' checklist items confirmed; see the flagged rows below.</div></div>';
+  var store=R["Store"]||"", code=String(store).split(/\s+/)[0].toUpperCase();
+  var notes=[]; var c27=String(get(R,27)).trim(); if(c27)notes.push(c27); if(sheetNote&&notes.join(" ").indexOf(sheetNote)<0)notes.push(sheetNote);
+  var photos=links(R["Display photo links"]);
+  var tagPh=links(R["Tag photo links"]);
+  var h='<div class="hero"><div class="top"><div><div class="eyebrow">Dabe Labour &middot; Installation Report</div><h1>'+esc(store)+'</h1>'+
+    '<div class="addr"><span class="pill">'+esc(code)+'</span>'+esc(R["Address"])+'</div></div><img class="logo" src="logo.png" alt="Dabe Labour" onerror="this.style.display=\'none\'"></div></div>'+
+    '<div class="facts"><div class="fact"><div class="k">Install date</div><div class="v">'+esc(R["Install Date"]||String(R["Submitted"]).split(",")[0])+'</div></div>'+
+    '<div class="fact"><div class="k">Installer</div><div class="v">'+esc(R["Installer"])+'</div></div>'+
+    '<div class="fact"><div class="k">Run</div><div class="v">'+esc(R["Run"]||"–")+'</div></div>'+
+    '<div class="fact"><div class="k">Display installed</div><div class="v">'+esc(String(get(R,1))||"–")+'</div></div></div>'+banner+rows;
+  if(notes.length)h+='<section><h2>Installer notes</h2>'+notes.map(function(n){return '<div class="note"><div class="who">'+esc(R["Installer"])+' &middot; on site</div>'+esc(n)+'</div>'}).join("")+'</section>';
+  function grid(title,ids){if(!ids.length)return "";return '<section><h2>'+title+' ('+ids.length+')</h2><div class="photos">'+ids.map(function(id,i){
+      var view="https://drive.google.com/file/d/"+id+"/view",th="https://drive.google.com/thumbnail?id="+id+"&sz=w800";
+      return '<a class="ph" href="'+view+'" target="_blank" rel="noopener"><div class="fb">Photo '+(i+1)+'<span>Tap to open</span></div><img src="'+th+'" alt="Photo '+(i+1)+'" loading="lazy" onerror="this.remove()"><div class="n">Photo '+(i+1)+'</div></a>'}).join("")+'</div></section>'}
+  h+=grid("Display photos",photos)+grid("Service tag photos",tagPh);
+  h+='<footer>Submitted '+esc(R["Submitted"])+'<br><b>Dabe Labour</b> &middot; Installations &amp; Maintenance</footer>';
+  return h;
+}
+
+function show(list,i,sheetNote){document.title="Store Report – "+list[i]["Store"];document.getElementById("app").innerHTML=build(list[i],sheetNote)}
+
+(function(){
+  var store=qs("store");
+  if(!store){msg("No store chosen","Open this page from the Store report button on the Hub.");return}
+  if(!pin()){msg("Please sign in on the Hub first","This report is private. Open the Hub once on this device, then tap the report button again.");return}
+  var p=pin();
+  Promise.all([
+    fetch(API+"?action=checklistReport&store="+encodeURIComponent(store)+"&pin="+encodeURIComponent(p)).then(function(r){return r.json()}),
+    fetch(API+"?team=all&pin="+encodeURIComponent(p)).then(function(r){return r.json()}).catch(function(){return {}})
+  ]).then(function(res){
+    var j=res[0],all=res[1];
+    if(!j.ok){msg(j.error==="pin"?"Password not accepted":"Could not load the report",j.error==="pin"?"Open the Hub and enter your password again.":"Please try again in a moment.");return}
+    var list=j.reports||[];
+    if(!list.length){msg("No report yet for "+store,"The installer has not submitted the Store Report for this store.");return}
+    var note="";
+    try{(all.rows||[]).forEach(function(r){if(String(r.store).toLowerCase()===store.toLowerCase()&&r.comment&&!note)note=String(r.comment).trim()})}catch(e){}
+    var sel=document.getElementById("pick");
+    if(list.length>1){sel.style.display="";sel.innerHTML=list.map(function(r,i){return '<option value="'+i+'">'+esc(r["Submitted"])+(i===0?" (latest)":"")+'</option>'}).join("");sel.onchange=function(){show(list,+sel.value,note)}}
+    show(list,0,note);
+  }).catch(function(){msg("Could not load the report","Check your connection and try again.")});
+})();
+</script>
+</body>
+</html>
