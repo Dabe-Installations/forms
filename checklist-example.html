@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Install checklist – example</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#2b2b2b;--green:#1a6b5a;--green2:#e6f1ee;--line:#dcdcd6;--bg:#f1f1ec;--red:#b3261e;--mute:#6b6b66}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Barlow,system-ui,sans-serif;color:var(--ink)}
+.wrap{max-width:520px;margin:0 auto;background:#fff;min-height:100vh;box-shadow:0 0 0 1px var(--line)}
+header{background:#2f2f2d;color:#fff;padding:16px 18px 14px;border-bottom:3px solid var(--green)}
+.kick{font:600 11px 'Barlow Condensed';letter-spacing:.12em;color:#8fc9b9;text-transform:uppercase}
+h1{font:700 26px 'Barlow Condensed';margin:4px 0 2px;text-transform:uppercase}
+.sub{font-size:13px;color:#bdbdb6}
+.tag{display:inline-block;background:#fff;color:var(--ink);font:700 12px 'Barlow Condensed';padding:1px 6px;border-radius:2px;margin-right:6px}
+.demo{background:#fff8dc;border-bottom:1px solid #eadf9f;padding:8px 18px;font-size:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.demo select{font:inherit;padding:3px 6px}
+.prog{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);padding:8px 18px;font:600 13px 'Barlow Condensed';letter-spacing:.06em;text-transform:uppercase;display:flex;justify-content:space-between}
+.bar{height:4px;background:var(--line)}.bar i{display:block;height:100%;width:0;background:var(--green);transition:width .25s}
+.sec{font:700 15px 'Barlow Condensed';letter-spacing:.1em;text-transform:uppercase;padding:14px 18px 6px;color:var(--green)}
+.q{padding:12px 18px;border-bottom:1px solid #eee}
+.q.sub{background:#fafaf7;border-left:3px solid var(--green);margin-left:18px;padding-left:12px;padding-right:18px}
+.q label.t{display:block;font-weight:600;font-size:15px;line-height:1.3;margin-bottom:8px}
+.req{color:var(--red)}
+.yn{display:flex;gap:8px}
+.yn button{flex:1;padding:12px;border:1.5px solid var(--line);background:#fff;font:600 16px 'Barlow Condensed';letter-spacing:.06em;text-transform:uppercase;border-radius:4px;color:var(--mute)}
+.yn button.on.y{background:var(--green);border-color:var(--green);color:#fff}
+.yn button.on.n{background:var(--red);border-color:var(--red);color:#fff}
+textarea,input[type=text]{width:100%;padding:10px;border:1.5px solid var(--line);border-radius:4px;font:inherit;font-size:15px}
+textarea{min-height:70px;resize:vertical}
+.ph{display:flex;flex-wrap:wrap;gap:8px}
+.ph .add{width:84px;height:84px;border:2px dashed #b9b9b2;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;color:var(--mute);cursor:pointer}
+.ph .add b{font-size:26px;line-height:1;color:var(--green)}
+.ph img{width:84px;height:84px;object-fit:cover;border-radius:6px;border:1px solid var(--line)}
+.ph input{display:none}
+.err{outline:2px solid var(--red);outline-offset:-2px}
+.msg{color:var(--red);font-size:12px;margin-top:6px;display:none}.err .msg{display:block}
+.foot{padding:18px}
+.go{width:100%;padding:15px;background:var(--green);color:#fff;border:0;border-radius:4px;font:700 18px 'Barlow Condensed';letter-spacing:.1em;text-transform:uppercase}
+.note{font-size:12px;color:var(--mute);text-align:center;margin-top:10px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}
+.modal div{background:#fff;border-radius:8px;padding:22px;max-width:380px;text-align:center}
+.modal h2{font:700 24px 'Barlow Condensed';text-transform:uppercase;margin:0 0 6px;color:var(--green)}
+.modal button{margin-top:14px;padding:10px 20px;border:0;background:var(--ink);color:#fff;border-radius:4px;font:600 15px 'Barlow Condensed';letter-spacing:.08em}
+</style></head><body>
+<div class="wrap">
+<header>
+ <div class="kick">Dabe Labour · Install checklist</div>
+ <h1>Shark Beauty Updates</h1>
+ <div class="sub"><span class="tag" id="rt">TGG</span><b id="st">Moorabbin</b> · VIC 13 · Installer: Vini · Mon 28 Sep</div>
+</header>
+<div class="demo">Demo only – pretend this store is: <select id="ret"><option>TGG</option><option>HN</option><option>JB</option></select>
+ <span>(JB and HN/TGG each get their own question)</span></div>
+<div class="prog"><span id="pt">0 of 0 answered</span><span id="pp">0%</span></div><div class="bar"><i id="pb"></i></div>
+<div id="form"></div>
+<div class="foot"><button class="go" id="submit">Submit checklist</button>
+<div class="note">On the real page this saves to your Google Sheet, one row per store.</div></div>
+</div>
+<div class="modal" id="modal"><div><h2>Checklist submitted</h2><p style="margin:0;font-size:14px">In the live version this row would now appear in your Google Sheet, with photos saved to a Drive folder and linked.</p><button onclick="modal.style.display='none'">Close</button></div></div>
+<script>
+// cond: show when parent answer equals value. only: retailers it applies to.
+const Q=[
+{id:1,sec:'General',t:'What displays are you installing in this store?',type:'text',req:1},
+{id:2,sec:'Inspection',t:'Did you sign in to the visitor log?',type:'yn',req:1},
+{id:3,t:'Why?',type:'text',parent:2,when:'No'},
+{id:4,t:'Have you discussed the works with the manager on duty?',type:'yn',req:1},
+{id:5,t:'Why?',type:'text',parent:4,when:'No'},
+{id:6,t:'Does the display location match the floorplan provided?',type:'yn',req:1},
+{id:7,t:'Have you installed the display as per instructions?',type:'yn',req:1},
+{id:8,t:'Why?',type:'text',parent:7,when:'No'},
+{id:9,t:'Are all lights and logos lit?',type:'yn',req:1},
+{id:10,t:'Why?',type:'text',parent:9,when:'No'},
+{id:11,t:'Have you applied New to Service tags to the power boards and transformer cable?',type:'yn',req:1},
+{id:12,t:'Why?',type:'text',parent:11,when:'No'},
+{id:13,t:'Please take photos',type:'photo',parent:11,when:'Yes'},
+{id:14,t:'Have you installed all display products as per the planogram guide?',type:'yn',req:1},
+{id:15,t:'Why?',type:'text',parent:14,when:'No'},
+{id:16,t:'Is there anything missing or damaged?',type:'yn',req:1},
+{id:17,t:'What items are missing?',type:'text',parent:16,when:'Yes'},
+{id:18,t:'Why?',type:'text',parent:16,when:'Yes'},
+{id:19,t:'Please write the name on the box here',type:'text',parent:16,when:'Yes'},
+{id:20,t:'For JB update only – have you used the new product graphics from the separate pack?',type:'yn',req:1,only:['JB']},
+{id:21,t:'Why?',type:'text',parent:20,when:'No'},
+{id:22,t:'For HN & TGG only – have you checked whether the front slogan has been covered with the topper?',type:'yn',req:1,only:['HN','TGG']},
+{id:23,t:'Why?',type:'text',parent:22,when:'No'},
+{id:24,t:'Have you asked the store for any missing stock?',type:'yn',req:1},
+{id:25,t:'Why?',type:'text',parent:24,when:'No'},
+{id:26,t:'Has all rubbish been removed from site?',type:'yn',req:1},
+{id:27,t:'Please add any additional comments below:',type:'text',long:1},
+{id:28,t:'Take approx. 4–5 photos of each display showing various angles',type:'photo',req:1}
+];
+const A={},P={};let retailer='TGG';
+const form=document.getElementById('form');
+const vis=q=>(!q.only||q.only.includes(retailer))&&(!q.parent||A[q.parent]===q.when)&&(!q.parent||vis(Q.find(x=>x.id===q.parent)));
+function render(){
+ let h='',sec='';
+ Q.filter(vis).forEach(q=>{
+  if(q.sec&&q.sec!==sec){sec=q.sec;h+=`<div class="sec">${sec}</div>`}
+  h+=`<div class="q ${q.parent?'sub':''}" id="q${q.id}"><label class="t">${q.t}${q.req?' <span class="req">*</span>':''}</label>`;
+  if(q.type==='yn')h+=`<div class="yn"><button class="y ${A[q.id]==='Yes'?'on y':''}" onclick="ans(${q.id},'Yes')">Yes</button><button class="n ${A[q.id]==='No'?'on n':''}" onclick="ans(${q.id},'No')">No</button></div>`;
+  if(q.type==='text')h+=q.long||q.parent?`<textarea oninput="A[${q.id}]=this.value;prog()">${A[q.id]||''}</textarea>`:`<input type="text" value="${A[q.id]||''}" oninput="A[${q.id}]=this.value;prog()">`;
+  if(q.type==='photo')h+=`<div class="ph">${(P[q.id]||[]).map(s=>`<img src="${s}">`).join('')}<label class="add"><b>+</b>Add photo<input type="file" accept="image/*" capture="environment" multiple onchange="pic(${q.id},this)"></label></div>`;
+  h+=`<div class="msg">Please answer this question</div></div>`;
+ });
+ form.innerHTML=h;prog();
+}
+function ans(id,v){A[id]=v;render()}
+function pic(id,el){[...el.files].forEach(f=>{const r=new FileReader();r.onload=e=>{(P[id]=P[id]||[]).push(e.target.result);A[id]='photos';render()};r.readAsDataURL(f)})}
+function prog(){
+ const req=Q.filter(q=>vis(q)&&q.req),done=req.filter(q=>A[q.id]&&String(A[q.id]).trim()).length;
+ const p=Math.round(done/req.length*100);
+ pt.textContent=`${done} of ${req.length} required answered`;pp.textContent=p+'%';pb.style.width=p+'%';
+}
+ret.onchange=()=>{retailer=ret.value;rt.textContent=retailer;render()};
+submit.onclick=()=>{
+ let first=null;
+ Q.filter(vis).forEach(q=>{const e=document.getElementById('q'+q.id);const bad=q.req&&!(A[q.id]&&String(A[q.id]).trim());e.classList.toggle('err',!!bad);if(bad&&!first)first=e});
+ if(first)first.scrollIntoView({behavior:'smooth',block:'center'});else modal.style.display='flex';
+};
+render();
+</script></body></html>
