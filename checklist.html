@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#2f2f2d">
+<title>Install Checklist – Dabe Labour</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#2b2b2b;--green:#1a6b5a;--line:#dcdcd6;--bg:#f1f1ec;--red:#b3261e;--mute:#6b6b66;--soft:#fafaf7}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:Barlow,system-ui,sans-serif;color:var(--ink);font-size:16px}
+.wrap{max-width:520px;margin:0 auto;background:#fff;min-height:100vh;box-shadow:0 0 0 1px var(--line)}
+header{background:#2f2f2d;color:#fff;padding:16px 18px 14px;border-bottom:3px solid var(--green)}
+.kick{font:600 11px 'Barlow Condensed',sans-serif;letter-spacing:.12em;color:#8fc9b9;text-transform:uppercase}
+h1{font:700 26px 'Barlow Condensed',sans-serif;margin:4px 0 0;text-transform:uppercase}
+.store{padding:16px 18px;border-bottom:1px solid var(--line);display:grid;gap:12px}
+.store label,.fl{display:block;font:600 12px 'Barlow Condensed',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:4px}
+select,input[type=text],textarea{width:100%;padding:12px 10px;border:1.5px solid var(--line);border-radius:4px;font:inherit;font-size:16px;background:#fff;color:var(--ink)}
+textarea{min-height:76px;resize:vertical}
+.info{background:var(--soft);border-left:3px solid var(--green);padding:10px 12px;font-size:14px;line-height:1.45;display:none}
+.info b{font-weight:600}
+.prog{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);padding:8px 18px;font:600 13px 'Barlow Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase;display:none;justify-content:space-between}
+.bar{height:4px;background:var(--line);display:none}.bar i{display:block;height:100%;width:0;background:var(--green);transition:width .25s}
+.sec{font:700 15px 'Barlow Condensed',sans-serif;letter-spacing:.1em;text-transform:uppercase;padding:14px 18px 6px;color:var(--green)}
+.q{padding:12px 18px;border-bottom:1px solid #eee}
+.q.follow{background:var(--soft);border-left:3px solid var(--green);margin-left:18px;padding-left:12px}
+.q label.t{display:block;font-weight:600;font-size:15px;line-height:1.3;margin-bottom:8px}
+.req{color:var(--red)}
+.yn{display:flex;gap:8px}
+.yn button{flex:1;padding:13px;border:1.5px solid var(--line);background:#fff;font:600 16px 'Barlow Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase;border-radius:4px;color:var(--mute)}
+.yn button.on.y{background:var(--green);border-color:var(--green);color:#fff}
+.yn button.on.n{background:var(--red);border-color:var(--red);color:#fff}
+.ph{display:flex;flex-wrap:wrap;gap:8px}
+.ph .add{width:84px;height:84px;border:2px dashed #b9b9b2;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;color:var(--mute);cursor:pointer}
+.ph .add b{font-size:26px;line-height:1;color:var(--green)}
+.ph .th{position:relative}
+.ph .th img{width:84px;height:84px;object-fit:cover;border-radius:6px;border:1px solid var(--line);display:block}
+.ph .th button{position:absolute;top:-6px;right:-6px;width:24px;height:24px;border-radius:50%;border:0;background:var(--ink);color:#fff;font-size:14px;line-height:1}
+.ph .th.ok img{border-color:var(--green)}
+.ph input{display:none}
+.hint{font-size:12px;color:var(--mute);margin-top:6px}
+.err{outline:2px solid var(--red);outline-offset:-2px}
+.msg{color:var(--red);font-size:12px;margin-top:6px;display:none}.err .msg{display:block}
+.foot{padding:18px;display:none}
+.go{width:100%;padding:15px;background:var(--green);color:#fff;border:0;border-radius:4px;font:700 18px 'Barlow Condensed',sans-serif;letter-spacing:.1em;text-transform:uppercase}
+.go[disabled]{opacity:.6}
+.status{font-size:14px;text-align:center;margin-top:10px;min-height:20px}
+.status.bad{color:var(--red);font-weight:600}
+.done{padding:40px 24px;text-align:center;display:none}
+.done h2{font:700 28px 'Barlow Condensed',sans-serif;text-transform:uppercase;color:var(--green);margin:0 0 8px}
+.done p{margin:0 0 20px;color:var(--mute)}
+.done button{padding:13px 22px;border:0;border-radius:4px;background:var(--ink);color:#fff;font:600 16px 'Barlow Condensed',sans-serif;letter-spacing:.08em;text-transform:uppercase}
+button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+</style></head><body>
+<div class="wrap">
+<header>
+ <div class="kick">Dabe Labour · Install checklist</div>
+ <h1>Shark Beauty Updates</h1>
+</header>
+<div id="main">
+ <div class="store">
+  <div><label for="ret">Retailer</label><select id="ret"><option value="">Loading stores…</option></select></div>
+  <div><label for="plc">Store</label><select id="plc" disabled><option value="">Choose a retailer first</option></select></div>
+  <div class="info" id="info"></div>
+  <div><label for="by">Conducted by</label><input type="text" id="by" autocomplete="name" placeholder="Your name"></div>
+ </div>
+ <div class="prog" id="prog"><span id="pt"></span><span id="pp"></span></div><div class="bar" id="bar"><i id="pb"></i></div>
+ <div id="form"></div>
+ <div class="foot" id="foot"><button class="go" id="go">Submit checklist</button><div class="status" id="status"></div></div>
+</div>
+<div class="done" id="done"><h2>Checklist submitted</h2><p id="donetxt"></p><button id="again">Do another store</button></div>
+</div>
+<script>
+(function(){
+var API='https://script.google.com/macros/s/AKfycbyx2biSIuIalJAlaeIpWtFim6nUGNbXE8d6rpX80UlJYIl_7cHN2zTgAtuZlRnEZouz3A/exec';
+var $=function(id){return document.getElementById(id)};
+// cond: show when the parent answer equals "when". only: store kinds the question applies to.
+var Q=[
+{id:1,sec:'General',t:'What displays are you installing in this store?',type:'text',req:1},
+{id:2,sec:'Inspection',t:'Did you sign in to the visitor log?',type:'yn',req:1},
+{id:3,t:'Why?',type:'text',parent:2,when:'No'},
+{id:4,t:'Have you discussed the works with the manager on duty?',type:'yn',req:1},
+{id:5,t:'Why?',type:'text',parent:4,when:'No'},
+{id:6,t:'Does the display location match the floorplan provided?',type:'yn',req:1},
+{id:7,t:'Have you installed the display as per instructions?',type:'yn',req:1},
+{id:8,t:'Why?',type:'text',parent:7,when:'No'},
+{id:9,t:'Are all lights and logos lit?',type:'yn',req:1},
+{id:10,t:'Why?',type:'text',parent:9,when:'No'},
+{id:11,t:'Have you applied New to Service tags to the power boards and transformer cable?',type:'yn',req:1},
+{id:12,t:'Why?',type:'text',parent:11,when:'No'},
+{id:13,t:'Please take photos',type:'photo',parent:11,when:'Yes'},
+{id:14,t:'Have you installed all display products as per the planogram guide?',type:'yn',req:1},
+{id:15,t:'Why?',type:'text',parent:14,when:'No'},
+{id:16,t:'Is there anything missing or damaged?',type:'yn',req:1},
+{id:17,t:'What items are missing?',type:'text',parent:16,when:'Yes'},
+{id:18,t:'Why?',type:'text',parent:16,when:'Yes'},
+{id:19,t:'Please write the name on the box here',type:'text',parent:16,when:'Yes'},
+{id:20,t:'For JB update only – have you used the new product graphics from the separate pack?',type:'yn',req:1,only:['JB']},
+{id:21,t:'Why?',type:'text',parent:20,when:'No'},
+{id:22,t:'For HN & TGG only – have you checked whether the front slogan has been covered with the topper?',type:'yn',req:1,only:['HN','TGG']},
+{id:23,t:'Why?',type:'text',parent:22,when:'No'},
+{id:24,t:'Have you asked the store for any missing stock?',type:'yn',req:1},
+{id:25,t:'Why?',type:'text',parent:24,when:'No'},
+{id:26,t:'Has all rubbish been removed from site?',type:'yn',req:1},
+{id:27,t:'Please add any additional comments below:',type:'text',long:1},
+{id:28,t:'Take approx. 4–5 photos of each display showing various angles',type:'photo',req:1,hint:'Aim for 4 to 5 photos from different angles.'}
+];
+var A={},P={},stores=[],cur=null,kind='',sid='',busy=false;
+
+function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function lsDel(k){try{localStorage.removeItem(k)}catch(e){}}
+
+// ---- stores ----
+var NAMES={HN:'Harvey Norman',JBHIFI:'JB Hi-Fi',TGG:'The Good Guys',SEPHORA:'Sephora',ATOMICA:'Atomica'};
+function prep(list){
+  var out=list.map(function(s){
+    var name=String(s.store||'').trim(),g,place;
+    if(NAMES[s.code]){g=NAMES[s.code];place=s.place}
+    else if(/^david jones/i.test(name)){g='David Jones';place=name.replace(/^david jones\s*/i,'')||name}
+    else if(/betta home living/i.test(name)){g='Betta Home Living';place=name.replace(/\s*betta home living\s*/i,' ').trim()||name}
+    else{g='Other';place=name}
+    var k=s.code==='JBHIFI'?'JB':(s.code==='HN'||s.code==='TGG')?s.code:'';
+    return {store:name,group:g,place:place,kind:k,address:s.address||'',run:s.run||'',team:s.team||'',installDate:s.installDate||''};
+  });
+  var seen={};out.forEach(function(s){var key=s.group+'|'+s.place;seen[key]=(seen[key]||0)+1});
+  out.forEach(function(s){if(seen[s.group+'|'+s.place]>1&&s.run)s.place+=' ('+s.run+')'});
+  out.sort(function(a,b){return a.group===b.group?a.place.localeCompare(b.place):a.group==='Other'?1:b.group==='Other'?-1:a.group.localeCompare(b.group)});
+  return out;
+}
+function fillRetailers(){
+  var groups=[];stores.forEach(function(s){if(groups.indexOf(s.group)<0)groups.push(s.group)});
+  var h='<option value="">Choose retailer…</option>';
+  groups.forEach(function(g){h+='<option>'+esc(g)+'</option>'});
+  $('ret').innerHTML=h;
+}
+function fillPlaces(g){
+  var h='<option value="">Choose store…</option>';
+  stores.forEach(function(s,i){if(s.group===g)h+='<option value="'+i+'">'+esc(s.place)+'</option>'});
+  $('plc').innerHTML=h;$('plc').disabled=false;
+}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function loadStores(){
+  var cached=lsGet('cl-stores');
+  fetch(API+'?action=checklistStores').then(function(r){return r.json()}).then(function(j){
+    if(!j.ok)throw new Error(j.error||'failed');
+    lsSet('cl-stores',JSON.stringify(j.stores));
+    stores=prep(j.stores);start();
+  }).catch(function(){
+    if(cached){try{stores=prep(JSON.parse(cached));start();return}catch(e){}}
+    $('ret').innerHTML='<option value="">Could not load stores. Check your signal and reload.</option>';
+  });
+}
+function start(){
+  fillRetailers();
+  var d=lsGet('cl-draft');
+  if(d){try{d=JSON.parse(d);var i=stores.findIndex(function(s){return s.store===d.store});
+    if(i>=0){$('ret').value=stores[i].group;fillPlaces(stores[i].group);$('plc').value=i;A=d.A||{};$('by').value=d.by||'';pick(i,true);}}catch(e){}}
+}
+function pick(i,keep){
+  cur=stores[i];kind=cur.kind;
+  if(!keep){A={};P={};}
+  sid='s'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+  var inst=cur.team.replace(/^T\d\s*/,'').trim();
+  if(!$('by').value)$('by').value=inst;
+  $('info').style.display='block';
+  $('info').innerHTML='<b>'+esc(cur.store)+'</b><br>'+esc(cur.address)+'<br>'+(cur.run?esc(cur.run)+' · ':'')+(cur.team?esc(cur.team):'')+(cur.installDate?' · '+esc(cur.installDate):'');
+  ['prog','bar'].forEach(function(id){$(id).style.display=id==='prog'?'flex':'block'});
+  $('foot').style.display='block';
+  render();
+}
+function clearStore(){cur=null;$('info').style.display='none';['prog','bar','foot'].forEach(function(id){$(id).style.display='none'});$('form').innerHTML=''}
+
+// ---- questions ----
+function vis(q){
+  if(q.only&&q.only.indexOf(kind)<0)return false;
+  if(q.parent){var p=Q.filter(function(x){return x.id===q.parent})[0];return A[q.parent]===q.when&&vis(p)}
+  return true;
+}
+function answered(q){
+  if(q.type==='photo')return (P[q.id]||[]).length>0;
+  return A[q.id]&&String(A[q.id]).trim();
+}
+function render(){
+  var h='',sec='';
+  Q.filter(vis).forEach(function(q){
+    if(q.sec&&q.sec!==sec){sec=q.sec;h+='<div class="sec">'+sec+'</div>'}
+    h+='<div class="q'+(q.parent?' follow':'')+'" id="q'+q.id+'"><label class="t">'+esc(q.t)+(q.req?' <span class="req">*</span>':'')+'</label>';
+    if(q.type==='yn')h+='<div class="yn"><button type="button" class="'+(A[q.id]==='Yes'?'on y':'')+'" data-a="'+q.id+'" data-v="Yes">Yes</button><button type="button" class="'+(A[q.id]==='No'?'on n':'')+'" data-a="'+q.id+'" data-v="No">No</button></div>';
+    if(q.type==='text')h+=(q.long||q.parent)?'<textarea data-t="'+q.id+'">'+esc(A[q.id]||'')+'</textarea>':'<input type="text" data-t="'+q.id+'" value="'+esc(A[q.id]||'')+'">';
+    if(q.type==='photo'){
+      h+='<div class="ph">';
+      (P[q.id]||[]).forEach(function(p,i){h+='<div class="th'+(p.url?' ok':'')+'"><img src="'+p.thumb+'" alt=""><button type="button" data-rm="'+q.id+':'+i+'" aria-label="Remove photo">×</button></div>'});
+      h+='<label class="add"><b>+</b>Add photo<input type="file" accept="image/*" multiple data-p="'+q.id+'"></label></div>';
+      h+='<div class="hint">'+(q.hint?q.hint+' ':'')+((P[q.id]||[]).length?(P[q.id].length+' added'):'')+'</div>';
+    }
+    h+='<div class="msg">Please answer this question</div></div>';
+  });
+  $('form').innerHTML=h;prog();
+}
+function prog(){
+  var req=Q.filter(function(q){return vis(q)&&q.req}),done=req.filter(answered).length;
+  var p=req.length?Math.round(done/req.length*100):0;
+  $('pt').textContent=done+' of '+req.length+' required answered';$('pp').textContent=p+'%';$('pb').style.width=p+'%';
+}
+function saveDraft(){if(cur)lsSet('cl-draft',JSON.stringify({store:cur.store,by:$('by').value,A:A}))}
+
+// ---- photos ----
+function shrink(file){
+  return new Promise(function(res,rej){
+    var url=URL.createObjectURL(file),img=new Image();
+    img.onload=function(){
+      var m=1600,w=img.width,h=img.height,s=Math.min(1,m/Math.max(w,h));
+      var c=document.createElement('canvas');c.width=Math.round(w*s);c.height=Math.round(h*s);
+      c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+      URL.revokeObjectURL(url);res(c.toDataURL('image/jpeg',0.72));
+    };
+    img.onerror=function(){URL.revokeObjectURL(url);rej(new Error('bad image'))};
+    img.src=url;
+  });
+}
+function addPhotos(id,files){
+  var list=Array.prototype.slice.call(files);
+  list.reduce(function(chain,f){return chain.then(function(){return shrink(f).then(function(d){
+    (P[id]=P[id]||[]).push({data:d,thumb:d,url:''});render();
+  }).catch(function(){})})},Promise.resolve());
+}
+
+// ---- events ----
+$('ret').addEventListener('change',function(){clearStore();A={};P={};if(this.value)fillPlaces(this.value);else{$('plc').innerHTML='<option value="">Choose a retailer first</option>';$('plc').disabled=true}});
+$('plc').addEventListener('change',function(){if(this.value==='')clearStore();else pick(+this.value)});
+$('by').addEventListener('input',saveDraft);
+$('form').addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b)return;
+  if(b.dataset.a){A[b.dataset.a]=b.dataset.v;saveDraft();render()}
+  if(b.dataset.rm){var s=b.dataset.rm.split(':');P[s[0]].splice(+s[1],1);render()}
+});
+$('form').addEventListener('input',function(e){var t=e.target.dataset&&e.target.dataset.t;if(t){A[t]=e.target.value;saveDraft();prog()}});
+$('form').addEventListener('change',function(e){var p=e.target.dataset&&e.target.dataset.p;if(p){addPhotos(p,e.target.files);e.target.value=''}});
+
+// ---- submit ----
+function post(o){
+  return fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(o)})
+    .then(function(r){return r.json()}).then(function(j){if(!j.ok)throw new Error(j.error||'Failed');return j});
+}
+function say(t,bad){var s=$('status');s.textContent=t;s.className='status'+(bad?' bad':'')}
+$('go').addEventListener('click',function(){
+  if(busy||!cur)return;
+  var first=null;
+  Q.filter(vis).forEach(function(q){var el=$('q'+q.id);var bad=q.req&&!answered(q);el.classList.toggle('err',!!bad);if(bad&&!first)first=el});
+  if(!$('by').value.trim()){$('by').focus();say('Please enter your name.',true);return}
+  if(first){first.scrollIntoView({behavior:'smooth',block:'center'});say('Some required questions still need an answer.',true);return}
+  busy=true;$('go').disabled=true;say('Uploading…');
+  var jobs=[];Object.keys(P).forEach(function(id){if(vis(Q.filter(function(q){return q.id==+id})[0]))P[id].forEach(function(p){if(!p.url)jobs.push(p)})});
+  var n=0,total=jobs.length;
+  jobs.reduce(function(chain,p){return chain.then(function(){n++;say('Uploading photo '+n+' of '+total+'…');
+    return post({action:'checklistPhoto',store:cur.store,data:p.data,n:n}).then(function(j){p.url=j.url;render()})})},Promise.resolve())
+  .then(function(){
+    say('Saving checklist…');
+    var ans={},photos={};
+    Q.filter(vis).forEach(function(q){
+      if(q.type==='photo'){var u=(P[q.id]||[]).map(function(p){return p.url});photos[q.id]=u;ans[q.id]=u.length+' photo'+(u.length===1?'':'s')}
+      else if(A[q.id]!=null)ans[q.id]=A[q.id];
+    });
+    return post({action:'checklist',submissionId:sid,store:cur.store,retailer:cur.group,address:cur.address,run:cur.run,
+      installer:$('by').value.trim(),installDate:cur.installDate,answers:ans,photos:photos});
+  }).then(function(){
+    lsDel('cl-draft');
+    $('main').style.display='none';$('done').style.display='block';
+    $('donetxt').textContent=cur.store+' has been saved. Thank you.';
+    window.scrollTo(0,0);
+  }).catch(function(err){
+    say('Could not finish: '+(err.message||'no signal')+'. Check your signal and tap Submit again. Your answers and photos are still here.',true);
+  }).then(function(){busy=false;$('go').disabled=false});
+});
+$('again').addEventListener('click',function(){
+  A={};P={};cur=null;$('done').style.display='none';$('main').style.display='block';
+  clearStore();$('ret').value='';$('plc').innerHTML='<option value="">Choose a retailer first</option>';$('plc').disabled=true;say('');window.scrollTo(0,0);
+});
+
+loadStores();
+})();
+</script></body></html>
