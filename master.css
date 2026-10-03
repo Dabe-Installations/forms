@@ -3,3 +3,9 @@
 
 .usernote.clamp{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
 .notemore{grid-column:2;justify-self:start;margin-top:6px;cursor:pointer}
+
+/* Team page buttons on the Hub */
+.teamnav{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;margin-top:18px}
+.teamnav a.day{text-decoration:none;text-align:center;display:block}
+.teamnav a.day:hover{border-color:var(--green)}
+@media (max-width:640px){.teamnav{justify-content:flex-start;margin-top:12px}}
