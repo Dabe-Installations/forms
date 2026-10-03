@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>To-Do</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="To-Do">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#1c2230">
+<meta name="robots" content="noindex,nofollow">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAEeUlEQVR4nO3cwXHbMBRF0e+My7A3cQP2PiWkmJSSYlJC9q7AKzeShSYcjeRHkRSA/wDc04DJjyuIpMI8PH1/DeAr37IPAL6IAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJAesw9gzefHe/YhtPD88pZ9CF97MPxvnyZp4ppbJUZxTNvENZNKXK45KOOcyTTydw6TQXjK3UKSdw7KWJc7n8w4KGOLxCmlxUEZ22XNKicOytgrZWIJF6S7ztPkpq4e52mYPiEdvonFcqaGu2nrr5UtI5injHNbzrpxQE2/Vm6e25xZXPCZkssT0qCM/3zmYBQH3LSLY3239Pm4OFifRrMrD4udgzKuOczEIg54ahSH4U1819rMM3/ncNg/PaVPJj8O2CIOSMQBiTggEQck4oBEHJCIAxJxtPDjz6/sQziCOKo7ldFjH8RR13kT3fVBHBVd19BXH8RRi+qgoz6Io4r1AnrpgzhydNEHcZS3ceH9+yCOwnYtuXkfxFHSgcV27oM4ijm2zH9//i58HOUQRxnjlRHEUcSQZQRx3G/UMoI47jRwGUEc9xi7jCCOw5xvQUshjiMOl9HRthHE0VJfZQRxHDD8pcaCOPaZp4wgjl2mKiOIY7vZygji2GjCMoI4tpizjCCOm6YtI3qPo/ZjypnLiK7jqP0m2eRlRL9x1H6TbIafTm7qMo7ab5JN8tPJTf3FYfsm2WBlRHdxNHiTjEuNRU9xbFm2O/ugjHPdxLF92Q73QRkX+ohj77I1e7lo4DKiiziOLVuD1xLHLiO6iOPwGlR9oXn4MqKLOKJmH5Sxoo84ok4flLGumziidB+UcVNPcUS5PtIfp3ahsziiRB/8dLJRf3FE/fuXsn+0X13GEc37mLCM6DeOaLhgc5YRXccRTZZt2jKi9zii8uLNXEYMEEdUW8LJy4gx4ogKC0kZMUwcUXQ5KeNknDii0KJSxmKoOOLupaWMc6PFESxwOQPGEUf7oKoLY8YR+1eaMq4NG0fsWW/K+NLIccS2VacMZfA44tbaU8aKx+wDaOFUwMWP9WRx0xRxnFDDXuN/reAw4oBEHJCIAxJxQCIOSPlxfH68Zx+CqfTJNIrj+eWtzR+aRJt55u8csGURR/r+achhJu3iWN8JHWbhY30azb6jLXYOeDKKg83jxGcOD0/fX1v+vS1nPu2tjdtwWu8cW87N56PTklsZYfvvOZZJDb+LOH8SWn+tnDhPxFb7z0nOBenw+0FxKRNLu1uhj+2yZpV5K0sfWyROKfk5B32sy51PzgXpNS5RLzh8bFyekDrMwofJNFx2jnPT7iImTSwc41hMUolbEwvrOJDL5ZoDhogDEnFAIg5IxAGJOCARByTigEQckIgDEnFAIg5IxAGJOCARByTigEQckIgDEnFAIg5IxAGJOCARByTigEQckIgDEnFAIg5IxAGJOCARByTigPQPQllgPvpB+GAAAAAASUVORK5CYII=">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAEeUlEQVR4nO3cwXHbMBRF0e+My7A3cQP2PiWkmJSSYlJC9q7AKzeShSYcjeRHkRSA/wDc04DJjyuIpMI8PH1/DeAr37IPAL6IAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJAesw9gzefHe/YhtPD88pZ9CF97MPxvnyZp4ppbJUZxTNvENZNKXK45KOOcyTTydw6TQXjK3UKSdw7KWJc7n8w4KGOLxCmlxUEZ22XNKicOytgrZWIJF6S7ztPkpq4e52mYPiEdvonFcqaGu2nrr5UtI5injHNbzrpxQE2/Vm6e25xZXPCZkssT0qCM/3zmYBQH3LSLY3239Pm4OFifRrMrD4udgzKuOczEIg54ahSH4U1819rMM3/ncNg/PaVPJj8O2CIOSMQBiTggEQck4oBEHJCIAxJxtPDjz6/sQziCOKo7ldFjH8RR13kT3fVBHBVd19BXH8RRi+qgoz6Io4r1AnrpgzhydNEHcZS3ceH9+yCOwnYtuXkfxFHSgcV27oM4ijm2zH9//i58HOUQRxnjlRHEUcSQZQRx3G/UMoI47jRwGUEc9xi7jCCOw5xvQUshjiMOl9HRthHE0VJfZQRxHDD8pcaCOPaZp4wgjl2mKiOIY7vZygji2GjCMoI4tpizjCCOm6YtI3qPo/ZjypnLiK7jqP0m2eRlRL9x1H6TbIafTm7qMo7ab5JN8tPJTf3FYfsm2WBlRHdxNHiTjEuNRU9xbFm2O/ugjHPdxLF92Q73QRkX+ohj77I1e7lo4DKiiziOLVuD1xLHLiO6iOPwGlR9oXn4MqKLOKJmH5Sxoo84ok4flLGumziidB+UcVNPcUS5PtIfp3ahsziiRB/8dLJRf3FE/fuXsn+0X13GEc37mLCM6DeOaLhgc5YRXccRTZZt2jKi9zii8uLNXEYMEEdUW8LJy4gx4ogKC0kZMUwcUXQ5KeNknDii0KJSxmKoOOLupaWMc6PFESxwOQPGEUf7oKoLY8YR+1eaMq4NG0fsWW/K+NLIccS2VacMZfA44tbaU8aKx+wDaOFUwMWP9WRx0xRxnFDDXuN/reAw4oBEHJCIAxJxQCIOSPlxfH68Zx+CqfTJNIrj+eWtzR+aRJt55u8csGURR/r+achhJu3iWN8JHWbhY30azb6jLXYOeDKKg83jxGcOD0/fX1v+vS1nPu2tjdtwWu8cW87N56PTklsZYfvvOZZJDb+LOH8SWn+tnDhPxFb7z0nOBenw+0FxKRNLu1uhj+2yZpV5K0sfWyROKfk5B32sy51PzgXpNS5RLzh8bFyekDrMwofJNFx2jnPT7iImTSwc41hMUolbEwvrOJDL5ZoDhogDEnFAIg5IxAGJOCARByTigEQckIgDEnFAIg5IxAGJOCARByTigEQckIgDEnFAIg5IxAGJOCARByTigEQckIgDEnFAIg5IxAGJOCARByTigPQPQllgPvpB+GAAAAAASUVORK5CYII=">
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--ink:#1c2230;--mute:#667085;--line:#e4e7ec;--ok:#12805c;--okbg:#e3f6ee;--warn:#b54708;--warnbg:#fff1e0;--acc:#2455d6}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding-bottom:env(safe-area-inset-bottom)}
+.wrap{max-width:720px;margin:0 auto;padding:16px;padding-top:max(16px,env(safe-area-inset-top))}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+h1{font-size:24px;margin:4px 0}
+.sub{color:var(--mute);font-size:14px;margin-bottom:12px}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 12px;font-size:15px;color:var(--ink)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0 14px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}.tile b{display:block;font-size:26px}.tile span{color:var(--mute);font-size:13px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:10px}
+.chip{flex:0 0 auto;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 14px;font-size:15px}.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.sec{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:14px;overflow:hidden}
+.sec>h2{margin:0;padding:12px 16px;font-size:16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}
+.sec.wait>h2{background:var(--warnbg);color:var(--warn)}
+.cnt{font-weight:600;font-size:14px;opacity:.8}
+.it{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);align-items:flex-start}
+.it:last-child{border-bottom:0}
+.ck{flex:0 0 auto;width:30px;height:30px;border-radius:9px;border:2px solid #98a2b3;background:#fff;margin-top:1px;padding:0;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;line-height:1}
+.it.done .ck{background:var(--ok);border-color:var(--ok)}
+.tx{flex:1;min-width:0}
+.tt{font-size:17px}
+.it.done .tt{color:var(--mute);text-decoration:line-through}
+.mt{font-size:13px;color:var(--mute);margin-top:3px}
+.tag{display:inline-block;background:#eef0f3;color:var(--mute);border-radius:999px;padding:1px 9px;font-size:12px;margin-right:6px}
+details.sec>summary{padding:12px 16px;font-weight:600;font-size:16px;cursor:pointer;list-style:none;display:flex;justify-content:space-between}
+details.sec>summary::-webkit-details-marker{display:none}
+.gate{max-width:360px;margin:18vh auto 0;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+.gate h1{font-size:22px}.gate input{width:100%;font-size:20px;padding:12px;border:1px solid var(--line);border-radius:10px;margin:12px 0}
+.gate button{width:100%;font-size:18px;padding:12px;border:0;border-radius:10px;background:var(--ink);color:#fff}
+.err{color:#b42318;font-size:14px;min-height:20px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:12px;padding:10px 16px;font-size:15px;max-width:90%;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+.empty{padding:16px;color:var(--mute)}
+</style></head><body>
+<div class="wrap" id="app"></div>
+<div class="toast" id="toast"></div>
+<script>
+var API='https://script.google.com/macros/s/AKfycbyhF-Cg6gB11eneOVRi8-r01LRrm2cvTeS0GEkD0hLonnhB_-hFVt1eTB-44ZfPeADB/exec';
+var PWKEY='todoPw';
+var rows=[],pw='',filter='All',busy=false,updated='',loaded=false;
+try{pw=localStorage.getItem(PWKEY)||''}catch(e){}
+function $(s){return document.querySelector(s)}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function toast(m){var t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(function(){t.classList.remove('show')},2600)}
+function fmtDate(d){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(d||'');return m?m[3]+'/'+m[2]+'/'+m[1]:(d||'')}
+function call(body){
+  body.pw=pw;
+  return fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)}).then(function(r){return r.json()});
+}
+function gate(msg){
+  $('#app').innerHTML='<div class="gate"><h1>To-Do</h1><div class="sub">Enter your password</div><input id="pwi" type="password" autocomplete="current-password" inputmode="text" autofocus><div class="err" id="err">'+esc(msg||'')+'</div><button id="go">Open</button></div>';
+  function submit(){var v=$('#pwi').value;if(!v)return;pw=v;load(true)}
+  $('#go').onclick=submit;$('#pwi').onkeydown=function(e){if(e.key==='Enter')submit()};
+}
+function load(fromGate){
+  if(busy)return;busy=true;
+  call({action:'list'}).then(function(res){
+    busy=false;
+    if(!res.ok){
+      if(res.error==='password'){try{localStorage.removeItem(PWKEY)}catch(e){}pw='';gate(fromGate?'Wrong password, try again':'');return}
+      if(loaded){toast('Could not refresh: '+res.error);return}
+      $('#app').innerHTML='<div class="wrap"><div class="empty">Could not load the list ('+esc(res.error)+').</div></div>';return;
+    }
+    try{localStorage.setItem(PWKEY,pw)}catch(e){}
+    rows=res.rows;loaded=true;
+    var n=new Date();updated=n.toLocaleTimeString('en-AU',{hour:'numeric',minute:'2-digit',timeZone:'Australia/Melbourne'});
+    render();
+  }).catch(function(){busy=false;if(loaded)toast('No connection, showing the last list');else $('#app').innerHTML='<div class="empty">No connection. Check your internet and reload.</div>'});
+}
+function projects(){var s={};rows.forEach(function(r){s[r.project||'(no project)']=1});return Object.keys(s)}
+function item(r,showProj){
+  var done=r.status==='Done';
+  return '<div class="it'+(done?' done':'')+'" data-row="'+r.row+'"><button class="ck" aria-label="'+(done?'Mark as not done':'Mark as done')+'" data-row="'+r.row+'">'+(done?'&#10003;':'')+'</button><div class="tx"><div class="tt">'+esc(r.item)+'</div><div class="mt">'+(showProj?'<span class="tag">'+esc(r.project)+'</span>':'')+esc(fmtDate(r.date))+(r.notes?' &middot; '+esc(r.notes):'')+'</div></div></div>';
+}
+function render(){
+  var open=rows.filter(function(r){return r.status!=='Done'});
+  var wait=open.filter(function(r){return r.status==='Waiting on Gabriel'});
+  var todo=open.filter(function(r){return r.status!=='Waiting on Gabriel'});
+  var done=rows.filter(function(r){return r.status==='Done'});
+  var f=function(r){return filter==='All'||(r.project||'(no project)')===filter};
+  var h='<div class="top"><div><h1>To-Do</h1><div class="sub">Updated '+esc(updated)+'</div></div><div><button class="btn" id="rf">Refresh</button> <button class="btn" id="lk">Lock</button></div></div>';
+  h+='<div class="tiles"><div class="tile"><b>'+wait.length+'</b><span>waiting on you</span></div><div class="tile"><b>'+todo.length+'</b><span>to do</span></div><div class="tile"><b>'+done.length+'</b><span>done</span></div></div>';
+  h+='<div class="chips"><div class="chip'+(filter==='All'?' on':'')+'" data-f="All">All</div>'+projects().map(function(p){return '<div class="chip'+(filter===p?' on':'')+'" data-f="'+esc(p)+'">'+esc(p)+'</div>'}).join('')+'</div>';
+  var w=wait.filter(f);
+  if(w.length)h+='<div class="sec wait"><h2>Waiting on you<span class="cnt">'+w.length+'</span></h2>'+w.map(function(r){return item(r,true)}).join('')+'</div>';
+  var ps=projects().filter(function(p){return filter==='All'||p===filter});
+  ps.forEach(function(p){
+    var its=todo.filter(function(r){return (r.project||'(no project)')===p});
+    if(!its.length)return;
+    h+='<div class="sec"><h2>'+esc(p)+'<span class="cnt">'+its.length+'</span></h2>'+its.map(function(r){return item(r,false)}).join('')+'</div>';
+  });
+  if(!w.length&&!todo.filter(f).length)h+='<div class="sec"><div class="empty">Nothing left here. Nice.</div></div>';
+  var d=done.filter(f);
+  if(d.length)h+='<details class="sec"><summary><span>Done</span><span class="cnt">'+d.length+'</span></summary>'+d.map(function(r){return item(r,true)}).join('')+'</details>';
+  var openD=$('details.sec')&&$('details.sec').open;
+  $('#app').innerHTML=h;
+  if(openD&&$('details.sec'))$('details.sec').open=true;
+  $('#rf').onclick=function(){load()};
+  $('#lk').onclick=function(){try{localStorage.removeItem(PWKEY)}catch(e){}pw='';rows=[];loaded=false;gate('')};
+  [].forEach.call(document.querySelectorAll('.chip'),function(c){c.onclick=function(){filter=c.getAttribute('data-f');render()}});
+  [].forEach.call(document.querySelectorAll('.ck'),function(b){b.onclick=function(){toggle(Number(b.getAttribute('data-row')))}});
+}
+function toggle(rowNo){
+  var r=rows.filter(function(x){return x.row===rowNo})[0];if(!r||r.pending)return;
+  var prev=r.status,next=prev==='Done'?'To do':'Done';
+  r.status=next;r.pending=true;render();
+  call({action:'setStatus',row:r.row,item:r.item,status:next}).then(function(res){
+    r.pending=false;
+    if(!res.ok){r.status=prev;render();toast(res.error==='moved'?'The sheet changed, refreshing':'Could not save, try again');if(res.error==='moved')load();return}
+    toast(next==='Done'?'Marked done':'Put back on the list');
+  }).catch(function(){r.pending=false;r.status=prev;render();toast('No connection, not saved')});
+}
+document.addEventListener('visibilitychange',function(){if(!document.hidden&&pw&&loaded)load()});
+if(pw)load();else gate('');
+</script></body></html>
