@@ -104,6 +104,8 @@ var Q=[
 {id:27,t:'Please add any additional comments below:',type:'text',long:1},
 {id:28,t:'Take approx. 4–5 photos of each display showing various angles',type:'photo',req:1,hint:'Aim for 4 to 5 photos from different angles.'}
 ];
+// Every "Why?" box is required whenever it is showing.
+Q.forEach(function(q){if(q.t==='Why?')q.req=1});
 var A={},P={},stores=[],cur=null,kind='',sid='',busy=false;
 
 function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
