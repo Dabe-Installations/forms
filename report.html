@@ -174,7 +174,7 @@ function build(R,sheetNote){
     '<div class="fact"><div class="k">Display installed</div><div class="v">'+esc(String(get(R,1))||"–")+'</div></div></div>'+banner+rows;
   if(notes.length)h+='<section><h2>Installer notes</h2>'+notes.map(function(n){return '<div class="note"><div class="who">'+esc(R["Installer"])+' &middot; on site</div>'+esc(n)+'</div>'}).join("")+'</section>';
   function grid(title,ids){if(!ids.length)return "";return '<section><h2>'+title+' ('+ids.length+')</h2><div class="photos">'+ids.map(function(id,i){
-      var view="https://drive.google.com/file/d/"+id+"/view",th="https://drive.google.com/thumbnail?id="+id+"&sz=w800";
+      var view=R["Photo folder"]||"https://drive.google.com/file/d/"+id+"/view",th="https://drive.google.com/thumbnail?id="+id+"&sz=w800";
       return '<a class="ph" href="'+view+'" target="_blank" rel="noopener"><div class="fb">Photo '+(i+1)+'<span>Tap to open</span></div><img src="'+th+'" alt="Photo '+(i+1)+'" loading="lazy" onerror="this.remove()"><div class="n">Photo '+(i+1)+'</div></a>'}).join("")+'</div></section>'}
   h+=grid("Display photos",photos)+grid("Service tag photos",tagPh);
   h+='<footer>Submitted '+esc(R["Submitted"])+'<br><b>Dabe Labour</b> &middot; Installations &amp; Maintenance</footer>';
