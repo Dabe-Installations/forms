@@ -26,6 +26,9 @@ textarea{min-height:76px;resize:vertical}
 .q label.t{display:block;font-weight:600;font-size:15px;line-height:1.3;margin-bottom:8px}
 .req{color:var(--red)}
 .q label.t a{color:var(--green);text-decoration:underline}
+.q.new{background:#eaf6ef;position:relative}
+.q.new label.t{padding-right:46px}
+.newtag{position:absolute;top:10px;right:12px;background:var(--green);color:#fff;font:700 11px 'Barlow Condensed',sans-serif;letter-spacing:.1em;padding:2px 7px;border-radius:3px}
 .yn{display:flex;gap:8px}
 .yn button{flex:1;padding:13px;border:1.5px solid var(--line);background:#fff;font:600 16px 'Barlow Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase;border-radius:4px;color:var(--mute)}
 .yn button.on.y{background:var(--green);border-color:var(--green);color:#fff}
@@ -99,7 +102,7 @@ var Q=[
 {id:21,t:'Why?',type:'text',parent:20,when:'No'},
 {id:22,t:'For HN & TGG only – have you checked whether the front slogan has been covered with the topper?',type:'yn',req:1,only:['HN','TGG']},
 {id:23,t:'Why?',type:'text',parent:22,when:'No'},
-{id:29,t:'Have you completed the additional Samsung tablet check/update? If unsure, please follow the guide:',link:{text:'Tablet Installation Guide',url:'https://drive.google.com/file/d/1X08LFTSuXrknMyGZlaX_rua-6CzlGtZe/view?usp=sharing'},type:'yn',req:1,only:['HN','TGG']},
+{id:29,isNew:1,t:'Have you completed the additional Samsung tablet check/update? If unsure, please follow the guide:',link:{text:'Tablet Installation Guide',url:'https://drive.google.com/file/d/1X08LFTSuXrknMyGZlaX_rua-6CzlGtZe/view?usp=sharing'},type:'yn',req:1,only:['HN','TGG']},
 {id:30,t:'Why?',type:'text',parent:29,when:'No'},
 {id:24,t:'Have you asked the store for any missing stock?',type:'yn',req:1},
 {id:25,t:'Why?',type:'text',parent:24,when:'No'},
@@ -194,7 +197,7 @@ function render(){
   var h='',sec='';
   Q.filter(vis).forEach(function(q){
     if(q.sec&&q.sec!==sec){sec=q.sec;h+='<div class="sec">'+sec+'</div>'}
-    h+='<div class="q'+(q.parent?' follow':'')+'" id="q'+q.id+'"><label class="t">'+esc(q.t)+(q.link?' <a href="'+esc(q.link.url)+'" target="_blank" rel="noopener">'+esc(q.link.text)+'</a>':'')+(q.req?' <span class="req">*</span>':'')+'</label>';
+    h+='<div class="q'+(q.parent?' follow':'')+(q.isNew?' new':'')+'" id="q'+q.id+'">'+(q.isNew?'<span class="newtag">NEW</span>':'')+'<label class="t">'+esc(q.t)+(q.link?' <a href="'+esc(q.link.url)+'" target="_blank" rel="noopener">'+esc(q.link.text)+'</a>':'')+(q.req?' <span class="req">*</span>':'')+'</label>';
     if(q.type==='yn')h+='<div class="yn"><button type="button" class="'+(A[q.id]==='Yes'?'on y':'')+'" data-a="'+q.id+'" data-v="Yes">Yes</button><button type="button" class="'+(A[q.id]==='No'?'on n':'')+'" data-a="'+q.id+'" data-v="No">No</button></div>';
     if(q.type==='text')h+=(q.long||q.parent)?'<textarea data-t="'+q.id+'">'+esc(A[q.id]||'')+'</textarea>':'<input type="text" data-t="'+q.id+'" value="'+esc(A[q.id]||'')+'">';
     if(q.type==='photo'){
