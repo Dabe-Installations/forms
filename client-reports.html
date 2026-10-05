@@ -159,6 +159,18 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
   function isNo(v){return /^no\b/i.test(String(v).trim())}
   function links(v){return String(v||"").split(/\s+/).filter(function(u){return /^https?:\/\//.test(u)})}
 
+  var MON={jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12};
+  // installation date (falls back to the submitted day if a report has none)
+  function dk(r){
+    var s=String(r["Install Date"]||"").trim(), m;
+    function p(n){return (n<10?"0":"")+n}
+    if((m=s.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/))) return m[3]+"-"+p(+m[2])+"-"+p(+m[1]);
+    if((m=s.match(/(\d{1,2})\s+([A-Za-z]{3})[a-z]*\.?(?:\s+(\d{4}))?/)) && MON[m[2].toLowerCase()]){
+      var y=m[3]||String(r._day||"").slice(0,4);
+      if(y) return y+"-"+p(MON[m[2].toLowerCase()])+"-"+p(+m[1]);
+    }
+    return r._day||"";
+  }
   function questions(r){
     var qs=[];
     Object.keys(r).forEach(function(h){
@@ -203,7 +215,7 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
     document.getElementById("stats").hidden=false;
     document.getElementById("tools").hidden=false;
     var stores={}, days={}, nf=0;
-    data.forEach(function(r){stores[String(r.Store).toLowerCase()]=1; days[r._day||"?"]=1; if(flagged(r)) nf++});
+    data.forEach(function(r){stores[String(r.Store).toLowerCase()]=1; days[dk(r)||"?"]=1; if(flagged(r)) nf++});
     document.getElementById("sReports").textContent=data.length;
     document.getElementById("sStores").textContent=Object.keys(stores).length;
     document.getElementById("sDays").textContent=Object.keys(days).length;
@@ -217,7 +229,7 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
     if(!list.length){msg("No matches","Try a different store name.");return}
 
     var groups={}, order=[];
-    list.forEach(function(r){var d=r._day||""; if(!groups[d]){groups[d]=[];order.push(d)} groups[d].push(r)});
+    list.forEach(function(r){var d=dk(r); if(!groups[d]){groups[d]=[];order.push(d)} groups[d].push(r)});
     order.sort(function(a,b){return a<b?1:a>b?-1:0});
     var h="";
     order.forEach(function(d){
