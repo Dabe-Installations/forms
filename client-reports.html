@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" href="icon-192.png">
+<title>Store Reports – Dabe Labour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#1F1E1D; --ink:#161716; --muted:#5c625f; --line:#e3e5e2; --page:#eef0ed; --card:#fff;
+  --green:#1a6b5a; --green-deep:#145248; --green-soft:#e6f2ee; --green-text:#3fb99c;
+  --amber:#f5b800; --amber-soft:#fff6d6; --amber-ink:#7a5a00;
+  --grey-soft:#f1f2f0;
+  --f-display:"Barlow Condensed","Arial Narrow",sans-serif;
+  --f-body:"Barlow","Segoe UI",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-height:1.45}
+.wrap{max-width:1000px;margin:0 auto;padding:0 16px 56px}
+.hero{background:var(--black);color:#fff;padding:30px 28px 26px;border-bottom:4px solid var(--green)}
+.hero .top{max-width:1000px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
+.eyebrow{font-family:var(--f-display);font-weight:600;font-size:.82rem;letter-spacing:.2em;text-transform:uppercase;color:var(--green-text)}
+.hero h1{font-family:var(--f-display);font-weight:700;font-size:2.6rem;line-height:1.05;text-transform:uppercase;letter-spacing:.02em;margin-top:6px}
+.hero p{color:#c9cdca;margin-top:8px;max-width:560px}
+.btn{font-family:var(--f-display);font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:.9rem;background:var(--amber);color:#111;border:0;padding:10px 18px;cursor:pointer}
+.btn:hover{filter:brightness(.95)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--green);padding:14px 16px}
+.stat b{display:block;font-family:var(--f-display);font-size:2rem;font-weight:700;line-height:1;color:var(--ink)}
+.stat span{font-family:var(--f-display);font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-size:.78rem;color:var(--muted)}
+.tools{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.tools input{flex:1;min-width:220px;font:inherit;padding:11px 14px;border:1px solid var(--line);background:#fff}
+.tools input:focus{outline:2px solid var(--green);outline-offset:0}
+.upd{font-size:.85rem;color:var(--muted)}
+.day{margin-top:26px}
+.day h2{font-family:var(--f-display);font-weight:700;font-size:1.35rem;letter-spacing:.06em;text-transform:uppercase;color:var(--green-deep);display:flex;align-items:baseline;gap:12px;padding-bottom:8px;border-bottom:2px solid var(--green)}
+.day h2 small{font-weight:600;font-size:.85rem;letter-spacing:.12em;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);margin-top:10px}
+.card>button{all:unset;box-sizing:border-box;display:flex;width:100%;align-items:center;gap:14px;padding:14px 18px;cursor:pointer}
+.card>button:focus-visible{outline:2px solid var(--green)}
+.card .name{font-family:var(--f-display);font-weight:700;font-size:1.3rem;text-transform:uppercase;letter-spacing:.03em;line-height:1.1}
+.card .addr{font-size:.9rem;color:var(--muted);margin-top:2px}
+.card .main{flex:1;min-width:0}
+.chip{display:inline-block;font-family:var(--f-display);font-weight:700;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;background:var(--grey-soft);color:var(--muted);white-space:nowrap}
+.chip.ok{background:var(--green-soft);color:var(--green-deep)}
+.chip.warn{background:var(--amber-soft);color:var(--amber-ink)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.time{font-size:.85rem;color:var(--muted);white-space:nowrap}
+.caret{width:10px;height:10px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .15s;flex:none;margin:0 4px 4px}
+.card.open .caret{transform:rotate(-135deg);margin-bottom:-4px}
+.detail{display:none;border-top:1px solid var(--line);padding:6px 18px 18px}
+.card.open .detail{display:block}
+.qa{display:grid;grid-template-columns:minmax(180px,1fr) 2fr;gap:8px 18px;padding:9px 0;border-bottom:1px solid var(--line)}
+.qa:last-child{border-bottom:0}
+.qa .q{font-weight:600;color:var(--muted)}
+.qa .why{grid-column:2;background:var(--grey-soft);padding:8px 12px;white-space:pre-wrap}
+.qa .a{white-space:pre-wrap}
+.pill{display:inline-block;font-family:var(--f-display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:.85rem;padding:2px 10px}
+.pill.y{background:var(--green-soft);color:var(--green-deep)}
+.pill.n{background:var(--amber-soft);color:var(--amber-ink)}
+.photos{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.photos b{font-family:var(--f-display);letter-spacing:.1em;text-transform:uppercase;font-size:.85rem;color:var(--green-deep);margin-right:4px}
+.photos a{font-family:var(--f-display);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:.85rem;color:var(--green-deep);background:var(--green-soft);padding:5px 12px;text-decoration:none}
+.photos a:hover{background:var(--green);color:#fff}
+.msg{background:#fff;border:1px solid var(--line);padding:28px;margin-top:24px;text-align:center}
+.msg h3{font-family:var(--f-display);text-transform:uppercase;letter-spacing:.06em;font-size:1.3rem;margin-bottom:6px}
+.foot{margin-top:34px;text-align:center;font-size:.8rem;color:var(--muted)}
+@media(max-width:700px){
+  .hero h1{font-size:2rem}.stats{grid-template-columns:repeat(2,1fr)}
+  .qa{grid-template-columns:1fr}.qa .why{grid-column:1}
+  .card>button{flex-wrap:wrap}.chips{justify-content:flex-start}
+}
+@media print{
+  body{background:#fff}.btn,.tools{display:none}
+  .card .detail{display:block}.card{break-inside:avoid}.caret{display:none}
+  .hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<header class="hero"><div class="top">
+  <div>
+    <div class="eyebrow">Dabe Labour &middot; Install reports</div>
+    <h1>Store Reports</h1>
+    <p>Every completed store report, newest first. This page updates by itself as the install teams submit their reports.</p>
+  </div>
+  <button class="btn" id="print" type="button">Save as PDF</button>
+</div></header>
+
+<main class="wrap">
+  <section class="stats" id="stats" hidden>
+    <div class="stat"><b id="sReports">0</b><span>Reports in</span></div>
+    <div class="stat"><b id="sStores">0</b><span>Stores</span></div>
+    <div class="stat"><b id="sDays">0</b><span>Days</span></div>
+    <div class="stat"><b id="sFlag">0</b><span>With missing / damaged items</span></div>
+  </section>
+  <div class="tools" id="tools" hidden>
+    <input id="q" type="search" placeholder="Search by store or address" aria-label="Search reports">
+    <span class="upd" id="upd"></span>
+  </div>
+  <div id="app"><div class="msg"><h3>Loading reports&hellip;</h3><p>One moment.</p></div></div>
+  <p class="foot">Photos open in Google Drive. Dabe Installations Pty Ltd</p>
+</main>
+
+<script>
+(function(){
+  var REFRESH_MS = 10*60*1000;           // refresh every 10 minutes
+  var data = [], opened = {}, loadedAt = null;
+  var app = document.getElementById("app");
+
+  function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+  function msg(h,p){app.innerHTML='<div class="msg"><h3>'+esc(h)+'</h3><p>'+esc(p)+'</p></div>'}
+
+  // secret key lives in the link after the # (never sent to the web server, never stored in the site files)
+  function key(){
+    var m=(location.hash||"").match(/k=([A-Za-z0-9]+)/);
+    try{ if(m){localStorage.setItem("dabeClientKey",m[1]);return m[1]} return localStorage.getItem("dabeClientKey")||"" }catch(e){ return m?m[1]:"" }
+  }
+
+  // same script web address the Hub and team pages use (read from the existing report page so it always matches)
+  function apiUrl(){
+    return fetch("report.html",{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){
+      var m=t.match(/https:\/\/script\.google\.com\/macros\/s\/[^"'\x60\s]+/);
+      if(!m) throw new Error("api");
+      return m[0];
+    });
+  }
+
+  function load(){
+    var k=key();
+    if(!k){msg("This link is incomplete","Please open the full link you were sent.");return}
+    apiUrl().then(function(api){
+      return fetch(api+"?action=clientReports&token="+encodeURIComponent(k)).then(function(r){return r.json()});
+    }).then(function(j){
+      if(!j||!j.ok){
+        if(j&&j.error==="token") msg("This link is not valid","Please ask Dabe Labour for a fresh link.");
+        else msg("Reports are not available just now","Please try again in a few minutes.");
+        return;
+      }
+      data=(j.reports||[]).slice();
+      loadedAt=new Date();
+      render();
+    }).catch(function(){
+      if(!data.length) msg("Could not load the reports","Please check your connection and refresh the page.");
+    });
+  }
+
+  function dayLabel(d){
+    if(!d) return "Date not recorded";
+    var p=d.split("-"); var dt=new Date(+p[0],+p[1]-1,+p[2]);
+    return dt.toLocaleDateString("en-AU",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  }
+  function timeOf(s){var m=String(s||"").match(/,\s*(.+)$/);return m?m[1]:""}
+  function isYes(v){return /^yes\b/i.test(String(v).trim())}
+  function isNo(v){return /^no\b/i.test(String(v).trim())}
+  function links(v){return String(v||"").split(/\s+/).filter(function(u){return /^https?:\/\//.test(u)})}
+
+  function questions(r){
+    var qs=[];
+    Object.keys(r).forEach(function(h){
+      var m=h.match(/^(\d+)\s+(.*)$/); if(m) qs.push({n:+m[1],label:m[2],key:h,val:String(r[h]||"").trim()});
+    });
+    qs.sort(function(a,b){return a.n-b.n});
+    return qs;
+  }
+
+  function detail(r){
+    var h="", qs=questions(r);
+    qs.forEach(function(q){
+      var isWhy=/^Why\b/i.test(q.label);
+      if(isWhy){ if(q.val) h+='<div class="qa"><div class="q"></div><div class="why"><b>Why: </b>'+esc(q.val)+'</div></div>'; return }
+      if(/photos?$/i.test(q.label)) return;           // photos shown as links below
+      if(!q.val) return;
+      var lab=q.label.charAt(0).toUpperCase()+q.label.slice(1), a;
+      var warnWhenYes=/missing or damaged/i.test(q.label);
+      if(isYes(q.val)) a='<span class="pill '+(warnWhenYes?'n':'y')+'">Yes</span>';
+      else if(isNo(q.val)) a='<span class="pill '+(warnWhenYes?'y':'n')+'">No</span>';
+      else a='<span class="a">'+esc(q.val)+'</span>';
+      var rest=q.val.replace(/^(yes|no)\b[\s,:-]*/i,"");
+      if((isYes(q.val)||isNo(q.val))&&rest) a+=' <span class="a">'+esc(rest)+'</span>';
+      h+='<div class="qa"><div class="q">'+esc(lab)+'</div><div>'+a+'</div></div>';
+    });
+    [["Tag photo links","Tag photos"],["Display photo links","Display photos"]].forEach(function(p){
+      var ls=links(r[p[0]]); if(!ls.length) return;
+      h+='<div class="photos"><b>'+p[1]+'</b>'+ls.map(function(u,i){return '<a href="'+esc(u)+'" target="_blank" rel="noopener">Photo '+(i+1)+'</a>'}).join("")+'</div>';
+    });
+    return h||'<p class="upd" style="padding-top:10px">No answers recorded.</p>';
+  }
+
+  function flagged(r){
+    var f=false;
+    Object.keys(r).forEach(function(h){ if(/missing or damaged/i.test(h)&&isYes(r[h])) f=true });
+    return f;
+  }
+  function nPhotos(r){return links(r["Tag photo links"]).length+links(r["Display photo links"]).length}
+
+  function render(){
+    var term=(document.getElementById("q").value||"").toLowerCase().trim();
+    document.getElementById("stats").hidden=false;
+    document.getElementById("tools").hidden=false;
+    var stores={}, days={}, nf=0;
+    data.forEach(function(r){stores[String(r.Store).toLowerCase()]=1; days[r._day||"?"]=1; if(flagged(r)) nf++});
+    document.getElementById("sReports").textContent=data.length;
+    document.getElementById("sStores").textContent=Object.keys(stores).length;
+    document.getElementById("sDays").textContent=Object.keys(days).length;
+    document.getElementById("sFlag").textContent=nf;
+    document.getElementById("upd").textContent=loadedAt?"Updated "+loadedAt.toLocaleTimeString("en-AU",{hour:"numeric",minute:"2-digit"}):"";
+
+    var list=data.filter(function(r){
+      return !term||(String(r.Store)+" "+String(r.Address)+" "+String(r.Retailer)).toLowerCase().indexOf(term)>-1;
+    });
+    if(!data.length){msg("No reports yet","Reports appear here as soon as the install teams submit them.");return}
+    if(!list.length){msg("No matches","Try a different store name.");return}
+
+    var groups={}, order=[];
+    list.forEach(function(r){var d=r._day||""; if(!groups[d]){groups[d]=[];order.push(d)} groups[d].push(r)});
+    order.sort(function(a,b){return a<b?1:a>b?-1:0});
+    var h="";
+    order.forEach(function(d){
+      var g=groups[d].sort(function(a,b){return (+b._ts||0)-(+a._ts||0)});
+      h+='<section class="day"><h2>'+esc(dayLabel(d))+'<small>'+g.length+(g.length===1?' report':' reports')+'</small></h2>';
+      g.forEach(function(r,i){
+        var id=(r._ts||0)+"|"+r.Store, open=opened[id]?" open":"";
+        var np=nPhotos(r);
+        h+='<div class="card'+open+'" data-id="'+esc(id)+'"><button type="button" aria-expanded="'+(open?"true":"false")+'">'+
+           '<div class="main"><div class="name">'+esc(r.Store)+'</div><div class="addr">'+esc(r.Address)+'</div></div>'+
+           '<div class="chips">'+(flagged(r)?'<span class="chip warn">Missing / damaged items</span>':'<span class="chip ok">Complete</span>')+
+           (np?'<span class="chip">'+np+' photos</span>':'')+'</div>'+
+           '<div class="time">'+esc(timeOf(r.Submitted))+'</div><span class="caret"></span></button>'+
+           '<div class="detail">'+detail(r)+'</div></div>';
+      });
+      h+='</section>';
+    });
+    app.innerHTML=h;
+  }
+
+  app.addEventListener("click",function(e){
+    var b=e.target.closest(".card>button"); if(!b) return;
+    var c=b.parentNode, id=c.getAttribute("data-id");
+    c.classList.toggle("open"); opened[id]=c.classList.contains("open");
+    b.setAttribute("aria-expanded",opened[id]?"true":"false");
+  });
+  document.getElementById("q").addEventListener("input",function(){ if(data.length) render() });
+  document.getElementById("print").addEventListener("click",function(){window.print()});
+
+  load();
+  setInterval(load,REFRESH_MS);
+})();
+</script>
+</body>
+</html>
