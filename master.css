@@ -9,3 +9,8 @@
 .teamnav a.day{text-decoration:none;text-align:center;display:block}
 .teamnav a.day:hover{border-color:var(--green)}
 @media (max-width:640px){.teamnav{justify-content:flex-start;margin-top:12px}}
+
+/* Long date titles: smaller, wrap, keep counter beside it */
+h1{font-size:clamp(1.8rem,5vw,2.6rem)}
+.hl{flex:1 1 360px;min-width:0}
+.hr{flex:0 1 auto;max-width:100%}
