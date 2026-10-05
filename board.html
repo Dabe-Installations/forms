@@ -91,6 +91,12 @@ h1::after{content:"";display:block;width:64px;height:4px;background:var(--green-
 .assign select{font:inherit;font-size:.9rem;padding:6px 8px;border:2px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);max-width:100%}
 .assign select.empty{border-color:var(--rev)}
 .assign label{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:700}
+.assign{flex-wrap:wrap}
+.assign input[type=date]{font:inherit;font-size:.9rem;padding:5px 8px;border:2px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);max-width:100%}
+.assign input[type=date].empty{border-color:var(--rev)}
+.run-assign input[type=date]{font:inherit;font-size:.9rem;padding:5px 8px;border:0;border-radius:6px;background:#fff;color:var(--ink)}
+.run-assign .lbl{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;opacity:.85}
+.pin button[disabled]{opacity:.6;cursor:wait}
 .lockd{font-size:.82rem;color:var(--muted);margin-top:6px;font-weight:600}
 .run-assign{display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap}
 .run-assign select{font:inherit;font-size:.9rem;padding:6px 8px;border:0;border-radius:6px;background:#fff;color:var(--ink)}
@@ -103,7 +109,7 @@ h1::after{content:"";display:block;width:64px;height:4px;background:var(--green-
 </style>
 </head>
 <body>
-<div class="pin" id="pin"><form id="pin-form"><h2>Store Run Board</h2><p>Enter the owner PIN to open the board. It is kept in this browser only.</p><input id="pin-in" type="password" inputmode="numeric" autocomplete="off" placeholder="Owner PIN"><button type="submit">Open board</button><p class="err" id="pin-err"></p></form></div>
+<div class="pin" id="pin"><form id="pin-form"><h2>Store Run Board</h2><p>Enter the owner PIN to open the board. It is kept in this browser only.</p><input id="pin-in" type="password" inputmode="numeric" autocomplete="off" placeholder="Owner PIN"><button type="submit" id="pin-btn">Open board</button><p class="err" id="pin-err"></p></form></div>
 <div class="wrap">
   <h1>Store Run Board</h1>
   <p class="sub" id="asof">Loading…</p>
@@ -157,21 +163,29 @@ function toast(t,bad){var m=$("msg");m.textContent=t;m.className="msg"+(bad?" ba
 function api(params){ return fetch(API_URL+"?"+params).then(function(r){return r.json();}); }
 function post(body){ return fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body)}).then(function(r){return r.json();}); }
 
+var inflight=null;
 function load(){
-  $("asof").textContent="Loading…";
-  return api("action=boardRows&pin="+encodeURIComponent(PIN)).then(function(j){
+  if(inflight) return inflight;
+  $("asof").textContent=rows.length?"Refreshing…":"Loading…";
+  inflight=api("action=boardRows&pin="+encodeURIComponent(PIN)).then(function(j){
     if(!j.ok){ throw new Error(j.error==="pin"?"pin":(j.error||"error")); }
-    rows=j.rows.map(function(r){
+    lsSet("dabe_board_cache",JSON.stringify(j.rows));
+    useRows(j.rows);
+    $("asof").textContent="Live from the Store Run Schedule sheet · "+new Date().toLocaleTimeString("en-AU",{hour:"2-digit",minute:"2-digit"});
+  }).then(function(){inflight=null;},function(e){inflight=null;throw e;});
+  return inflight;
+}
+function useRows(list){
+    rows=list.map(function(r){
       var d=pd(r.date), status=r.done?"done":(r.revisit?"rev":"todo");
       r.d=d; r.status=status; r.brand=brand(r.address); r.team=String(r.team||"").trim();
       r.un=!r.done && !r.team;
       r.late=!r.done && d && d<TODAY;
+      r.installKey=r.installKey||"";
       return r; });
     var set={}; BASE_TEAMS.concat(rows.map(function(r){return r.team;})).forEach(function(t){ if(t) set[t]=1; });
     teams=Object.keys(set).sort();
-    $("asof").textContent="Live from the Store Run Schedule sheet · "+new Date().toLocaleTimeString("en-AU",{hour:"2-digit",minute:"2-digit"});
     fillFilters(); summary(); render();
-  });
 }
 function fillSelect(id,label,vals,fmt){
   var el=$(id), cur=el.value;
@@ -220,10 +234,13 @@ function render(){
     var h='<section class="run"><div class="run-h"><div class="run-top"><span class="run-name">'+esc(g.run)+'</span><span class="run-date">'+fd(g.date)+'</span><span class="run-prog">'+dn+' / '+all.length+' done</span></div>'+
       '<div class="run-meta">'+(g.items[0].hrs?esc(g.items[0].hrs)+' hrs':'')+(crew?' · '+esc(crew):'')+'</div><div class="pbar"><i style="width:'+pct+'%"></i></div>';
     if(open){
-      if(pending && pending.key===g.key){
+      if(pending && pending.key===g.key && pending.kind==="date"){
+        h+='<div class="run-assign"><span class="q">Set install date '+(pending.date?fdIso(pending.date):'to blank')+' for '+open+' open store'+(open>1?'s':'')+' in '+esc(g.run)+'?</span><button type="button" class="go" data-act="runyes" data-k="'+esc(g.key)+'">Yes, set date</button><button type="button" class="no" data-act="runno">Cancel</button></div>';
+      } else if(pending && pending.key===g.key){
         h+='<div class="run-assign"><span class="q">Assign '+(pending.team?esc(pending.team):'nobody')+' to '+open+' open store'+(open>1?'s':'')+' in '+esc(g.run)+'?</span><button type="button" class="go" data-act="runyes" data-k="'+esc(g.key)+'">Yes, assign</button><button type="button" class="no" data-act="runno">Cancel</button></div>';
       } else {
-        h+='<div class="run-assign"><select data-act="runpick" data-k="'+esc(g.key)+'" aria-label="Assign whole run"><option value="__">Assign whole run…</option><option value="">Unassigned</option>'+teams.map(function(t){return '<option value="'+esc(t)+'">'+esc(t)+'</option>';}).join("")+'</select></div>';
+        h+='<div class="run-assign"><select data-act="runpick" data-k="'+esc(g.key)+'" aria-label="Assign whole run"><option value="__">Assign whole run…</option><option value="">Unassigned</option>'+teams.map(function(t){return '<option value="'+esc(t)+'">'+esc(t)+'</option>';}).join("")+'</select>'+
+          '<span class="lbl">Install date for run</span><input type="date" data-act="rundate" data-k="'+esc(g.key)+'" aria-label="Install date for whole run"></div>';
       }
     }
     h+='</div>';
@@ -235,7 +252,8 @@ function render(){
       var who='';
       if(r.done) who='<div class="who">'+esc(r.team||"—")+' <small>· done '+fd(r.completionDate)+'</small></div>';
       else if(r.locked) who='<div class="who">'+esc(r.team||"—")+'</div><div class="lockd">Approved and locked</div>';
-      else who='<div class="assign"><label for="a'+r.row+'">Installer</label><select id="a'+r.row+'" data-act="one" data-row="'+r.row+'" class="'+(r.team?'':'empty')+'">'+teamOptions(r.team)+'</select></div>';
+      else who='<div class="assign"><label for="a'+r.row+'">Installer</label><select id="a'+r.row+'" data-act="one" data-row="'+r.row+'" class="'+(r.team?'':'empty')+'">'+teamOptions(r.team)+'</select>'+
+        '<label for="d'+r.row+'">Install date</label><input type="date" id="d'+r.row+'" data-act="date" data-row="'+r.row+'" value="'+esc(r.installKey)+'" class="'+(r.installKey?'':'empty')+'"></div>';
       h+='<div class="row"><div class="r-top"><div class="pills">'+pills+'</div><div class="main"><div class="store">'+esc(r.store)+'</div><div class="addr">'+esc(r.address)+'</div><div class="tags">'+tags+'</div>'+who+'</div></div>'+(r.comment?'<div class="note">'+esc(r.comment)+'</div>':'')+'</div>';
     });
     return h+'</section>';
@@ -254,9 +272,26 @@ function assign(items,team){
   }).catch(function(){ toast("Could not reach the sheet. Nothing was changed.",true); return load(); });
 }
 
+function fdIso(k){ var p=String(k).split("-"); return p.length===3? fd(p[2]+"/"+p[1]+"/"+p[0]) : k; }
+function setDate(items,key){
+  return post({action:"setInstallDate",owner:PIN,date:key,items:items.map(function(r){return {row:r.row,run:r.run,store:r.store};})}).then(function(j){
+    if(!j.ok){ toast(j.error==="pin"?"Wrong PIN":("Not saved: "+j.error),true); return load(); }
+    var dmy=key? key.split("-").reverse().join("/") : "";
+    items.forEach(function(r){ var sk=(j.skipped||[]).some(function(s){return s.store===r.store;}); if(!sk){ r.installKey=key; r.installDate=dmy; r.date=dmy||r.clientDate||r.date; r.d=pd(r.date); r.late=!r.done && r.d && r.d<TODAY; } });
+    var msg=j.changed+" store"+(j.changed===1?"":"s")+(key?" set to "+fdIso(key):" install date cleared");
+    if(j.skipped&&j.skipped.length){ toast(msg+". Skipped "+j.skipped.map(function(s){return s.store+" ("+s.reason+")";}).join(", "),true); return load(); }
+    toast(msg); summary(); fillFilters(); render();
+  }).catch(function(){ toast("Could not reach the sheet. Nothing was changed.",true); return load(); });
+}
+
 document.addEventListener("change",function(e){
   var t=e.target, a=t.getAttribute&&t.getAttribute("data-act");
-  if(a==="one"){
+  if(a==="date"){
+    var rr=rows.filter(function(x){return String(x.row)===t.getAttribute("data-row");})[0];
+    t.disabled=true; setDate([rr],t.value).then(function(){t.disabled=false;});
+  } else if(a==="rundate"){
+    pending={key:t.getAttribute("data-k"),kind:"date",date:t.value}; render();
+  } else if(a==="one"){
     var r=rows.filter(function(x){return String(x.row)===t.getAttribute("data-row");})[0];
     t.disabled=true; assign([r],t.value).then(function(){t.disabled=false;});
   } else if(a==="runpick"){
@@ -269,9 +304,9 @@ document.addEventListener("click",function(e){
   var a=b.getAttribute("data-act");
   if(a==="runno"){ pending=null; render(); }
   if(a==="runyes"&&pending){
-    var k=pending.key, team=pending.team; pending=null;
+    var k=pending.key, p=pending; pending=null;
     var items=rows.filter(function(r){return (r.date+"|"+r.run)===k && !r.done && !r.locked;});
-    assign(items,team);
+    if(p.kind==="date") setDate(items,p.date); else assign(items,p.team);
   }
 });
 $("status-seg").addEventListener("click",function(e){
@@ -290,15 +325,27 @@ $("clear").addEventListener("click",function(){
 });
 $("refresh").addEventListener("click",function(){ load().then(function(){toast("Refreshed");}).catch(function(){toast("Could not refresh",true);}); });
 
-function start(pin){
+var timer=null;
+function startTimer(){ if(!timer) timer=setInterval(function(){ if(!pending && !document.hidden) load().catch(function(){}); },300000); }
+function start(pin,fromSaved){
   PIN=pin;
   if(!API_URL){ $("pin-err").textContent="This board is not connected to the sheet yet."; return; }
-  $("pin-err").textContent="";
-  load().then(function(){ lsSet("dabe_board_pin",pin); $("pin").hidden=true; setInterval(function(){ if(!pending) load().catch(function(){}); },300000); })
-  .catch(function(e){ $("pin").hidden=false; $("pin-err").textContent=(e.message==="pin")?"That PIN is not right.":"Could not load the sheet. Try again."; lsSet("dabe_board_pin",""); });
+  $("pin-err").textContent=""; $("pin-btn").disabled=true; $("pin-btn").textContent="Opening…";
+  // A saved PIN opens the board straight away; the data loads behind it (a saved copy shows first if there is one).
+  if(fromSaved){ $("pin").hidden=true; try{ var c=JSON.parse(lsGet("dabe_board_cache")||"null"); if(c&&c.length){ useRows(c); $("asof").textContent="Showing the last saved copy · refreshing…"; } }catch(e){} }
+  load().then(function(){ lsSet("dabe_board_pin",pin); $("pin").hidden=true; $("pin-btn").disabled=false; $("pin-btn").textContent="Open board"; startTimer(); })
+  .catch(function(e){
+    $("pin-btn").disabled=false; $("pin-btn").textContent="Open board";
+    if(e.message==="pin"){ lsSet("dabe_board_pin",""); lsSet("dabe_board_cache",""); rows=[]; $("list").innerHTML=""; $("pin").hidden=false; $("pin-err").textContent="That PIN is not right."; return; }
+    // Any other problem (slow signal, script waking up): keep the PIN, keep the board, try once more in a few seconds.
+    if(!fromSaved && !rows.length){ $("pin").hidden=false; $("pin-err").textContent="Could not load the sheet. Tap Open board to try again."; return; }
+    $("asof").textContent="Could not refresh. Trying again…";
+    setTimeout(function(){ load().then(function(){ startTimer(); }).catch(function(){ $("asof").textContent=(rows.length?"Showing the last saved copy. ":"")+"Could not reach the sheet. Tap Refresh."; toast("Could not reach the sheet",true); }); },4000);
+  });
 }
-$("pin-form").addEventListener("submit",function(e){ e.preventDefault(); start($("pin-in").value.trim()); });
-var saved=lsGet("dabe_board_pin"); if(saved){ start(saved); }
+$("pin-form").addEventListener("submit",function(e){ e.preventDefault(); if($("pin-btn").disabled) return; var v=$("pin-in").value.trim(); if(v) start(v,false); });
+document.addEventListener("visibilitychange",function(){ if(!document.hidden && PIN && !pending) load().catch(function(){}); });
+var saved=lsGet("dabe_board_pin"); if(saved){ start(saved,true); }
 </script>
 </body>
 </html>
