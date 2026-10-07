@@ -14,3 +14,7 @@
 h1{font-size:clamp(1.8rem,5vw,2.6rem)}
 .hl{flex:1 1 360px;min-width:0}
 .hr{flex:0 1 auto;max-width:100%}
+
+
+  /* Big screens: full width, three columns. Phones unchanged. */
+@media (min-width:1100px){body{padding-inline:40px}.wrap{max-width:none}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
