@@ -147,11 +147,11 @@ function fillPlaces(g){
   $('plc').innerHTML=h;$('plc').disabled=false;
 }
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-function loadStores(){
-  var cached=lsGet('cl-stores');
-  fetch(API+'?action=checklistStores').then(function(r){return r.json()}).then(function(j){
+var TEAM='';try{TEAM=(new URLSearchParams(location.search).get('team')||'').replace(/[^0-9]/g,'')}catch(e){} var SK='cl-stores'+(TEAM?'-t'+TEAM:''); function loadStores(){
+  var cached=lsGet(SK);
+  fetch(API+'?action=checklistStores'+(TEAM?'&team='+TEAM:'')).then(function(r){return r.json()}).then(function(j){
     if(!j.ok)throw new Error(j.error||'failed');
-    lsSet('cl-stores',JSON.stringify(j.stores));
+    lsSet(SK,JSON.stringify(j.stores));
     stores=prep(j.stores);start();
   }).catch(function(){
     if(cached){try{stores=prep(JSON.parse(cached));start();return}catch(e){}}
