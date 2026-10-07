@@ -18,3 +18,4 @@ h1{font-size:clamp(1.8rem,5vw,2.6rem)}
 
   /* Big screens: full width, three columns. Phones unchanged. */
 @media (min-width:1100px){body{padding-inline:40px}.wrap{max-width:none}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+/* State buttons */ .stsel{display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:0 1 480px;align-self:center;min-width:260px}.stbtn{font-family:var(--f-display);font-weight:800;font-size:clamp(1.1rem,2.2vw,1.7rem);letter-spacing:.04em;text-transform:uppercase;padding:18px 12px;background:var(--surface);color:var(--ink);border:1px solid var(--line);cursor:pointer}.stall{grid-column:1/-1;padding:12px}.stbtn.on{background:var(--green);border-color:var(--green)}.stbtn:focus-visible{outline:2px solid var(--green-text);outline-offset:2px}@media(max-width:600px){.stsel{flex:1 1 100%}}
