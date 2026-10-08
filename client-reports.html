@@ -79,6 +79,11 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
   .card .detail{display:block}.card{break-inside:avoid}.caret{display:none}
   .hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.tabs button{font-family:var(--f-display);font-size:20px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;padding:10px 18px;border-radius:999px;border:2px solid var(--green);background:#fff;color:var(--green);cursor:pointer}
+.tabs button small{font-family:var(--f-body);font-size:13px;font-weight:600;margin-left:8px;opacity:.8}
+.tabs button.on{background:var(--green);color:#fff}
+@media print{.tabs{display:none}}
 </style>
 </head>
 <body>
@@ -98,6 +103,11 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
     <div class="stat"><b id="sDays">0</b><span>Days</span></div>
     <div class="stat"><b id="sFlag">0</b><span>With missing / damaged items</span></div>
   </section>
+  <div class="tabs" id="tabs" hidden>
+    <button type="button" data-st="all" class="on">All states<small id="nAll"></small></button>
+    <button type="button" data-st="VIC">Victoria<small id="nVIC"></small></button>
+    <button type="button" data-st="WA">Western Australia<small id="nWA"></small></button>
+  </div>
   <div class="tools" id="tools" hidden>
     <input id="q" type="search" placeholder="Search by store or address" aria-label="Search reports">
     <span class="upd" id="upd"></span>
@@ -210,22 +220,35 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
   }
   function nPhotos(r){return links(r["Tag photo links"]).length+links(r["Display photo links"]).length}
 
+  var curState="all";
+  function stateOf(r){
+    var m=String(r.Run||"").match(/^\s*(VIC|WA|QLD|NSW|SA|TAS|NT|ACT)\b/i);
+    if(!m) m=String(r.Address||"").match(/\b(VIC|WA|QLD|NSW|SA|TAS|NT|ACT)\s+\d{4}\b/i);
+    return m?m[1].toUpperCase():"VIC";
+  }
   function render(){
+    var cnt={all:data.length,VIC:0,WA:0};
+    data.forEach(function(r){var st=stateOf(r); cnt[st]=(cnt[st]||0)+1});
+    document.getElementById("nAll").textContent=cnt.all;
+    document.getElementById("nVIC").textContent=cnt.VIC;
+    document.getElementById("nWA").textContent=cnt.WA;
+    document.getElementById("tabs").hidden=false;
+    var view=data.filter(function(r){return curState==="all"||stateOf(r)===curState});
     var term=(document.getElementById("q").value||"").toLowerCase().trim();
     document.getElementById("stats").hidden=false;
     document.getElementById("tools").hidden=false;
     var stores={}, days={}, nf=0;
-    data.forEach(function(r){stores[String(r.Store).toLowerCase()]=1; days[dk(r)||"?"]=1; if(flagged(r)) nf++});
-    document.getElementById("sReports").textContent=data.length;
+    view.forEach(function(r){stores[String(r.Store).toLowerCase()]=1; days[dk(r)||"?"]=1; if(flagged(r)) nf++});
+    document.getElementById("sReports").textContent=view.length;
     document.getElementById("sStores").textContent=Object.keys(stores).length;
     document.getElementById("sDays").textContent=Object.keys(days).length;
     document.getElementById("sFlag").textContent=nf;
     document.getElementById("upd").textContent=loadedAt?"Updated "+loadedAt.toLocaleTimeString("en-AU",{hour:"numeric",minute:"2-digit"}):"";
 
-    var list=data.filter(function(r){
+    var list=view.filter(function(r){
       return !term||(String(r.Store)+" "+String(r.Address)+" "+String(r.Retailer)).toLowerCase().indexOf(term)>-1;
     });
-    if(!data.length){msg("No reports yet","Reports appear here as soon as the install teams submit them.");return}
+    if(!view.length){msg("No reports yet","Reports appear here as soon as the install teams submit them.");return}
     if(!list.length){msg("No matches","Try a different store name.");return}
 
     var groups={}, order=[];
@@ -257,6 +280,12 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
     b.setAttribute("aria-expanded",opened[id]?"true":"false");
   });
   document.getElementById("q").addEventListener("input",function(){ if(data.length) render() });
+  document.getElementById("tabs").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-st]"); if(!b) return;
+    curState=b.getAttribute("data-st");
+    Array.prototype.forEach.call(document.querySelectorAll("#tabs button"),function(x){x.classList.toggle("on",x===b)});
+    if(data.length) render();
+  });
   document.getElementById("print").addEventListener("click",function(){window.print()});
 
   load();
