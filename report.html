@@ -167,6 +167,7 @@ function build(R,sheetNote){
   var notes=[]; var c27=String(get(R,27)).trim(); if(c27)notes.push(c27); if(sheetNote&&notes.join(" ").indexOf(sheetNote)<0)notes.push(sheetNote);
   var photos=links(R["Display photo links"]);
   var tagPh=links(R["Tag photo links"]);
+var tabletPh=links(R["31 Tablet photo links"]);
   var h='<div class="hero"><div class="top"><div><div class="eyebrow">Dabe Labour &middot; Installation Report</div><h1>'+esc(store)+'</h1>'+
     '<div class="addr"><span class="pill">'+esc(code)+'</span>'+esc(R["Address"])+'</div></div><img class="logo" src="logo.png" alt="Dabe Labour" onerror="this.style.display=\'none\'"></div></div>'+
     '<div class="facts"><div class="fact"><div class="k">Install date</div><div class="v">'+esc(R["Install Date"]||String(R["Submitted"]).split(",")[0])+'</div></div>'+
@@ -177,7 +178,7 @@ function build(R,sheetNote){
   function grid(title,ids){if(!ids.length)return "";return '<section><h2>'+title+' ('+ids.length+')</h2><div class="photos">'+ids.map(function(id,i){
       var view=R["Photo folder"]||"https://drive.google.com/file/d/"+id+"/view",th="https://drive.google.com/thumbnail?id="+id+"&sz=w800";
       return '<a class="ph" href="'+view+'" target="_blank" rel="noopener"><div class="fb">Photo '+(i+1)+'<span>Tap to open</span></div><img src="'+th+'" alt="Photo '+(i+1)+'" loading="lazy" onerror="this.remove()"><div class="n">Photo '+(i+1)+'</div></a>'}).join("")+'</div></section>'}
-  h+=grid("Display photos",photos)+grid("Service tag photos",tagPh);
+  h+=grid("Display photos",photos)+grid("Service tag photos",tagPh)+grid("Samsung tablet photos",tabletPh);
   h+='<footer>Submitted '+esc(R["Submitted"])+'<br><b>Dabe Labour</b> &middot; Installations &amp; Maintenance</footer>';
   return h;
 }
