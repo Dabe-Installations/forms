@@ -56,11 +56,43 @@ textarea{min-height:76px;resize:vertical}
 button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--green);outline-offset:2px}
 .ch{flex-direction:column;align-items:stretch}.ch button{text-align:left}
 .pv{background:#fff3c4;border:1px solid #e3c35a;color:#5a4500;padding:8px 12px;font:600 14px Barlow,sans-serif;margin:0 0 12px;border-radius:4px}
+
+/* PDF / client-report style (27 Oct 2026) */
+:root{--green:#0f7a55;--g2:#1f9c78;--line:#dfe5e2;--bg:#fff;--soft:#f3faf7;--mute:#6b7570;--ink:#111}
+body{background:#fff}
+.wrap{box-shadow:none;background:#fff}
+header{background:#fff;color:var(--ink);padding:22px 18px 0;border:0;text-align:center}
+header .banner{display:block;width:86%;max-width:380px;margin:0 auto}
+.kick{color:var(--green);font:600 12px Barlow,sans-serif;letter-spacing:.22em;margin-top:14px}
+h1{font:700 30px/1.1 'Barlow Condensed',sans-serif;text-transform:none;margin:4px 0 0;color:var(--ink)}
+header .rule{height:4px;background:var(--g2);margin:16px 0 0;border-radius:2px}
+.store{border:1px solid var(--line);border-radius:12px;margin:16px 14px 6px;padding:16px;text-align:center}
+.store label,.fl{text-align:center;letter-spacing:.16em}
+select,input[type=text],textarea{border:1px solid var(--line);border-radius:10px;text-align:center;text-align-last:center}
+textarea{text-align:left}
+.info{border:1px solid var(--line);border-left:0;border-radius:10px;background:var(--soft);text-align:center}
+.prog{border-bottom:1px solid var(--line)}
+.bar i{background:var(--g2)}
+.sec{text-align:center;color:var(--green);font:600 13px Barlow,sans-serif;letter-spacing:.22em;padding:22px 18px 6px}
+.q{border:1px solid var(--line);border-radius:12px;margin:10px 14px;padding:14px;text-align:center}
+.q.follow{margin-left:14px;border-left:1px solid var(--line);background:var(--soft);padding-left:14px}
+.q label.t{text-align:center}
+.yn button{border:1px solid var(--line);border-radius:10px}
+.yn button.on.y{background:var(--green);border-color:var(--green)}
+.ch button{text-align:center}
+.ph{justify-content:center}
+.ph .add{border-radius:10px}
+.hint{text-align:center}
+.err{outline:2px solid var(--red);outline-offset:-1px;border-radius:12px}
+.go{border-radius:10px;background:var(--green)}
+.done h2{color:var(--green)}
 </style></head><body>
 <div class="wrap">
 <header>
- <div class="kick">Dabe Labour · Install checklist</div>
+ <img class="banner" src="Dabe-Banner-v9-Transparent.png" alt="Dabe Installations">
+ <div class="kick">Store Report</div>
  <h1 id="ttl">Shark Beauty Updates</h1>
+ <div class="rule"></div>
 </header>
 <div id="main">
  <div class="store">
