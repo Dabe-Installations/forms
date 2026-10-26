@@ -258,7 +258,7 @@ function pick(i,keep){
   cur=stores[i];kind=cur.kind;
   if(!keep){A={};P={};}
   sid='s'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
-  var inst=cur.team.replace(/^T\d\s*/,'').trim();
+  var parts=String(cur.team||'').split(/[,;&\n]+/).map(function(x){return x.trim()}).filter(String);var mine=TEAM?parts.filter(function(x){return new RegExp('^T'+TEAM+'\\b').test(x)})[0]:(parts.length===1?parts[0]:'');var inst=String(mine||'').replace(/^T\d+\s*/,'').trim();
   if(!$('by').value)$('by').value=inst;
   $('info').style.display='block';
   $('info').innerHTML='<b>'+esc(cur.store)+'</b><br>'+esc(cur.address)+'<br>'+(cur.run?esc(cur.run)+' · ':'')+(cur.team?esc(cur.team):'')+(cur.installDate?' · '+esc(cur.installDate):'');
