@@ -54,14 +54,17 @@ textarea{min-height:76px;resize:vertical}
 .done p{margin:0 0 20px;color:var(--mute)}
 .done button{padding:13px 22px;border:0;border-radius:4px;background:var(--ink);color:#fff;font:600 16px 'Barlow Condensed',sans-serif;letter-spacing:.08em;text-transform:uppercase}
 button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.ch{flex-direction:column;align-items:stretch}.ch button{text-align:left}
+.pv{background:#fff3c4;border:1px solid #e3c35a;color:#5a4500;padding:8px 12px;font:600 14px Barlow,sans-serif;margin:0 0 12px;border-radius:4px}
 </style></head><body>
 <div class="wrap">
 <header>
  <div class="kick">Dabe Labour · Install checklist</div>
- <h1>Shark Beauty Updates</h1>
+ <h1 id="ttl">Shark Beauty Updates</h1>
 </header>
 <div id="main">
  <div class="store">
+  <div><label for="prj">Project</label><select id="prj"><option value="beauty">Shark Beauty Updates</option><option value="coffee">Shark Coffee Upgrade</option></select></div>
   <div><label for="ret">Retailer</label><select id="ret"><option value="">Loading stores…</option></select></div>
   <div><label for="plc">Store</label><select id="plc" disabled><option value="">Choose a retailer first</option></select></div>
   <div class="info" id="info"></div>
@@ -78,7 +81,7 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
 var API='https://script.google.com/macros/s/AKfycbyx2biSIuIalJAlaeIpWtFim6nUGNbXE8d6rpX80UlJYIl_7cHN2zTgAtuZlRnEZouz3A/exec';
 var $=function(id){return document.getElementById(id)};
 // cond: show when the parent answer equals "when". only: store kinds the question applies to.
-var Q=[
+var QB=[
 {id:1,sec:'General',t:'What displays are you installing in this store?',type:'text',req:1},
 {id:2,sec:'Inspection',t:'Did you sign in to the visitor log?',type:'yn',req:1},
 {id:3,t:'Why?',type:'text',parent:2,when:'No'},
@@ -111,6 +114,54 @@ var Q=[
 {id:27,t:'Please add any additional comments below:',type:'text',long:1},
 {id:28,t:'Take approx. 4–5 photos of each display showing various angles',type:'photo',req:1,hint:'Aim for 4 to 5 photos from different angles.'}
 ];
+var QC=[
+{id:102,sec:'General',t:'Which display are you installing?',type:'choice',opts:['TGG Coffee 2026 Auto Barista Update','BL Coffee 2026 Auto Barista'],req:1},
+{id:103,t:'What is the name of the Manager on duty?',type:'text',req:1},
+{id:104,sec:'Before install',t:'Did you sign into the visitor log?',type:'yn',req:1},
+{id:105,t:'Why not?',type:'text',parent:104,when:'No',req:1},
+{id:106,t:'Have you discussed the works with the manager on duty?',type:'yn',req:1},
+{id:107,t:'Why not?',type:'text',parent:106,when:'No',req:1},
+{id:108,t:'Did you notice any damage to the display before you started?',type:'yn',req:1},
+{id:109,t:'Describe the damage',type:'text',parent:108,when:'Yes',req:1},
+{id:110,t:"On the existing display, were all the lights and logos working?",type:'yn',req:1},
+{id:111,t:"Which lights and/or logos weren't working?",type:'text',parent:110,when:'No',req:1},
+{id:112,t:'Was the install kit complete and undamaged on arrival?',type:'yn',req:1},
+{id:113,t:'What items were missing or damaged?',type:'text',parent:112,when:'No',req:1},
+{id:114,t:'Did you switch off and unplug the display before starting work?',type:'yn',req:1},
+{id:115,t:'Why not?',type:'text',parent:114,when:'No',req:1},
+{id:116,t:'Upload before photos here, please.',type:'photo',req:1,hint:'At least 3 photos (left, right, front), plus any damage.'},
+{id:117,sec:'Completion',t:'Are all lights and logos lit?',type:'yn',req:1},
+{id:118,t:"Which lights and logos aren't lit?",type:'text',parent:117,when:'No',req:1},
+{id:119,t:'Are all cables hidden and clear of the base, rear cover and drawer?',type:'yn',req:1},
+{id:120,t:'Why not?',type:'text',parent:119,when:'No',req:1},
+{id:121,t:'Is the power lead clear of walkways?',type:'yn',req:1},
+{id:122,t:'Why not?',type:'text',parent:121,when:'No',req:1},
+{id:123,t:'Have you installed all display products as per the planogram?',type:'yn',req:1},
+{id:124,t:'Why not?',type:'text',parent:123,when:'No',req:1},
+{id:125,t:'Is there anything missing or damaged?',type:'yn',req:1},
+{id:126,t:'What is missing or damaged? Have you advised the Project Manager?',type:'text',parent:125,when:'Yes',req:1},
+{id:127,t:'Have all old parts, packaging and rubbish been removed from site?',type:'yn',req:1},
+{id:128,t:'Why not?',type:'text',parent:127,when:'No',req:1},
+{id:130,sec:'The Good Guys only',t:'Is a 4 outlet powerboard under the power hatch, connected to power?',type:'yn',req:1,only:['TGG']},
+{id:131,t:'Why not?',type:'text',parent:130,when:'No',req:1},
+{id:132,t:'Were all bolts refitted to the header assembly and the lightbox rear cover, including the bolt through the logo?',type:'yn',req:1,only:['TGG']},
+{id:133,t:'Why not?',type:'text',parent:132,when:'No',req:1},
+{id:134,t:'Was the 15mm hole drilled, deburred and all metal shavings removed?',type:'yn',req:1,only:['TGG']},
+{id:135,t:'Why not?',type:'text',parent:134,when:'No',req:1},
+{id:136,sec:'Photos',t:'Have you taken photos of the existing display?',type:'yn',req:1},
+{id:137,t:'Please add photos',type:'photo',parent:136,when:'Yes',req:1},
+{id:138,t:'Why not?',type:'text',parent:136,when:'No',req:1},
+{id:139,t:'Have you taken any photos during the install?',type:'yn',req:1},
+{id:140,t:'Please add photos',type:'photo',parent:139,when:'Yes',req:1},
+{id:141,t:'Upload completion photos',type:'photo',req:1,hint:'Include: left side, right side, front face, close-up of the drawer front.'},
+{id:142,t:'Any additional comments?',type:'text',long:1,req:1}
+];
+var Q=QB,PROJ="beauty";
+function projKey(n){return /coffee/i.test(String(n||""))?"coffee":"beauty"}
+function inProj(s){return projKey(s.project)===PROJ&&(PROJ!=="beauty"||!s.project||/beauty/i.test(s.project))}
+
+var PROJECTS={beauty:{name:"Shark Beauty Updates",q:QB},coffee:{name:"Shark Coffee Upgrade",q:QC}};
+try{var _pp=new URLSearchParams(location.search).get("project");if(_pp){PROJ=projKey(_pp);Q=PROJECTS[PROJ].q}}catch(e){}
 // Every "Why?" box is required whenever it is showing.
 Q.forEach(function(q){if(q.t==='Why?')q.req=1});
 var A={},P={},stores=[],cur=null,kind='',sid='',busy=false;
@@ -129,7 +180,7 @@ function prep(list){
     else if(/betta home living/i.test(name)){g='Betta Home Living';place=name.replace(/\s*betta home living\s*/i,' ').trim()||name}
     else{g='Other';place=name}
     var k=s.code==='JBHIFI'?'JB':(s.code==='HN'||s.code==='TGG')?s.code:'';
-    return {store:name,group:g,place:place,kind:k,address:s.address||'',run:s.run||'',team:s.team||'',installDate:s.installDate||''};
+    return {store:name,group:g,place:place,kind:k,address:s.address||'',run:s.run||'',team:s.team||'',installDate:s.installDate||'',project:s.project||''};
   });
   var seen={};out.forEach(function(s){var key=s.group+'|'+s.place;seen[key]=(seen[key]||0)+1});
   out.forEach(function(s){if(seen[s.group+'|'+s.place]>1&&s.run)s.place+=' ('+s.run+')'});
@@ -137,14 +188,14 @@ function prep(list){
   return out;
 }
 function fillRetailers(){
-  var groups=[];stores.forEach(function(s){if(groups.indexOf(s.group)<0)groups.push(s.group)});
+  var groups=[];stores.forEach(function(s){if(inProj(s)&&groups.indexOf(s.group)<0)groups.push(s.group)});
   var h='<option value="">Choose retailer…</option>';
   groups.forEach(function(g){h+='<option>'+esc(g)+'</option>'});
   $('ret').innerHTML=h;
 }
 function fillPlaces(g){
   var h='<option value="">Choose store…</option>';
-  stores.forEach(function(s,i){if(s.group===g)h+='<option value="'+i+'">'+esc(s.place)+'</option>'});
+  stores.forEach(function(s,i){if(s.group===g&&inProj(s))h+='<option value="'+i+'">'+esc(s.place)+'</option>'});
   $('plc').innerHTML=h;$('plc').disabled=false;
 }
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
@@ -160,14 +211,15 @@ var TEAM='';try{TEAM=(new URLSearchParams(location.search).get('team')||'').repl
   });
 }
 function start(){
+  $('prj').value=PROJ;$('ttl').textContent=PROJECTS[PROJ].name;
   fillRetailers();
   var want=''; try{want=new URLSearchParams(location.search).get('store')||''}catch(e){}
   var d=lsGet('cl-draft');
-  if(want){var wi=stores.findIndex(function(s){return s.store===want});
+  if(want){var wi=stores.findIndex(function(s){return s.store===want&&inProj(s)});
     if(wi>=0){var dd=null;try{dd=d?JSON.parse(d):null}catch(e){}
-      var keep=dd&&dd.store===want;A=keep?(dd.A||{}):{};$('by').value=keep?(dd.by||''):'';
+      var keep=dd&&dd.store===want&&(dd.proj||'beauty')===PROJ;A=keep?(dd.A||{}):{};$('by').value=keep?(dd.by||''):'';
       $('ret').value=stores[wi].group;fillPlaces(stores[wi].group);$('plc').value=wi;pick(wi,true);return;}}
-  if(d){try{d=JSON.parse(d);var i=stores.findIndex(function(s){return s.store===d.store});
+  if(d){try{d=JSON.parse(d);if((d.proj||'beauty')!==PROJ)throw 0;var i=stores.findIndex(function(s){return s.store===d.store&&inProj(s)});
     if(i>=0){$('ret').value=stores[i].group;fillPlaces(stores[i].group);$('plc').value=i;A=d.A||{};$('by').value=d.by||'';pick(i,true);}}catch(e){}}
 }
 function pick(i,keep){
@@ -199,6 +251,7 @@ function render(){
   Q.filter(vis).forEach(function(q){
     if(q.sec&&q.sec!==sec){sec=q.sec;h+='<div class="sec">'+sec+'</div>'}
     h+='<div class="q'+(q.parent?' follow':'')+(q.isNew?' new':'')+'" id="q'+q.id+'">'+(q.isNew?'<span class="newtag">NEW</span>':'')+'<label class="t">'+esc(q.t)+(q.link?' <a href="'+esc(q.link.url)+'" target="_blank" rel="noopener">'+esc(q.link.text)+'</a>':'')+(q.req?' <span class="req">*</span>':'')+'</label>';
+    if(q.type==='choice')h+='<div class="yn ch">'+q.opts.map(function(o){return '<button type="button" class="'+(A[q.id]===o?'on y':'')+'" data-a="'+q.id+'" data-v="'+esc(o)+'">'+esc(o)+'</button>'}).join('')+'</div>';
     if(q.type==='yn')h+='<div class="yn"><button type="button" class="'+(A[q.id]==='Yes'?'on y':'')+'" data-a="'+q.id+'" data-v="Yes">Yes</button><button type="button" class="'+(A[q.id]==='No'?'on n':'')+'" data-a="'+q.id+'" data-v="No">No</button></div>';
     if(q.type==='text')h+=(q.long||q.parent)?'<textarea data-t="'+q.id+'">'+esc(A[q.id]||'')+'</textarea>':'<input type="text" data-t="'+q.id+'" value="'+esc(A[q.id]||'')+'">';
     if(q.type==='photo'){
@@ -216,7 +269,7 @@ function prog(){
   var p=req.length?Math.round(done/req.length*100):0;
   $('pt').textContent=done+' of '+req.length+' required answered';$('pp').textContent=p+'%';$('pb').style.width=p+'%';
 }
-function saveDraft(){if(cur)lsSet('cl-draft',JSON.stringify({store:cur.store,by:$('by').value,A:A}))}
+function saveDraft(){if(cur)lsSet('cl-draft',JSON.stringify({store:cur.store,proj:PROJ,by:$('by').value,A:A}))}
 
 // ---- photos ----
 function shrink(file){
@@ -242,6 +295,7 @@ function addPhotos(id,files){
 }
 
 // ---- events ----
+$('prj').addEventListener('change',function(){PROJ=this.value;Q=PROJECTS[PROJ].q;$('ttl').textContent=PROJECTS[PROJ].name;A={};P={};clearStore();fillRetailers();$('plc').innerHTML='<option value="">Choose a retailer first</option>';$('plc').disabled=true;});
 $('ret').addEventListener('change',function(){clearStore();A={};P={};if(this.value)fillPlaces(this.value);else{$('plc').innerHTML='<option value="">Choose a retailer first</option>';$('plc').disabled=true}});
 $('plc').addEventListener('change',function(){if(this.value==='')clearStore();else pick(+this.value)});
 $('by').addEventListener('input',saveDraft);
@@ -278,7 +332,8 @@ $('go').addEventListener('click',function(){
       else if(A[q.id]!=null)ans[q.id]=A[q.id];
     });
     return post({action:'checklist',submissionId:sid,store:cur.store,retailer:cur.group,address:cur.address,run:cur.run,
-      installer:$('by').value.trim(),installDate:cur.installDate,answers:ans,photos:photos});
+      installer:$('by').value.trim(),installDate:cur.installDate,answers:ans,photos:photos,
+      project:PROJ==='beauty'?'':PROJECTS[PROJ].name,questions:PROJ==='beauty'?undefined:Q.map(function(q){return {id:q.id,label:q.t,type:q.type}})});
   }).then(function(){
     lsDel('cl-draft');
     $('main').style.display='none';$('done').style.display='block';
@@ -290,7 +345,7 @@ $('go').addEventListener('click',function(){
 });
 $('again').addEventListener('click',function(){
   A={};P={};cur=null;$('done').style.display='none';$('main').style.display='block';
-  clearStore();$('ret').value='';$('plc').innerHTML='<option value="">Choose a retailer first</option>';$('plc').disabled=true;say('');window.scrollTo(0,0);
+  clearStore();fillRetailers();$('ret').value='';$('plc').innerHTML='<option value="">Choose a retailer first</option>';$('plc').disabled=true;say('');window.scrollTo(0,0);
 });
 
 loadStores();
