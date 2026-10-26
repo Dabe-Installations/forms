@@ -180,12 +180,9 @@ var QC=[
 {id:133,t:'Why not?',type:'text',parent:132,when:'No',req:1},
 {id:134,t:'Was the 15mm hole drilled, deburred and all metal shavings removed?',type:'yn',req:1,only:['TGG']},
 {id:135,t:'Why not?',type:'text',parent:134,when:'No',req:1},
-{id:136,sec:'Photos',t:'Have you taken photos of the existing display?',type:'yn',req:1},
-{id:137,t:'Please add photos',type:'photo',parent:136,when:'Yes',req:1},
-{id:138,t:'Why not?',type:'text',parent:136,when:'No',req:1},
-{id:139,t:'Have you taken any photos during the install?',type:'yn',req:1},
-{id:140,t:'Please add photos',type:'photo',parent:139,when:'Yes',req:1},
-{id:141,t:'Upload completion photos',type:'photo',req:1,hint:'Include: left side, right side, front face, close-up of the drawer front.'},
+{id:139,sec:'Photos',t:'Have you taken any photos during the install?',type:'yn'},
+{id:140,t:'Please add photos',type:'photo',parent:139,when:'Yes'},
+{id:141,t:'Please upload here the final installation photos (minimum 4 photos).',type:'photo',req:1,min:4,hint:'At least 4 photos: left side, right side, front face, close-up of the drawer front.'},
 {id:142,t:'Any additional comments?',type:'text',long:1,req:1}
 ];
 var Q=QB,PROJ="beauty";
@@ -275,7 +272,7 @@ function vis(q){
   return true;
 }
 function answered(q){
-  if(q.type==='photo')return (P[q.id]||[]).length>0;
+  if(q.type==='photo')return (P[q.id]||[]).length>=(q.min||1);
   return A[q.id]&&String(A[q.id]).trim();
 }
 function render(){
@@ -292,7 +289,7 @@ function render(){
       h+='<label class="add"><b>+</b>Add photo<input type="file" accept="image/*" multiple data-p="'+q.id+'"></label></div>';
       h+='<div class="hint">'+(q.hint?q.hint+' ':'')+((P[q.id]||[]).length?(P[q.id].length+' added'):'')+'</div>';
     }
-    h+='<div class="msg">Please answer this question</div></div>';
+    h+='<div class="msg">'+(q.min?'Please add at least '+q.min+' photos':'Please answer this question')+'</div></div>';
   });
   $('form').innerHTML=h;prog();
 }
