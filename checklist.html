@@ -275,7 +275,7 @@ function start(){
   if(want){var wi=stores.findIndex(function(s){return s.store===want&&inProj(s)});
     if(wi>=0){var dd=null;try{dd=d?JSON.parse(d):null}catch(e){}
       var keep=dd&&dd.store===want&&(dd.proj||'beauty')===PROJ;A=keep?(dd.A||{}):{};$('by').value=keep?(dd.by||''):'';
-      $('ret').value=stores[wi].group;fillPlaces(stores[wi].group);$('plc').value=wi;pick(wi,true);return;}}
+      $('ret').value=stores[wi].group;fillPlaces(stores[wi].group);$('plc').value=wi;pick(wi,true);['prj','ret','plc'].forEach(function(id){var e=$(id);e.disabled=true;e.parentNode.style.display='none'});$('again').style.display='none';return;}}
   if(d){try{d=JSON.parse(d);if((d.proj||'beauty')!==PROJ)throw 0;var i=stores.findIndex(function(s){return s.store===d.store&&inProj(s)});
     if(i>=0){$('ret').value=stores[i].group;fillPlaces(stores[i].group);$('plc').value=i;A=d.A||{};$('by').value=d.by||'';pick(i,true);}}catch(e){}}
 }
