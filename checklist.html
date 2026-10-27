@@ -90,13 +90,13 @@ textarea{text-align:left}
 <div class="wrap">
 <header>
  <img class="banner" src="Dabe-Banner-v9-Transparent.png" alt="Dabe Installations">
- <div class="kick">Store Report</div>
+ <div class="kick" id="kick">Store Report</div>
  <h1 id="ttl">Shark Beauty Updates</h1>
  <div class="rule"></div>
 </header>
 <div id="main">
  <div class="store">
-  <div><label for="prj">Project</label><select id="prj"><option value="beauty">Shark Beauty Updates</option><option value="coffee">Shark Coffee Upgrade</option></select></div>
+  <div><label for="prj">Project</label><select id="prj"><option value="beauty">Shark Beauty Updates</option><option value="coffee">Shark Coffee Upgrade</option><option value="audit">Shark Power Audit</option></select></div>
   <div><label for="ret">Retailer</label><select id="ret"><option value="">Loading stores…</option></select></div>
   <div><label for="plc">Store</label><select id="plc" disabled><option value="">Choose a retailer first</option></select></div>
   <div class="info" id="info"></div>
@@ -185,11 +185,39 @@ var QC=[
 {id:141,t:'Please upload here the final installation photos (minimum 4 photos).',type:'photo',req:1,min:4,hint:'At least 4 photos: left side, right side, front face, close-up of the drawer front.'},
 {id:142,t:'Any additional comments?',type:'text',long:1,req:1}
 ];
+var QA=[
+{id:201,sec:'Step 1 – Advise the store',t:'Have you advised the store team that you are carrying out a power audit on the Shark Beauty End?',type:'yn',req:1},
+{id:202,t:'Why not?',type:'text',parent:201,when:'No',req:1},
+{id:203,sec:'Step 2 – Find the Beauty End display',t:'Have you located the Shark Beauty End display?',type:'yn',req:1},
+{id:204,t:'Why not?',type:'text',parent:203,when:'No',req:1},
+{id:205,sec:'Before accessing the unit – required photos',t:'Before — full shot: photograph the complete Beauty End in its as-found condition.',type:'photo',req:1,hint:'Take these photos before moving stock or removing any panels.'},
+{id:206,t:'Cable / tray shot — as is: show the visible cable routing, tray area and power setup before anything is moved.',type:'photo',req:1},
+{id:207,t:'Back of transformer: capture the rear of each transformer / power supply where accessible.',type:'photo',req:1},
+{id:208,t:'Electrical tags: photograph any electrical inspection or test tags clearly enough to show the date and other relevant details.',type:'photo',req:1},
+{id:209,sec:'Safety check',t:'Is a powerboard in use that is not tagged or is out of date?',type:'yn',req:1},
+{id:210,t:'Have you flagged it and turned off / disconnected it?',type:'yn',parent:209,when:'Yes',req:1},
+{id:211,t:'Details',type:'text',parent:209,when:'Yes',req:1},
+{id:212,t:'Is there any visible cable damage or excessive heat?',type:'yn',req:1},
+{id:213,t:'Have you flagged it and turned off / disconnected it?',type:'yn',parent:212,when:'Yes',req:1},
+{id:214,t:'Details',type:'text',parent:212,when:'Yes',req:1},
+{id:215,t:'Is the unit and electrical equipment safe to handle?',type:'yn',req:1},
+{id:216,t:'Do not continue the inspection. Follow store electrical safety procedures and escalate the issue. Describe what is unsafe and who you escalated it to.',type:'text',parent:215,when:'No',req:1},
+{id:217,sec:'Step 3 – Empty the bottom shelf & remove the base panel',t:'Have you emptied the bottom shelf and removed the base panel?',type:'yn',parent:215,when:'Yes',top:1,req:1},
+{id:218,t:'Why not?',type:'text',parent:217,when:'No',req:1},
+{id:219,sec:'Step 4 – Inspect cables & power supplies / transformers',t:'Photograph each power supply / transformer and its full label (peel back the Velcro on the base). Brand, model and serial number must be readable.',type:'photo',parent:215,when:'Yes',top:1,req:1},
+{id:220,t:'Have you found any damage, heat or powerboard issues with the cables, plugs or powerboards?',type:'yn',parent:215,when:'Yes',top:1,req:1},
+{id:221,t:'Describe the defects',type:'text',parent:220,when:'Yes',req:1},
+{id:222,t:'Photos of the defects',type:'photo',parent:220,when:'Yes',req:1},
+{id:223,sec:'Audit complete',t:'Have you advised the store of the actions taken?',type:'yn',req:1},
+{id:224,t:'Why not?',type:'text',parent:223,when:'No',req:1},
+{id:225,t:'Any additional comments?',type:'text',long:1}
+];
 var Q=QB,PROJ="beauty";
-function projKey(n){return /coffee/i.test(String(n||""))?"coffee":"beauty"}
-function inProj(s){return projKey(s.project)===PROJ&&(PROJ!=="beauty"||!s.project||/beauty/i.test(s.project))}
+function projKey(n){n=String(n||"");return /power audit/i.test(n)?"audit":/coffee/i.test(n)?"coffee":"beauty"}
+function inProj(s){if(PROJ==="audit")return s.kind==="TGG"&&projKey(s.project)==="coffee";return projKey(s.project)===PROJ&&(PROJ!=="beauty"||!s.project||/beauty/i.test(s.project))}
 
-var PROJECTS={beauty:{name:"Shark Beauty Updates",q:QB},coffee:{name:"Shark Coffee Upgrade",q:QC}};
+var PROJECTS={beauty:{name:"Shark Beauty Updates",q:QB},coffee:{name:"Shark Coffee Upgrade",q:QC},audit:{name:"Shark Power Audit",q:QA,kick:"Power Audit",guide:"https://drive.google.com/file/d/1Zhn4xHjvQpsVkOUcLEy67JwDIbyVfWmR/view?usp=sharing"}};
+function setHead(){$("ttl").textContent=PROJECTS[PROJ].name;$("kick").textContent=PROJECTS[PROJ].kick||"Store Report"}
 try{var _pp=new URLSearchParams(location.search).get("project");if(_pp){PROJ=projKey(_pp);Q=PROJECTS[PROJ].q}}catch(e){}
 // Every "Why?" box is required whenever it is showing.
 Q.forEach(function(q){if(q.t==='Why?')q.req=1});
@@ -240,7 +268,7 @@ var TEAM='';try{TEAM=(new URLSearchParams(location.search).get('team')||'').repl
   });
 }
 function start(){
-  $('prj').value=PROJ;$('ttl').textContent=PROJECTS[PROJ].name;
+  $('prj').value=PROJ;setHead();
   fillRetailers();
   var want=''; try{want=new URLSearchParams(location.search).get('store')||''}catch(e){}
   var d=lsGet('cl-draft');
@@ -279,7 +307,7 @@ function render(){
   var h='',sec='';
   Q.filter(vis).forEach(function(q){
     if(q.sec&&q.sec!==sec){sec=q.sec;h+='<div class="sec">'+sec+'</div>'}
-    h+='<div class="q'+(q.parent?' follow':'')+(q.isNew?' new':'')+'" id="q'+q.id+'">'+(q.isNew?'<span class="newtag">NEW</span>':'')+'<label class="t">'+esc(q.t)+(q.link?' <a href="'+esc(q.link.url)+'" target="_blank" rel="noopener">'+esc(q.link.text)+'</a>':'')+(q.req?' <span class="req">*</span>':'')+'</label>';
+    h+='<div class="q'+(q.parent&&!q.top?' follow':'')+(q.isNew?' new':'')+'" id="q'+q.id+'">'+(q.isNew?'<span class="newtag">NEW</span>':'')+'<label class="t">'+esc(q.t)+(q.link?' <a href="'+esc(q.link.url)+'" target="_blank" rel="noopener">'+esc(q.link.text)+'</a>':'')+(q.req?' <span class="req">*</span>':'')+'</label>';
     if(q.type==='choice')h+='<div class="yn ch">'+q.opts.map(function(o){return '<button type="button" class="'+(A[q.id]===o?'on y':'')+'" data-a="'+q.id+'" data-v="'+esc(o)+'">'+esc(o)+'</button>'}).join('')+'</div>';
     if(q.type==='yn')h+='<div class="yn"><button type="button" class="'+(A[q.id]==='Yes'?'on y':'')+'" data-a="'+q.id+'" data-v="Yes">Yes</button><button type="button" class="'+(A[q.id]==='No'?'on n':'')+'" data-a="'+q.id+'" data-v="No">No</button></div>';
     if(q.type==='text')h+=(q.long||q.parent)?'<textarea data-t="'+q.id+'">'+esc(A[q.id]||'')+'</textarea>':'<input type="text" data-t="'+q.id+'" value="'+esc(A[q.id]||'')+'">';
@@ -291,6 +319,7 @@ function render(){
     }
     h+='<div class="msg">'+(q.min?'Please add at least '+q.min+' photos':'Please answer this question')+'</div></div>';
   });
+  if(PROJECTS[PROJ].guide)h='<div class="q" style="background:#fff0f7;border-color:#ffb3d6"><label class="t" style="margin:0">Follow the guide word by word: <a href="'+PROJECTS[PROJ].guide+'" target="_blank" rel="noopener">Power Audit Installer Guide</a></label></div>'+h;
   $('form').innerHTML=h;prog();
 }
 function prog(){
@@ -324,7 +353,7 @@ function addPhotos(id,files){
 }
 
 // ---- events ----
-$('prj').addEventListener('change',function(){PROJ=this.value;Q=PROJECTS[PROJ].q;$('ttl').textContent=PROJECTS[PROJ].name;A={};P={};clearStore();fillRetailers();$('plc').innerHTML='<option value="">Choose a retailer first</option>';$('plc').disabled=true;});
+$('prj').addEventListener('change',function(){PROJ=this.value;Q=PROJECTS[PROJ].q;setHead();A={};P={};clearStore();fillRetailers();$('plc').innerHTML='<option value="">Choose a retailer first</option>';$('plc').disabled=true;});
 $('ret').addEventListener('change',function(){clearStore();A={};P={};if(this.value)fillPlaces(this.value);else{$('plc').innerHTML='<option value="">Choose a retailer first</option>';$('plc').disabled=true}});
 $('plc').addEventListener('change',function(){if(this.value==='')clearStore();else pick(+this.value)});
 $('by').addEventListener('input',saveDraft);
