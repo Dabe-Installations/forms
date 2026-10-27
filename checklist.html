@@ -86,6 +86,7 @@ textarea{text-align:left}
 .err{outline:2px solid var(--red);outline-offset:-1px;border-radius:12px}
 .go{border-radius:10px;background:var(--green)}
 .done h2{color:var(--green)}
+.gd{margin:6px 14px 10px;text-align:left;font-size:15px;line-height:1.45;color:#333}.gd p{margin:6px 2px}.gb{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px 0;background:#fff}.gb b{display:block;font:700 14px 'Barlow Condensed',sans-serif;letter-spacing:.08em;color:var(--green);margin-bottom:4px}.gb ul,.gb ol{margin:4px 0;padding-left:20px}.gb li{margin:3px 0}.gb.mint{background:#eef7f3;border-color:#cfe7dc}.gb.red{background:#fdf1f0;border-color:#f1c9c5}.gb.red b{color:#c62f26}.gb.done{background:#0f7a55;color:#fff;border:0;text-align:center}.gb.done b{color:#fff}.gi{display:flex;gap:8px;justify-content:center}.gi img{flex:1;min-width:0;max-height:340px;object-fit:cover;border-radius:10px;border:1px solid var(--line)}.gc{text-align:center;font-style:italic;font-size:12px;color:var(--mute)}
 </style></head><body>
 <div class="wrap">
 <header>
@@ -186,29 +187,39 @@ var QC=[
 {id:142,t:'Any additional comments?',type:'text',long:1,req:1}
 ];
 var QA=[
-{id:201,sec:'Step 1 – Advise the store',t:'Have you advised the store team that you are carrying out a power audit on the Shark Beauty End?',type:'yn',req:1},
+{id:300,type:'info',html:'<p>Use this guide when carrying out a store power audit on Shark Beauty end displays. Complete the photo checks in order and flag any unsafe, damaged or out-of-date electrical equipment.</p><div class="gb mint"><b>AUDIT PURPOSE</b>Verify the visible power setup, cables, powerboards, transformers and electrical tags on the Shark Beauty End, and capture clear evidence for the audit.</div>'},
+{id:301,sec:'Step 1 – Advise the store',type:'info',html:'<p>Advise the store team that you are carrying out a power audit on the <b>Shark Beauty End</b>.</p>'},
+{id:201,t:'Have you advised the store team that you are carrying out a power audit on the Shark Beauty End?',type:'yn',req:1},
 {id:202,t:'Why not?',type:'text',parent:201,when:'No',req:1},
-{id:203,sec:'Step 2 – Find the Beauty End display',t:'Have you located the Shark Beauty End display?',type:'yn',req:1},
+{id:302,sec:'Step 2 – Find the Beauty End display',type:'info',html:'<p>Locate the Shark Beauty End display. The unit may vary slightly by store presentation; use the reference images below to identify the display.</p><div class="gi"><img src="pa-1.jpg" alt=""><img src="pa-2.jpg" alt=""></div><p class="gc">Reference examples — complete Shark Beauty End displays that may be encountered in store.</p>'},
+{id:203,t:'Have you located the Shark Beauty End display?',type:'yn',req:1},
 {id:204,t:'Why not?',type:'text',parent:203,when:'No',req:1},
-{id:205,sec:'Before accessing the unit – required photos',t:'Before — full shot: photograph the complete Beauty End in its as-found condition.',type:'photo',req:1,hint:'Take these photos before moving stock or removing any panels.'},
+{id:303,sec:'Before accessing the unit — required photos & safety check',type:'info',html:'<p>Take the following photos before moving stock or removing any panels:</p><div class="gb mint"><b>PHOTO STANDARD</b><ul><li>Keep the whole item in frame where possible.</li><li>Make labels, tags and serial numbers readable.</li><li>Do not cover or obscure cables, plugs, tags or transformer labels.</li><li>Take additional photos if a single image does not clearly show the condition.</li></ul></div>'},
+{id:205,t:'Before — full shot: photograph the complete Beauty End in its as-found condition.',type:'photo',req:1},
 {id:206,t:'Cable / tray shot — as is: show the visible cable routing, tray area and power setup before anything is moved.',type:'photo',req:1},
 {id:207,t:'Back of transformer: capture the rear of each transformer / power supply where accessible.',type:'photo',req:1},
 {id:208,t:'Electrical tags: photograph any electrical inspection or test tags clearly enough to show the date and other relevant details.',type:'photo',req:1},
-{id:209,sec:'Safety check',t:'Is a powerboard in use that is not tagged or is out of date?',type:'yn',req:1},
+{id:304,type:'info',html:'<div class="gb red"><b>FLAG &amp; DISCONNECT</b>If a powerboard is in use but is not tagged or is out of date, flag it and turn off / disconnect it.</div>'},
+{id:209,t:'Is a powerboard in use that is not tagged or is out of date?',type:'yn',req:1},
 {id:210,t:'Have you flagged it and turned off / disconnected it?',type:'yn',parent:209,when:'Yes',req:1},
 {id:211,t:'Details',type:'text',parent:209,when:'Yes',req:1},
+{id:305,type:'info',html:'<div class="gb red"><b>DAMAGE / HEAT</b>If there is visible cable damage or excessive heat, flag it and turn off / disconnect it.</div>'},
 {id:212,t:'Is there any visible cable damage or excessive heat?',type:'yn',req:1},
 {id:213,t:'Have you flagged it and turned off / disconnected it?',type:'yn',parent:212,when:'Yes',req:1},
 {id:214,t:'Details',type:'text',parent:212,when:'Yes',req:1},
+{id:306,type:'info',html:'<div class="gb red"><b>Important:</b> If the unit or electrical equipment is unsafe to handle, do not continue the inspection. Follow store electrical safety procedures and escalate the issue.</div>'},
 {id:215,t:'Is the unit and electrical equipment safe to handle?',type:'yn',req:1},
-{id:216,t:'Do not continue the inspection. Follow store electrical safety procedures and escalate the issue. Describe what is unsafe and who you escalated it to.',type:'text',parent:215,when:'No',req:1},
-{id:217,sec:'Step 3 – Empty the bottom shelf & remove the base panel',t:'Have you emptied the bottom shelf and removed the base panel?',type:'yn',parent:215,when:'Yes',top:1,req:1},
+{id:216,t:'Describe what is unsafe and who you escalated it to.',type:'text',parent:215,when:'No',req:1},
+{id:307,sec:'Step 3 – Empty the bottom shelf & remove the base panel',type:'info',parent:215,when:'Yes',html:'<p>Remove stock from the bottom shelf so the lower section of the Beauty End is clear. Then remove the base panel to access the power supplies / transformers and cable connections.</p><div class="gi"><img src="pa-3.jpg" alt=""></div><p class="gc">Reference — the red arrow identifies the lower base-panel area to be accessed after the bottom shelf is emptied.</p><div class="gb mint"><b>CHECK BEFORE PROCEEDING</b>Keep the removed stock and panel secure. Do not obstruct the store aisle or leave loose components where customers can access them.</div>'},
+{id:217,t:'Have you emptied the bottom shelf and removed the base panel?',type:'yn',parent:215,when:'Yes',top:1,req:1},
 {id:218,t:'Why not?',type:'text',parent:217,when:'No',req:1},
-{id:219,sec:'Step 4 – Inspect cables & power supplies / transformers',t:'Photograph each power supply / transformer and its full label (peel back the Velcro on the base). Brand, model and serial number must be readable.',type:'photo',parent:215,when:'Yes',top:1,req:1},
+{id:308,sec:'Step 4 – Inspect cables & power supplies / transformers',type:'info',parent:215,when:'Yes',html:'<p>With the base panel removed, inspect all power supplies, cables and connections.</p><div class="gb"><b>REQUIRED PHOTOS &amp; CHECKS</b><ol><li>Photograph each power supply / transformer and its rear label.</li><li>Peel back the Velcro on the base to expose the complete label (see photo).</li><li>Capture the full label with brand, model and serial number readable.</li><li>Check cables, plugs and powerboards for damage, heat and test-tag status.</li><li>Photograph and report any defects. Disconnect unsafe equipment per store procedures.</li></ol></div><div class="gi"><img src="pa-4.jpg" alt=""></div><p class="gc">Reference: Velcro-covered base of a power supply / transformer.</p>'},
+{id:219,t:'Photograph each power supply / transformer and its full label (peel back the Velcro on the base). Brand, model and serial number must be readable.',type:'photo',parent:215,when:'Yes',top:1,req:1},
 {id:220,t:'Have you found any damage, heat or powerboard issues with the cables, plugs or powerboards?',type:'yn',parent:215,when:'Yes',top:1,req:1},
 {id:221,t:'Describe the defects',type:'text',parent:220,when:'Yes',req:1},
 {id:222,t:'Photos of the defects',type:'photo',parent:220,when:'Yes',req:1},
-{id:223,sec:'Audit complete',t:'Have you advised the store of the actions taken?',type:'yn',req:1},
+{id:309,sec:'Audit complete',type:'info',html:'<div class="gb"><b>FINAL PHOTO CHECKLIST</b><ul><li>Full Beauty End before work</li><li>Cable / tray routing as found</li><li>Rear and full labels of every power supply</li><li>Electrical tags (dates readable)</li><li>Any damage, heat or powerboard issues</li></ul></div><div class="gb done"><b>AUDIT COMPLETE</b>Confirm photos are captured, issues flagged and store advised of actions taken.</div>'},
+{id:223,t:'Have you advised the store of the actions taken?',type:'yn',req:1},
 {id:224,t:'Why not?',type:'text',parent:223,when:'No',req:1},
 {id:225,t:'Any additional comments?',type:'text',long:1}
 ];
@@ -307,6 +318,7 @@ function render(){
   var h='',sec='';
   Q.filter(vis).forEach(function(q){
     if(q.sec&&q.sec!==sec){sec=q.sec;h+='<div class="sec">'+sec+'</div>'}
+    if(q.type==='info'){h+='<div class="gd">'+q.html+'</div>';return}
     h+='<div class="q'+(q.parent&&!q.top?' follow':'')+(q.isNew?' new':'')+'" id="q'+q.id+'">'+(q.isNew?'<span class="newtag">NEW</span>':'')+'<label class="t">'+esc(q.t)+(q.link?' <a href="'+esc(q.link.url)+'" target="_blank" rel="noopener">'+esc(q.link.text)+'</a>':'')+(q.req?' <span class="req">*</span>':'')+'</label>';
     if(q.type==='choice')h+='<div class="yn ch">'+q.opts.map(function(o){return '<button type="button" class="'+(A[q.id]===o?'on y':'')+'" data-a="'+q.id+'" data-v="'+esc(o)+'">'+esc(o)+'</button>'}).join('')+'</div>';
     if(q.type==='yn')h+='<div class="yn"><button type="button" class="'+(A[q.id]==='Yes'?'on y':'')+'" data-a="'+q.id+'" data-v="Yes">Yes</button><button type="button" class="'+(A[q.id]==='No'?'on n':'')+'" data-a="'+q.id+'" data-v="No">No</button></div>';
@@ -391,7 +403,7 @@ $('go').addEventListener('click',function(){
     });
     return post({action:'checklist',submissionId:sid,store:cur.store,retailer:cur.group,address:cur.address,run:cur.run,
       installer:$('by').value.trim(),installDate:cur.installDate,answers:ans,photos:photos,
-      project:PROJ==='beauty'?'':PROJECTS[PROJ].name,questions:PROJ==='beauty'?undefined:Q.map(function(q){return {id:q.id,label:q.t,type:q.type}})});
+      project:PROJ==='beauty'?'':PROJECTS[PROJ].name,questions:PROJ==='beauty'?undefined:Q.filter(function(q){return q.type!=='info'}).map(function(q){return {id:q.id,label:q.t,type:q.type}})});
   }).then(function(){
     lsDel('cl-draft');
     $('main').style.display='none';$('done').style.display='block';
