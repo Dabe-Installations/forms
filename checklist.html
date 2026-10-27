@@ -104,9 +104,9 @@ textarea{text-align:left}
  </div>
  <div class="prog" id="prog"><span id="pt"></span><span id="pp"></span></div><div class="bar" id="bar"><i id="pb"></i></div>
  <div id="form"></div>
- <div class="foot" id="foot"><button class="go" id="go">Submit checklist</button><div class="status" id="status"></div></div>
+ <div class="foot" id="foot"><button class="go" id="go">Submit report</button><div class="status" id="status"></div></div>
 </div>
-<div class="done" id="done"><h2>Checklist submitted</h2><p id="donetxt"></p><button id="again">Do another store</button></div>
+<div class="done" id="done"><h2>Report submitted</h2><p id="donetxt"></p><button id="again">Do another store</button></div>
 </div>
 <script>
 (function(){
@@ -319,7 +319,7 @@ function render(){
     }
     h+='<div class="msg">'+(q.min?'Please add at least '+q.min+' photos':'Please answer this question')+'</div></div>';
   });
-  if(PROJECTS[PROJ].guide)h='<div style="margin:16px 14px 6px"><a href="'+PROJECTS[PROJ].guide+'" target="_blank" rel="noopener" style="display:block;text-align:center;background:#0f7a55;color:#fff;font:700 24px Barlow Condensed,sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:18px 12px;border-radius:12px;text-decoration:none">Power Audit Installer Guide</a></div>'+h;
+  if(PROJECTS[PROJ].guide)h='<div style="margin:18px 14px 8px;text-align:center"><p style="margin:0 0 10px;font-weight:600;font-size:15px;line-height:1.4">Before you start, open the guide to see exactly what to do for this power audit.</p><a href="'+PROJECTS[PROJ].guide+'" target="_blank" rel="noopener" style="display:block;background:#0f7a55;color:#fff;padding:16px 12px 14px;border-radius:12px;text-decoration:none;box-shadow:0 4px 0 #0a5a3e,0 8px 16px rgba(0,0,0,.2)"><span style="display:block;font:700 24px Barlow Condensed,sans-serif;letter-spacing:.06em;text-transform:uppercase">Power Audit Installer Guide &#8250;</span><span style="display:block;font:600 14px Barlow,sans-serif;margin-top:4px">Tap here to open the guide</span></a></div>'+h;
   $('form').innerHTML=h;prog();
 }
 function prog(){
