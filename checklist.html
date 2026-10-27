@@ -319,7 +319,7 @@ function render(){
     }
     h+='<div class="msg">'+(q.min?'Please add at least '+q.min+' photos':'Please answer this question')+'</div></div>';
   });
-  if(PROJECTS[PROJ].guide)h='<div class="q" style="background:#fff0f7;border-color:#ffb3d6"><label class="t" style="margin:0">Follow the guide word by word: <a href="'+PROJECTS[PROJ].guide+'" target="_blank" rel="noopener">Power Audit Installer Guide</a></label></div>'+h;
+  if(PROJECTS[PROJ].guide)h='<div style="margin:16px 14px 6px"><a href="'+PROJECTS[PROJ].guide+'" target="_blank" rel="noopener" style="display:block;text-align:center;background:#0f7a55;color:#fff;font:700 24px Barlow Condensed,sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:18px 12px;border-radius:12px;text-decoration:none">Power Audit Installer Guide</a></div>'+h;
   $('form').innerHTML=h;prog();
 }
 function prog(){
