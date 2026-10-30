@@ -94,6 +94,13 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
 .audit .photos a{background:#ffe0ee;color:#9b1458}.audit .photos a:hover{background:#9b1458;color:#fff}
 .qa .photos{margin-top:0}
 @media print{.tabs{display:none}}
+.rbar{display:flex;justify-content:flex-end;padding:10px 0 4px}
+.rbtn{font-family:var(--f-display);font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:.8rem;background:var(--amber);color:#111;border:0;padding:7px 14px;cursor:pointer}
+.rbtn:hover{filter:brightness(.95)}
+@media print{
+  .rbar{display:none}
+  body.one .stats,body.one .tools,body.one .foot,body.one .day:not(.pday),body.one .card:not(.printing),body.one .day h2 small,body.one .hero p,body.one .hero .btn{display:none}
+}
 </style>
 </head>
 <body>
@@ -307,14 +314,32 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
            (hasPA?'<span class="chip pa">Power audit'+(paIssue(r)?' &middot; issue found':'')+'</span>':'')+
            (np?'<span class="chip">'+np+' photos</span>':'')+'</div>'+
            '<div class="time">'+esc(timeOf(r.Submitted))+'</div><span class="caret"></span></button>'+
-           '<div class="detail">'+fullDetail(r)+'</div></div>';
+           '<div class="detail"><div class="rbar"><button type="button" class="rbtn" data-pdf>Save this report as PDF</button></div>'+fullDetail(r)+'</div></div>';
       });
       h+='</section>';
     });
     app.innerHTML=h;
   }
 
+  var oldTitle=document.title;
+  function endOne(){
+    document.body.classList.remove("one");
+    Array.prototype.forEach.call(document.querySelectorAll(".printing,.pday"),function(x){x.classList.remove("printing","pday")});
+    document.title=oldTitle;
+  }
+  window.addEventListener("afterprint",endOne);
   app.addEventListener("click",function(e){
+    var pb=e.target.closest("[data-pdf]");
+    if(pb){
+      var card=pb.closest(".card"), day=card.closest(".day");
+      endOne();
+      card.classList.add("printing"); if(day) day.classList.add("pday");
+      document.body.classList.add("one");
+      var nm=card.querySelector(".name"), dh=day&&day.querySelector("h2");
+      document.title=(nm?nm.textContent:"Store report")+" - "+(dh?dh.firstChild.textContent:"")+" - Store Report";
+      window.print();
+      return;
+    }
     var b=e.target.closest(".card>button"); if(!b) return;
     var c=b.parentNode, id=c.getAttribute("data-id");
     c.classList.toggle("open"); opened[id]=c.classList.contains("open");
@@ -332,7 +357,7 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
     curProj=b.getAttribute("data-pj");
     if(data.length) render();
   });
-  document.getElementById("print").addEventListener("click",function(){window.print()});
+  document.getElementById("print").addEventListener("click",function(){endOne();window.print()});
 
   load();
   setInterval(load,REFRESH_MS);
