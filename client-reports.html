@@ -93,6 +93,19 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
 .audit .qa{border-bottom-color:#f3d3e1}
 .audit .photos a{background:#ffe0ee;color:#9b1458}.audit .photos a:hover{background:#9b1458;color:#fff}
 .qa .photos{margin-top:0}
+.photos a.th{display:inline-flex;flex-direction:column;align-items:center;gap:3px;padding:4px;background:var(--green-soft)}
+.photos a.th img{width:72px;height:72px;object-fit:cover;display:block;background:#dfe5e2}
+.photos a.th span{font-size:.72rem}
+.audit .photos a.th{background:#ffe0ee}
+.bigp{display:none}
+@media print{
+  .photos a.th img{width:60px;height:60px}
+  body.one .bigp{display:block;break-before:page}
+  .bigp figure{margin:0 0 8mm;break-inside:avoid;text-align:center}
+  .bigp img{width:100%;height:112mm;object-fit:contain;display:block;background:#fff}
+  .bigp figcaption{font-family:var(--f-display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:.9rem;color:var(--green-deep);margin-top:2mm}
+  .bigp h3{font-family:var(--f-display);text-transform:uppercase;letter-spacing:.06em;font-size:1.1rem;margin-bottom:4mm;color:var(--green-deep)}
+}
 @media print{.tabs{display:none}}
 .rbar{display:flex;justify-content:flex-end;padding:10px 0 4px}
 .rbtn{font-family:var(--f-display);font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:.8rem;background:var(--amber);color:#111;border:0;padding:7px 14px;cursor:pointer}
@@ -217,7 +230,11 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
   var PHOTO_NAMES={116:"Before photos",137:"Existing display photos",140:"Photos during install",141:"Final installation photos",219:"Power supply / transformer labels",222:"Photos of the defects"};
   var MAIN_WARN=/missing or damaged|notice any damage/i, PA_WARN=/not tagged or is out of date|visible cable damage|found any damage|^216 /i;
   var WARN_YES=/missing or damaged|notice any damage|not tagged or is out of date|visible cable damage|found any damage/i;
-  function photoRow(label,ls){return '<div class="photos"><b>'+esc(label)+'</b>'+ls.map(function(u,i){return '<a href="'+esc(u)+'" target="_blank" rel="noopener">Photo '+(i+1)+'</a>'}).join("")+'</div>'}
+  function driveId(u){var m=String(u).match(/\/d\/([\w-]{20,})/)||String(u).match(/[?&]id=([\w-]{20,})/);return m?m[1]:""}
+  function thumbUrl(u,w){var id=driveId(u);return id?"https://drive.google.com/thumbnail?id="+id+"&sz=w"+w:""}
+  function photoRow(label,ls){return '<div class="photos" data-label="'+esc(label)+'"><b>'+esc(label)+'</b>'+ls.map(function(u,i){var t=thumbUrl(u,240);
+    return t?'<a class="th" href="'+esc(u)+'" target="_blank" rel="noopener" data-big="'+esc(thumbUrl(u,1600))+'"><img src="'+esc(t)+'" alt="Photo '+(i+1)+'" loading="lazy"><span>Photo '+(i+1)+'</span></a>'
+            :'<a href="'+esc(u)+'" target="_blank" rel="noopener">Photo '+(i+1)+'</a>'}).join("")+'</div>'}
   function detail(r){
     var h="", qs=questions(r);
     qs.forEach(function(q){
@@ -329,6 +346,7 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
   function endOne(){
     document.body.classList.remove("one");
     Array.prototype.forEach.call(document.querySelectorAll(".printing,.pday"),function(x){x.classList.remove("printing","pday")});
+    Array.prototype.forEach.call(document.querySelectorAll(".bigp"),function(x){x.parentNode.removeChild(x)});
     document.title=oldTitle;
   }
   window.addEventListener("afterprint",endOne);
@@ -341,7 +359,25 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
       document.body.classList.add("one");
       var nm=card.querySelector(".name"), dh=day&&day.querySelector("h2");
       document.title=(nm?nm.textContent:"Store report")+" - "+(dh?dh.firstChild.textContent:"")+" - Store Report";
-      window.print();
+      // big photos at the end of this report, 2 per page
+      var figs="", imgs=[];
+      Array.prototype.forEach.call(card.querySelectorAll(".photos"),function(row){
+        var lab=row.getAttribute("data-label")||"Photos";
+        Array.prototype.forEach.call(row.querySelectorAll("a.th"),function(a,i){
+          figs+='<figure><img src="'+esc(a.getAttribute("data-big"))+'" alt=""><figcaption>'+esc(lab)+' &middot; Photo '+(i+1)+'</figcaption></figure>';
+        });
+      });
+      if(figs){
+        var bp=document.createElement("div"); bp.className="bigp"; bp.innerHTML='<h3>Photos</h3>'+figs;
+        card.querySelector(".detail").appendChild(bp);
+        imgs=Array.prototype.slice.call(card.querySelectorAll("img"));
+      }
+      var old=pb.textContent; pb.textContent="Preparing PDF..."; pb.disabled=true;
+      var waits=imgs.map(function(im){ im.loading="eager"; return im.complete?Promise.resolve():new Promise(function(r){im.onload=im.onerror=r}) });
+      Promise.race([Promise.all(waits),new Promise(function(r){setTimeout(r,15000)})]).then(function(){
+        pb.textContent=old; pb.disabled=false;
+        window.print();
+      });
       return;
     }
     var b=e.target.closest(".card>button"); if(!b) return;
