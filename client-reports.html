@@ -83,6 +83,16 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
 .tabs button{font-family:var(--f-display);font-size:20px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;padding:10px 18px;border-radius:999px;border:2px solid var(--green);background:#fff;color:var(--green);cursor:pointer}
 .tabs button small{font-family:var(--f-body);font-size:13px;font-weight:600;margin-left:8px;opacity:.8}
 .tabs button.on{background:var(--green);color:#fff}
+.ptabs button{font-size:17px;padding:8px 16px;border-color:var(--ink);color:var(--ink)}
+.ptabs button.on{background:var(--ink);color:#fff}
+.proj{font-family:var(--f-display);font-weight:600;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:2px}
+.chip.pa{background:#ffe0ee;color:#9b1458}
+.audit{margin-top:18px;border:2px solid #f3b6d0;background:#fff8fb;padding:4px 16px 14px}
+.audit h4{font-family:var(--f-display);font-weight:700;font-size:1.15rem;letter-spacing:.06em;text-transform:uppercase;color:#9b1458;padding:10px 0 2px}
+.audit .sub{font-size:.85rem;color:var(--muted);padding-bottom:6px;border-bottom:1px solid #f3d3e1}
+.audit .qa{border-bottom-color:#f3d3e1}
+.audit .photos a{background:#ffe0ee;color:#9b1458}.audit .photos a:hover{background:#9b1458;color:#fff}
+.qa .photos{margin-top:0}
 @media print{.tabs{display:none}}
 </style>
 </head>
@@ -91,7 +101,7 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
   <div>
     <div class="eyebrow">Dabe Labour &middot; Install reports</div>
     <h1>Store Reports</h1>
-    <p>Every completed store report, newest first. This page updates by itself as the install teams submit their reports.</p>
+    <p>Every completed store report and power audit, newest first. This page updates by itself as the install teams submit their reports.</p>
   </div>
   <button class="btn" id="print" type="button">Save as PDF</button>
 </div></header>
@@ -103,6 +113,7 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
     <div class="stat"><b id="sDays">0</b><span>Days</span></div>
     <div class="stat"><b id="sFlag">0</b><span>With missing / damaged items</span></div>
   </section>
+  <div class="tabs ptabs" id="ptabs" hidden></div>
   <div class="tabs" id="tabs" hidden>
     <button type="button" data-st="all" class="on">All states<small id="nAll"></small></button>
     <button type="button" data-st="VIC">Victoria<small id="nVIC"></small></button>
@@ -190,15 +201,21 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
     return qs;
   }
 
+  var PHOTO_NAMES={116:"Before photos",137:"Existing display photos",140:"Photos during install",141:"Final installation photos",219:"Power supply / transformer labels",222:"Photos of the defects"};
+  var MAIN_WARN=/missing or damaged|notice any damage/i, PA_WARN=/not tagged or is out of date|visible cable damage|found any damage|^216 /i;
+  var WARN_YES=/missing or damaged|notice any damage|not tagged or is out of date|visible cable damage|found any damage/i;
+  function photoRow(label,ls){return '<div class="photos"><b>'+esc(label)+'</b>'+ls.map(function(u,i){return '<a href="'+esc(u)+'" target="_blank" rel="noopener">Photo '+(i+1)+'</a>'}).join("")+'</div>'}
   function detail(r){
     var h="", qs=questions(r);
     qs.forEach(function(q){
       var isWhy=/^Why\b/i.test(q.label);
       if(isWhy){ if(q.val) h+='<div class="qa"><div class="q"></div><div class="why"><b>Why: </b>'+esc(q.val)+'</div></div>'; return }
-      if(/photos?$/i.test(q.label)) return;           // photos shown as links below
+      var pl=links(q.val);
+      if(pl.length){ h+=photoRow(PHOTO_NAMES[q.n]||q.label.split(":")[0].replace(/[.,]?\s*please\.?$/i,""),pl); return }
+      if(/photos?$/i.test(q.label)) return;           // Beauty photos shown as links below
       if(!q.val) return;
       var lab=q.label.charAt(0).toUpperCase()+q.label.slice(1), a;
-      var warnWhenYes=/missing or damaged/i.test(q.label);
+      var warnWhenYes=WARN_YES.test(q.label);
       if(isYes(q.val)) a='<span class="pill '+(warnWhenYes?'n':'y')+'">Yes</span>';
       else if(isNo(q.val)) a='<span class="pill '+(warnWhenYes?'y':'n')+'">No</span>';
       else a='<span class="a">'+esc(q.val)+'</span>';
@@ -208,17 +225,29 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
     });
     [["Tag photo links","Tag photos"],["Display photo links","Display photos"]].forEach(function(p){
       var ls=links(r[p[0]]); if(!ls.length) return;
-      h+='<div class="photos"><b>'+p[1]+'</b>'+ls.map(function(u,i){return '<a href="'+esc(u)+'" target="_blank" rel="noopener">Photo '+(i+1)+'</a>'}).join("")+'</div>';
+      h+=photoRow(p[1],ls);
     });
     return h||'<p class="upd" style="padding-top:10px">No answers recorded.</p>';
+  }
+  function auditBlock(a){
+    return '<div class="audit"><h4>Shark Power Audit</h4><div class="sub">Submitted '+esc(a.Submitted)+'</div>'+detail(a)+'</div>';
+  }
+  function fullDetail(r){
+    if(r._auditOnly) return '<p class="upd" style="padding-top:10px">Coffee upgrade report not submitted yet.</p>'+auditBlock(r);
+    return detail(r)+(r._audit?auditBlock(r._audit):'');
   }
 
   function flagged(r){
     var f=false;
-    Object.keys(r).forEach(function(h){ if(/missing or damaged/i.test(h)&&isYes(r[h])) f=true });
+    Object.keys(r).forEach(function(h){ if(/^\d+\s/.test(h)&&MAIN_WARN.test(h)&&isYes(r[h])) f=true });
     return f;
   }
-  function nPhotos(r){return links(r["Tag photo links"]).length+links(r["Display photo links"]).length}
+  function paIssue(r){var a=r._auditOnly?r:r._audit, f=false; if(!a) return false;
+    Object.keys(a).forEach(function(h){ if(/^216 /.test(h)?String(a[h]).trim():(PA_WARN.test(h)&&isYes(a[h]))) f=true }); return f}
+  function nLinks(r){var n=0; Object.keys(r).forEach(function(h){ if(h.charAt(0)!=="_") n+=links(r[h]).length }); return n}
+  function nPhotos(r){return nLinks(r)+(r._audit?nLinks(r._audit):0)}
+  function projOf(r){return r._project||"Shark Beauty Updates"}
+  var curProj="all";
 
   var curState="all";
   function stateOf(r){
@@ -227,13 +256,23 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
     return m?m[1].toUpperCase():"VIC";
   }
   function render(){
-    var cnt={all:data.length,VIC:0,WA:0};
-    data.forEach(function(r){var st=stateOf(r); cnt[st]=(cnt[st]||0)+1});
+    var pc={}, porder=[];
+    data.forEach(function(r){var p=projOf(r); if(!pc[p]){pc[p]=0;porder.push(p)} pc[p]++});
+    if(curProj!=="all"&&!pc[curProj]) curProj="all";
+    var pt=document.getElementById("ptabs");
+    if(porder.length>1){
+      pt.innerHTML='<button type="button" data-pj="all"'+(curProj==="all"?' class="on"':'')+'>All projects<small>'+data.length+'</small></button>'+
+        porder.map(function(p){return '<button type="button" data-pj="'+esc(p)+'"'+(curProj===p?' class="on"':'')+'>'+esc(p)+'<small>'+pc[p]+'</small></button>'}).join("");
+      pt.hidden=false;
+    } else pt.hidden=true;
+    var pdata=data.filter(function(r){return curProj==="all"||projOf(r)===curProj});
+    var cnt={all:pdata.length,VIC:0,WA:0};
+    pdata.forEach(function(r){var st=stateOf(r); cnt[st]=(cnt[st]||0)+1});
     document.getElementById("nAll").textContent=cnt.all;
     document.getElementById("nVIC").textContent=cnt.VIC;
     document.getElementById("nWA").textContent=cnt.WA;
     document.getElementById("tabs").hidden=false;
-    var view=data.filter(function(r){return curState==="all"||stateOf(r)===curState});
+    var view=pdata.filter(function(r){return curState==="all"||stateOf(r)===curState});
     var term=(document.getElementById("q").value||"").toLowerCase().trim();
     document.getElementById("stats").hidden=false;
     document.getElementById("tools").hidden=false;
@@ -246,7 +285,7 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
     document.getElementById("upd").textContent=loadedAt?"Updated "+loadedAt.toLocaleTimeString("en-AU",{hour:"numeric",minute:"2-digit"}):"";
 
     var list=view.filter(function(r){
-      return !term||(String(r.Store)+" "+String(r.Address)+" "+String(r.Retailer)).toLowerCase().indexOf(term)>-1;
+      return !term||(String(r.Store)+" "+String(r.Address)+" "+String(r.Retailer)+" "+projOf(r)).toLowerCase().indexOf(term)>-1;
     });
     if(!view.length){msg("No reports yet","Reports appear here as soon as the install teams submit them.");return}
     if(!list.length){msg("No matches","Try a different store name.");return}
@@ -259,14 +298,16 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
       var g=groups[d].sort(function(a,b){return (+b._ts||0)-(+a._ts||0)});
       h+='<section class="day"><h2>'+esc(dayLabel(d))+'<small>'+g.length+(g.length===1?' report':' reports')+'</small></h2>';
       g.forEach(function(r,i){
-        var id=(r._ts||0)+"|"+r.Store, open=opened[id]?" open":"";
+        var id=(r._ts||0)+"|"+r.Store+"|"+projOf(r), open=opened[id]?" open":"";
+        var hasPA=!!(r._audit||r._auditOnly);
         var np=nPhotos(r);
         h+='<div class="card'+open+'" data-id="'+esc(id)+'"><button type="button" aria-expanded="'+(open?"true":"false")+'">'+
-           '<div class="main"><div class="name">'+esc(r.Store)+'</div><div class="addr">'+esc(r.Address)+'</div></div>'+
+           '<div class="main">'+(curProj==="all"?'<div class="proj">'+esc(projOf(r))+'</div>':'')+'<div class="name">'+esc(r.Store)+'</div><div class="addr">'+esc(r.Address)+'</div></div>'+
            '<div class="chips">'+(flagged(r)?'<span class="chip warn">Missing / damaged items</span>':'<span class="chip ok">Complete</span>')+
+           (hasPA?'<span class="chip pa">Power audit'+(paIssue(r)?' &middot; issue found':'')+'</span>':'')+
            (np?'<span class="chip">'+np+' photos</span>':'')+'</div>'+
            '<div class="time">'+esc(timeOf(r.Submitted))+'</div><span class="caret"></span></button>'+
-           '<div class="detail">'+detail(r)+'</div></div>';
+           '<div class="detail">'+fullDetail(r)+'</div></div>';
       });
       h+='</section>';
     });
@@ -284,6 +325,11 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
     var b=e.target.closest("button[data-st]"); if(!b) return;
     curState=b.getAttribute("data-st");
     Array.prototype.forEach.call(document.querySelectorAll("#tabs button"),function(x){x.classList.toggle("on",x===b)});
+    if(data.length) render();
+  });
+  document.getElementById("ptabs").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-pj]"); if(!b) return;
+    curProj=b.getAttribute("data-pj");
     if(data.length) render();
   });
   document.getElementById("print").addEventListener("click",function(){window.print()});
