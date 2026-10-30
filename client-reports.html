@@ -169,7 +169,13 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
         else msg("Reports are not available just now","Please try again in a few minutes.");
         return;
       }
-      data=(j.reports||[]).slice();
+      data=[];
+      (j.reports||[]).forEach(function(r){          // power audits shown as their own reports
+        if(r._audit){ var a=r._audit; delete r._audit; a._isAudit=true; a._project="Shark Power Audit"; data.push(a) }
+        if(r._auditOnly){ r._isAudit=true; r._project="Shark Power Audit"; delete r._auditOnly }
+        data.push(r);
+      });
+      data.sort(function(a,b){return (+b._ts||0)-(+a._ts||0)});
       loadedAt=new Date();
       render();
     }).catch(function(){
@@ -240,8 +246,7 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
     return '<div class="audit"><h4>Shark Power Audit</h4><div class="sub">Submitted '+esc(a.Submitted)+'</div>'+detail(a)+'</div>';
   }
   function fullDetail(r){
-    if(r._auditOnly) return '<p class="upd" style="padding-top:10px">Coffee upgrade report not submitted yet.</p>'+auditBlock(r);
-    return detail(r)+(r._audit?auditBlock(r._audit):'');
+    return detail(r);
   }
 
   function flagged(r){
@@ -249,10 +254,10 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
     Object.keys(r).forEach(function(h){ if(/^\d+\s/.test(h)&&MAIN_WARN.test(h)&&isYes(r[h])) f=true });
     return f;
   }
-  function paIssue(r){var a=r._auditOnly?r:r._audit, f=false; if(!a) return false;
+  function paIssue(r){var a=r._isAudit?r:null, f=false; if(!a) return false;
     Object.keys(a).forEach(function(h){ if(/^216 /.test(h)?String(a[h]).trim():(PA_WARN.test(h)&&isYes(a[h]))) f=true }); return f}
   function nLinks(r){var n=0; Object.keys(r).forEach(function(h){ if(h.charAt(0)!=="_") n+=links(r[h]).length }); return n}
-  function nPhotos(r){return nLinks(r)+(r._audit?nLinks(r._audit):0)}
+  function nPhotos(r){return nLinks(r)}
   function projOf(r){return r._project||"Shark Beauty Updates"}
   var curProj="all";
 
@@ -306,12 +311,11 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
       h+='<section class="day"><h2>'+esc(dayLabel(d))+'<small>'+g.length+(g.length===1?' report':' reports')+'</small></h2>';
       g.forEach(function(r,i){
         var id=(r._ts||0)+"|"+r.Store+"|"+projOf(r), open=opened[id]?" open":"";
-        var hasPA=!!(r._audit||r._auditOnly);
         var np=nPhotos(r);
         h+='<div class="card'+open+'" data-id="'+esc(id)+'"><button type="button" aria-expanded="'+(open?"true":"false")+'">'+
            '<div class="main">'+(curProj==="all"?'<div class="proj">'+esc(projOf(r))+'</div>':'')+'<div class="name">'+esc(r.Store)+'</div><div class="addr">'+esc(r.Address)+'</div></div>'+
-           '<div class="chips">'+(flagged(r)?'<span class="chip warn">Missing / damaged items</span>':'<span class="chip ok">Complete</span>')+
-           (hasPA?'<span class="chip pa">Power audit'+(paIssue(r)?' &middot; issue found':'')+'</span>':'')+
+           '<div class="chips">'+(r._isAudit?'<span class="chip pa">Power audit'+(paIssue(r)?' &middot; issue found':' &middot; complete')+'</span>':
+             (flagged(r)?'<span class="chip warn">Missing / damaged items</span>':'<span class="chip ok">Complete</span>'))+
            (np?'<span class="chip">'+np+' photos</span>':'')+'</div>'+
            '<div class="time">'+esc(timeOf(r.Submitted))+'</div><span class="caret"></span></button>'+
            '<div class="detail"><div class="rbar"><button type="button" class="rbtn" data-pdf>Save this report as PDF</button></div>'+fullDetail(r)+'</div></div>';
