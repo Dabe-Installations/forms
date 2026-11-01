@@ -96,7 +96,7 @@ textarea{text-align:left}
 </header>
 <div id="main">
  <div class="store">
-  <div><label for="prj">Project</label><select id="prj"><option value="beauty">Shark Beauty Updates</option><option value="coffee">Shark Coffee Upgrade</option><option value="audit">Shark Power Audit</option></select></div>
+  <div><label for="prj">Project</label><select id="prj"><option value="beauty">Shark Beauty Updates</option><option value="coffee">Shark Coffee Upgrade</option><option value="audit">Shark Power Audit</option><option value="cryo">Cryo Glow and Facial Topper</option></select></div>
   <div><label for="ret">Retailer</label><select id="ret"><option value="">Loading stores…</option></select></div>
   <div><label for="plc">Store</label><select id="plc" disabled><option value="">Choose a retailer first</option></select></div>
   <div class="info" id="info"></div>
@@ -213,10 +213,60 @@ var QA=[
 {id:225,t:'Any additional comments?',type:'text',long:1}
 ];
 var Q=QB,PROJ="beauty";
-function projKey(n){n=String(n||"");return /power audit/i.test(n)?"audit":/coffee/i.test(n)?"coffee":"beauty"}
+function projKey(n){n=String(n||"");return /cryo|topper/i.test(n)?"cryo":/power audit/i.test(n)?"audit":/coffee/i.test(n)?"coffee":"beauty"}
 function inProj(s){if(PROJ==="audit")return s.kind==="TGG"&&projKey(s.project)==="coffee";return projKey(s.project)===PROJ&&(PROJ!=="beauty"||!s.project||/beauty/i.test(s.project))}
 
-var PROJECTS={beauty:{name:"Shark Beauty Updates",q:QB},coffee:{name:"Shark Coffee Upgrade",q:QC},audit:{name:"Shark Power Audit",q:QA,kick:"Power Audit",guide:"https://drive.google.com/file/d/1Zhn4xHjvQpsVkOUcLEy67JwDIbyVfWmR/view?usp=sharing"}};
+// Cryo Glow and Facial Topper (Shark Phase 3). Questions from Mills AuditMe 'Shark Beauty Installation'.
+var QG=[
+{id:301,sec:'General',t:'Which display are you installing?',type:'choice',opts:['Cryo / Facial Pro Topper','Beauty Endcap Update'],req:1},
+{id:302,sec:'General',t:'What is the name of the Manager on duty?',type:'text',req:1},
+{id:304,sec:'Before install',t:'Did you sign into the visitor log?',type:'yn',req:1},
+{id:305,t:'Why not?',type:'text',parent:304,when:'No',req:1},
+{id:306,sec:'Before install',t:'Have you discussed the works with the manager on duty?',type:'yn',req:1},
+{id:307,t:'Why not?',type:'text',parent:306,when:'No',req:1},
+{id:308,sec:'Before install',t:'Was there any damage to the display before you started?',type:'yn',req:1},
+{id:309,t:'Describe the damage',type:'text',parent:308,when:'Yes',req:1},
+{id:310,sec:'Before install',t:"On the existing display, were all the lights and logos working?",type:'yn',req:1},
+{id:311,t:"Which lights and/or logos weren't working?",type:'text',parent:310,when:'No',req:1},
+{id:312,sec:'Before install',t:'Was the install kit complete and undamaged on arrival?',type:'yn',req:1},
+{id:313,t:'What items were missing or damaged?',type:'text',parent:312,when:'No',req:1},
+{id:314,sec:'Before install',t:'Did you switch off and unplug the display before starting work?',type:'yn',req:1},
+{id:315,t:'Why not?',type:'text',parent:314,when:'No',req:1},
+{id:316,sec:'Before install',t:'Upload before photos here, please.',type:'photo',req:1,min:3,hint:'At least 3 photos (left, right, front), plus any damage.'},
+{id:317,sec:'Completion',t:'Are all lights and logos lit?',type:'yn',req:1},
+{id:318,t:"Which lights and logos aren't lit?",type:'text',parent:317,when:'No',req:1},
+{id:319,sec:'Completion',t:'Are all cables hidden and clear of the base, rear cover and drawer?',type:'yn',req:1},
+{id:320,t:'Why not?',type:'text',parent:319,when:'No',req:1},
+{id:321,sec:'Completion',t:'Is the power lead clear of walkways?',type:'yn',req:1},
+{id:322,t:'Why not?',type:'text',parent:321,when:'No',req:1},
+{id:323,sec:'Completion',t:'Have you installed all display products as per the planogram?',type:'yn',req:1},
+{id:324,t:'Why not?',type:'text',parent:323,when:'No',req:1},
+{id:325,sec:'Completion',t:'Is there anything missing or damaged?',type:'yn',req:1},
+{id:326,t:'What is missing or damaged? Have you advised the Project Manager?',type:'text',parent:325,when:'Yes',req:1},
+{id:327,sec:'Completion',t:'Have all old parts, packaging and rubbish been removed from site?',type:'yn',req:1},
+{id:328,t:'Why not?',type:'text',parent:327,when:'No',req:1},
+{id:330,sec:'Cryo & Facial Pro Topper',t:'Have you used the previous blue mask on the display?',type:'yn',req:1,parent:301,when:'Cryo / Facial Pro Topper',top:1,only:['JB']},
+{id:331,t:'Why not?',type:'text',parent:330,when:'No',req:1},
+{id:332,sec:'Cryo & Facial Pro Topper',t:'Did you tightly tether the mask onto the bracket?',type:'yn',req:1,parent:301,when:'Cryo / Facial Pro Topper',top:1,only:['JB']},
+{id:333,t:'Why not?',type:'text',parent:332,when:'No',req:1},
+{id:334,sec:'Cryo & Facial Pro Topper',t:'Does the mask turn on and light up?',type:'yn',req:1,parent:301,when:'Cryo / Facial Pro Topper',top:1,only:['JB']},
+{id:335,t:'What happens? What have you checked?',type:'text',parent:334,when:'No',req:1},
+{id:336,sec:'Cryo & Facial Pro Topper',t:'Have the Facial Pro display products been positioned evenly on the topper?',type:'yn',req:1,parent:301,when:'Cryo / Facial Pro Topper',top:1},
+{id:337,t:'Why not?',type:'text',parent:336,when:'No',req:1},
+{id:338,sec:'Cryo & Facial Pro Topper',t:'Have you placed the white topical bottles on the display?',type:'yn',req:1,parent:301,when:'Cryo / Facial Pro Topper',top:1},
+{id:339,t:'Why not?',type:'text',parent:338,when:'No',req:1},
+{id:340,sec:'Cryo & Facial Pro Topper',t:'Upload photos of the finished installation here, please.',type:'photo',req:1,min:4,hint:'Minimum of 4 photos.',parent:301,when:'Cryo / Facial Pro Topper',top:1},
+{id:350,sec:'Beauty Endcap Update',t:'Did you position the display far enough forward to cover the previous white lettering?',type:'yn',req:1,parent:301,when:'Beauty Endcap Update',top:1,only:['HN','TGG']},
+{id:351,t:'Why not?',type:'text',parent:350,when:'No',req:1},
+{id:352,sec:'Beauty Endcap Update',t:"Have you used the new graphic pack supplied with the 'Flexstyle' graphic?",type:'yn',req:1,parent:301,when:'Beauty Endcap Update',top:1,only:['JB']},
+{id:353,t:'Why not?',type:'text',parent:352,when:'No',req:1},
+{id:354,sec:'Beauty Endcap Update',t:'Have you put the USB in and selected the new content?',type:'yn',req:1,parent:301,when:'Beauty Endcap Update',top:1,only:['JB']},
+{id:355,t:'Why not?',type:'text',parent:354,when:'No',req:1},
+{id:356,sec:'Beauty Endcap Update',t:'Do the hair tools have 400mm of flex in the cord to test with?',type:'yn',req:1,parent:301,when:'Beauty Endcap Update',top:1},
+{id:357,t:'Why not?',type:'text',parent:356,when:'No',req:1},
+{id:358,sec:'Beauty Endcap Update',t:'Upload photos of the finished Beauty update here, please.',type:'photo',req:1,parent:301,when:'Beauty Endcap Update',top:1}
+];
+var PROJECTS={beauty:{name:"Shark Beauty Updates",q:QB},coffee:{name:"Shark Coffee Upgrade",q:QC},cryo:{name:"Cryo Glow and Facial Topper",q:QG},audit:{name:"Shark Power Audit",q:QA,kick:"Power Audit",guide:"https://drive.google.com/file/d/1Zhn4xHjvQpsVkOUcLEy67JwDIbyVfWmR/view?usp=sharing"}};
 function setHead(){$("ttl").textContent=PROJECTS[PROJ].name;$("kick").textContent=PROJECTS[PROJ].kick||"Store Report"}
 try{var _pp=new URLSearchParams(location.search).get("project");if(_pp){PROJ=projKey(_pp);Q=PROJECTS[PROJ].q}}catch(e){}
 // Every "Why?" box is required whenever it is showing.
