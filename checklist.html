@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="icon-192.png"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#2f2f2d">
+<meta name="theme-color" content="#ffffff">
 <title>Install Checklist – Dabe Labour</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#2b2b2b;--green:#1a6b5a;--line:#dcdcd6;--bg:#f1f1ec;--red:#b3261e;--mute:#6b6b66;--soft:#fafaf7}
 *{box-sizing:border-box}
@@ -86,14 +86,50 @@ textarea{text-align:left}
 .err{outline:2px solid var(--red);outline-offset:-1px;border-radius:12px}
 .go{border-radius:10px;background:var(--green)}
 .done h2{color:var(--green)}
+
+/* App look, same as the team pages v2 (5 Nov 2026) */
+:root{--bg:#f1f4f2;--ink:#111a17;--text:#111a17;--mute:#6a7772;--muted:#6a7772;--line:#e3e9e6;--green:#1a6b5a;--g2:#1a6b5a;--deep2:#14564a;--soft:#e2efec;--field:#f4f7f5;--red:#c62828;--head:'Barlow Condensed','Arial Narrow',Arial,sans-serif;--body:'Figtree',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;--sh:0 1px 2px rgba(17,26,23,.05),0 8px 24px rgba(17,26,23,.05)}
+html,body{background:var(--bg)!important;color:var(--text);font:16px/1.45 var(--body)}
+.wrap{max-width:none;background:transparent!important;box-shadow:none!important;min-height:100vh}
+header.appbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:3px solid var(--green);padding:calc(env(safe-area-inset-top,0px) + 10px) 16px 10px;text-align:left}
+.appbar-in{max-width:620px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.appbar img{height:26px;display:block}.appbar .wm{font:800 20px/1 var(--head);letter-spacing:.04em;color:var(--text)}
+.who{display:flex;align-items:center;gap:10px;text-align:right}.who small{display:block;font-size:11px;color:var(--muted);line-height:1.2}.who b{display:block;font-size:13px;line-height:1.2}
+.av{width:36px;height:36px;border-radius:50%;background:var(--soft);color:var(--green);display:grid;place-items:center;font:700 13px var(--body);flex:none}
+.hello{background:#fff;padding:14px 16px 16px;border-bottom:1px solid var(--line)}.hello-in{max-width:620px;margin:0 auto}
+.backl{display:inline-flex;align-items:center;gap:6px;color:var(--green);font-weight:700;font-size:14px;text-decoration:none;margin:0 0 10px}.backl:hover{text-decoration:underline}
+.kick{color:var(--green);font:700 13px var(--head);letter-spacing:.14em;text-transform:uppercase;margin:0}
+h1{font:800 30px/1.05 var(--head);text-transform:none;margin:4px 0 0;color:var(--text)}
+.hello p{margin:4px 0 0;color:var(--muted);font-size:14px}
+#main,.done{max-width:620px;margin:0 auto;padding:16px 16px 0}
+.store{background:#fff;border:0;border-radius:18px;box-shadow:var(--sh);margin:0 0 14px;padding:16px;text-align:left}
+.store label,.fl{font:700 12px var(--head);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:left}
+select,input[type=text],textarea{border:1px solid var(--line);border-radius:12px;background:var(--field);text-align:left;text-align-last:auto;padding:12px;font:16px var(--body);color:var(--text)}
+.info{background:var(--soft);color:var(--deep2);border:0;border-radius:12px;text-align:left;font-size:14px}
+.prog{position:sticky;top:calc(env(safe-area-inset-top,0px) + 59px);background:var(--bg);border:0;padding:10px 4px 6px;font:700 13px var(--head);letter-spacing:.1em;color:var(--muted)}
+.bar{height:6px;border-radius:3px;background:var(--line);margin:0 0 6px}.bar i{background:var(--green);border-radius:3px}
+.sec{text-align:left;color:var(--green);font:700 15px/1 var(--head);letter-spacing:.14em;text-transform:uppercase;padding:0;margin:22px 4px 10px}
+.q{background:#fff;border:0;border-radius:18px;box-shadow:var(--sh);margin:0 0 12px;padding:16px;text-align:left}
+.q.follow{margin-left:0;border:0;border-left:4px solid var(--green);background:#fff;padding-left:14px}
+.q.new{background:#fff}
+.q label.t{text-align:left;font-weight:700;font-size:16px}
+.yn button,.ch button{min-height:48px;border:1.5px solid var(--line);border-radius:14px;background:#fff;font:700 15px var(--body);letter-spacing:0;text-transform:none;color:var(--text)}
+.ch button{text-align:left;padding:12px 14px}
+.yn button.on.y,.ch button.on{background:var(--green);border-color:var(--green);color:#fff}
+.yn button.on.n{background:var(--red);border-color:var(--red);color:#fff}
+.ph{justify-content:flex-start}.ph .add{border-radius:14px;border:2px dashed #c9d3cf;background:var(--field)}.ph .th img{border-radius:12px}
+.hint{text-align:left;color:var(--muted)}
+.err{outline:2px solid var(--red);outline-offset:-2px;border-radius:18px}
+.foot{padding:6px 0 calc(32px + env(safe-area-inset-bottom,0px))}
+.go{min-height:54px;border-radius:14px;background:var(--green);font:700 17px var(--body);letter-spacing:0;text-transform:none;box-shadow:0 10px 24px rgba(26,107,90,.3)}
+.done{text-align:center}.done h2{font:800 30px var(--head);text-transform:none;color:var(--green)}
+.done button,.done a.btn2{display:inline-block;min-height:48px;padding:13px 22px;border:0;border-radius:14px;background:var(--green);color:#fff;font:700 16px var(--body);letter-spacing:0;text-transform:none;text-decoration:none;margin:4px}
+.done button#again{background:#fff;color:var(--green);border:1.5px solid var(--line)}
+.pv{border-radius:12px}
 </style></head><body>
 <div class="wrap">
-<header>
- <img class="banner" src="Dabe-Banner-v9-Transparent.png" alt="Dabe Installations">
- <div class="kick" id="kick">Store Report</div>
- <h1 id="ttl">Shark Beauty Updates</h1>
- <div class="rule"></div>
-</header>
+<header class="appbar"><div class="appbar-in"><img src="https://dabe-installations.github.io/shift-timesheet/dabe-mark.png" alt="Dabe Installations" onerror="this.outerHTML='<span class=wm>DABE</span>'"><div class="who"><div><small id="whoT">Store Report</small><b id="whoN">Installer</b></div><div class="av" id="whoA">D</div></div></div></header>
+<section class="hello"><div class="hello-in"><a class="backl" id="backl" href="index.html" hidden>&larr; Back to my runs</a><div class="kick" id="kick">Store Report</div><h1 id="ttl">Shark Beauty Updates</h1><p id="hsub"></p></div></section>
 <div id="main">
  <div class="store">
   <div><label for="prj">Project</label><select id="prj"><option value="beauty">Shark Beauty Updates</option><option value="coffee">Shark Coffee Upgrade</option><option value="audit">Shark Power Audit</option><option value="cryo">Cryo Glow and Facial Topper</option></select></div>
@@ -106,7 +142,7 @@ textarea{text-align:left}
  <div id="form"></div>
  <div class="foot" id="foot"><button class="go" id="go">Submit report</button><div class="status" id="status"></div></div>
 </div>
-<div class="done" id="done"><h2>Report submitted</h2><p id="donetxt"></p><button id="again">Do another store</button></div>
+<div class="done" id="done"><h2>Report submitted</h2><p id="donetxt"></p><a class="btn2" id="doneback" href="index.html" hidden>Back to my runs</a><button id="again">Do another store</button></div>
 </div>
 <script>
 (function(){
@@ -458,4 +494,20 @@ $('again').addEventListener('click',function(){
 
 loadStores();
 })();
-</script></body></html>
+</script><script>
+/* App header: team, installer, store, back link (5 Nov 2026) */
+(function(){
+ var q;try{q=new URLSearchParams(location.search)}catch(e){q={get:function(){return ''}}}
+ var t=(q.get('team')||'').replace(/[^0-9]/g,''),st=q.get('store')||'';
+ var lab=t==='5'?'WA Team 1':t==='6'?'WA Team 2':(t?'Team '+t:'Store Report');
+ document.getElementById('whoT').textContent=lab;
+ if(t){['backl','doneback'].forEach(function(id){var a=document.getElementById(id);a.href='team'+t+'-v2.html';a.hidden=false;a.addEventListener('click',function(e){if(window.opener&&!window.opener.closed){e.preventDefault();try{window.opener.focus()}catch(x){}window.close();setTimeout(function(){location.href=a.href},300)}})})}
+ var d=new Date().toLocaleDateString('en-AU',{weekday:'short',day:'numeric',month:'short',timeZone:'Australia/Melbourne'});
+ document.getElementById('hsub').textContent=(st?st+' · ':'')+d;
+ var by=document.getElementById('by');
+ function who(){var n=(by&&by.value||'').trim();document.getElementById('whoN').textContent=n||'Installer';
+  var w=n.replace(/[^A-Za-zÀ-ÿ ]/g,'').trim().split(/\s+/);document.getElementById('whoA').textContent=(((w[0]||'')[0]||'D')+((w[1]||'')[0]||'')).toUpperCase()}
+ if(by){by.addEventListener('input',who);setInterval(who,1500)}who();
+})();
+</script>
+</body></html>
