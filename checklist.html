@@ -322,7 +322,7 @@ function start(){
   fillRetailers();
   var want=''; try{want=new URLSearchParams(location.search).get('store')||''}catch(e){}
   var d=lsGet('cl-draft');
-  if(want){var wi=stores.findIndex(function(s){return s.store===want&&inProj(s)});
+  if(want){var wi=stores.findIndex(function(s){return s.store===want&&(inProj(s)||PROJ==="beauty")});
     if(wi>=0){var dd=null;try{dd=d?JSON.parse(d):null}catch(e){}
       var keep=dd&&dd.store===want&&(dd.proj||'beauty')===PROJ;A=keep?(dd.A||{}):{};$('by').value=keep?(dd.by||''):'';
       $('ret').value=stores[wi].group;fillPlaces(stores[wi].group);$('plc').value=wi;pick(wi,true);['prj','ret','plc'].forEach(function(id){var e=$(id);e.disabled=true;e.parentNode.style.display='none'});$('again').style.display='none';return;}}
