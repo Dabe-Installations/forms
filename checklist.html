@@ -250,7 +250,7 @@ var QA=[
 ];
 var Q=QB,PROJ="beauty";
 function projKey(n){n=String(n||"");return /floor ?care|wet ?& ?dry/i.test(n)?"floor":/cryo|topper/i.test(n)?"cryo":/power audit/i.test(n)?"audit":/coffee/i.test(n)?"coffee":"beauty"}
-function inProj(s){if(PROJ==="audit")return s.kind==="TGG"&&projKey(s.project)==="coffee";return projKey(s.project)===PROJ&&(PROJ!=="beauty"||!s.project||/beauty/i.test(s.project))}
+function inProj(s){if(PROJ==="floor")return s.kind==="JB"||/test/i.test(s.store)||projKey(s.project)==="floor";if(PROJ==="audit")return s.kind==="TGG"&&projKey(s.project)==="coffee";return projKey(s.project)===PROJ&&(PROJ!=="beauty"||!s.project||/beauty/i.test(s.project))}
 
 // Cryo Glow and Facial Topper (Shark Phase 3). Questions from Mills AuditMe 'Shark Beauty Installation'.
 var QG=[
