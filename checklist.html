@@ -126,6 +126,7 @@ select,input[type=text],textarea{border:1px solid var(--line);border-radius:12px
 .done button,.done a.btn2{display:inline-block;min-height:48px;padding:13px 22px;border:0;border-radius:14px;background:var(--green);color:#fff;font:700 16px var(--body);letter-spacing:0;text-transform:none;text-decoration:none;margin:4px}
 .done button#again{background:#fff;color:var(--green);border:1.5px solid var(--line)}
 .pv{border-radius:12px}
+.sig{position:relative}.sig canvas{display:block;width:100%;height:190px;border:1.5px dashed #b9b9b0;border-radius:12px;background:#fff;touch-action:none}.sig .sc{position:absolute;right:8px;top:8px;width:auto!important;flex:none;min-height:0;padding:6px 12px;font-size:13px;border-radius:8px;border:1px solid #dcdcd6;background:#fafaf7;color:#6b6b66}.sig .sl{position:absolute;left:14px;bottom:30px;right:14px;border-top:1px solid #dcdcd6;pointer-events:none}.sig .sh{position:absolute;left:14px;bottom:8px;font-size:12px;color:#9a9a94;pointer-events:none}.pg2back{display:inline-block;margin:14px 16px 0;background:none;border:0;color:var(--green);font-weight:700;font-size:15px;padding:6px 0}
 </style></head><body>
 <div class="wrap">
 <header class="appbar"><div class="appbar-in"><img src="https://dabe-installations.github.io/shift-timesheet/dabe-mark.png" alt="Dabe Installations" onerror="this.outerHTML='<span class=wm>DABE</span>'"><div class="who"><div><small id="whoT">Store Report</small><b id="whoN">Installer</b></div><div class="av" id="whoA">D</div></div></div></header>
@@ -249,13 +250,12 @@ var QA=[
 {id:225,t:'Any additional comments?',type:'text',long:1}
 ];
 var Q=QB,PROJ="beauty";
-function projKey(n){n=String(n||"");return /floor ?care|wet ?& ?dry/i.test(n)?"floor":/cryo|topper/i.test(n)?"cryo":/power audit/i.test(n)?"audit":/coffee/i.test(n)?"coffee":"beauty"}
+function projKey(n){n=String(n||"");return /floor|wet ?& ?dry/i.test(n)?"floor":/cryo|topper/i.test(n)?"cryo":/power audit/i.test(n)?"audit":/coffee/i.test(n)?"coffee":"beauty"}
 function inProj(s){if(PROJ==="floor")return s.kind==="JB"||/test/i.test(s.store)||projKey(s.project)==="floor";if(PROJ==="audit")return s.kind==="TGG"&&projKey(s.project)==="coffee";return projKey(s.project)===PROJ&&(PROJ!=="beauty"||!s.project||/beauty/i.test(s.project))}
 
 // Cryo Glow and Facial Topper (Shark Phase 3). Questions from Mills AuditMe 'Shark Beauty Installation'.
 var QG=[
 {id:301,sec:'General',t:'Which display are you installing?',type:'choice',opts:['Cryo / Facial Pro Topper','Beauty Endcap Update'],req:1},
-{id:302,sec:'General',t:'What is the name of the Manager on duty?',type:'text',req:1},
 {id:304,sec:'Before install',t:'Did you sign into the visitor log?',type:'yn',req:1},
 {id:305,t:'Why not?',type:'text',parent:304,when:'No',req:1},
 {id:306,sec:'Before install',t:'Have you discussed the works with the manager on duty?',type:'yn',req:1},
@@ -300,7 +300,9 @@ var QG=[
 {id:355,t:'Why not?',type:'text',parent:354,when:'No',req:1},
 {id:356,sec:'Beauty Endcap Update',t:'Do the hair tools have 400mm of flex in the cord to test with?',type:'yn',req:1,parent:301,when:'Beauty Endcap Update',top:1},
 {id:357,t:'Why not?',type:'text',parent:356,when:'No',req:1},
-{id:358,sec:'Beauty Endcap Update',t:'Upload photos of the finished Beauty update here, please.',type:'photo',req:1,parent:301,when:'Beauty Endcap Update',top:1}
+{id:358,sec:'Beauty Endcap Update',t:'Upload photos of the finished Beauty update here, please.',type:'photo',req:1,parent:301,when:'Beauty Endcap Update',top:1},
+{id:360,sec:'Store manager sign-off',t:'Store manager name',type:'text',req:1,page:2},
+{id:361,sec:'Store manager sign-off',t:'Store manager signature',type:'sign',req:1,page:2}
 ];
 // Shark Floorcare JB (aisle bay). Questions from the install guides in Drive > Shark Floorcare.
 var QF=[
@@ -308,7 +310,6 @@ var QF=[
 {id:411,t:'Why not?',type:'text',parent:410,when:'No',req:1},
 {id:412,sec:'Before install',t:'Have you discussed the works with the manager on duty?',type:'yn',req:1},
 {id:413,t:'Why not?',type:'text',parent:412,when:'No',req:1},
-{id:401,sec:'Before install',t:'What is the name of the Manager on duty?',type:'text',req:1},
 {id:414,sec:'Before install',t:'Was the bay empty and ready for you when you arrived (stock cleared)?',type:'yn',req:1},
 {id:415,t:'What was still on the bay? Who cleared it (you or the store) and how long did it take?',type:'text',parent:414,when:'No',req:1},
 {id:416,t:'Please take a photo of the bay as you found it',type:'photo',parent:414,when:'No',req:1},
@@ -351,9 +352,11 @@ var QF=[
 {id:493,t:'What is missing or damaged? Have you told Gabriel?',type:'text',parent:492,when:'Yes',req:1},
 {id:494,sec:'Completion',t:'Have all old parts, packaging and rubbish been removed from site?',type:'yn',req:1},
 {id:495,t:'Why not?',type:'text',parent:494,when:'No',req:1},
-{id:496,sec:'Completion',t:'Any additional comments?',type:'text',long:1}
+{id:496,sec:'Completion',t:'Any additional comments?',type:'text',long:1},
+{id:497,sec:'Store manager sign-off',t:'Store manager name',type:'text',req:1,page:2},
+{id:498,sec:'Store manager sign-off',t:'Store manager signature',type:'sign',req:1,page:2}
 ];
-var PROJECTS={beauty:{name:"Shark Beauty Updates",q:QB},coffee:{name:"Shark Coffee Upgrade",q:QC},cryo:{name:"Cryo Glow and Facial Topper",q:QG},floor:{name:"Shark Floorcare JB",q:QF},audit:{name:"Shark Power Audit",q:QA,kick:"Power Audit",guide:"https://drive.google.com/file/d/1Zhn4xHjvQpsVkOUcLEy67JwDIbyVfWmR/view?usp=sharing"}};
+var PROJECTS={beauty:{name:"Shark Beauty Updates",q:QB},coffee:{name:"Shark Coffee Upgrade",q:QC},cryo:{name:"Cryo Glow and Facial Topper",q:QG,signoff:1},floor:{name:"Shark Floorcare JB",q:QF,signoff:1},audit:{name:"Shark Power Audit",q:QA,kick:"Power Audit",guide:"https://drive.google.com/file/d/1Zhn4xHjvQpsVkOUcLEy67JwDIbyVfWmR/view?usp=sharing"}};
 function setHead(){$("ttl").textContent=PROJECTS[PROJ].name;$("kick").textContent=PROJECTS[PROJ].kick||"Store Report"}
 try{var _pp=new URLSearchParams(location.search).get("project");if(_pp){PROJ=projKey(_pp);Q=PROJECTS[PROJ].q}}catch(e){}
 // Every "Why?" box is required whenever it is showing.
@@ -416,8 +419,26 @@ function start(){
   if(d){try{d=JSON.parse(d);if((d.proj||'beauty')!==PROJ)throw 0;var i=stores.findIndex(function(s){return s.store===d.store&&inProj(s)});
     if(i>=0){$('ret').value=stores[i].group;fillPlaces(stores[i].group);$('plc').value=i;A=d.A||{};$('by').value=d.by||'';pick(i,true);}}catch(e){}}
 }
+// ---- sign-off page (page 2) ----
+var PAGE=1;
+function two(){return !!PROJECTS[PROJ].signoff}
+function onPage(q){return (q.page||1)===(two()?PAGE:(q.page||1))}
+function setPage(n){PAGE=n;var sb=document.querySelector('.store');if(sb)sb.style.display=(PAGE===2?'none':'');$('go').textContent=(two()&&PAGE===1)?'Next':'Submit report';}
+function initSig(){
+  Array.prototype.forEach.call(document.querySelectorAll('canvas[data-s]'),function(c){
+    var id=c.dataset.s,r=window.devicePixelRatio||1,w=c.clientWidth,h=c.clientHeight;c.width=w*r;c.height=h*r;
+    var x=c.getContext('2d');x.scale(r,r);x.fillStyle='#fff';x.fillRect(0,0,w,h);x.lineWidth=2.4;x.lineCap='round';x.lineJoin='round';x.strokeStyle='#1d1d1b';
+    if(P[id]&&P[id][0]){var im=new Image();im.onload=function(){x.drawImage(im,0,0,w,h)};im.src=P[id][0].data}
+    var down=false,lx=0,ly=0,drew=false;
+    function pt(e){var b=c.getBoundingClientRect();return [e.clientX-b.left,e.clientY-b.top]}
+    c.addEventListener('pointerdown',function(e){e.preventDefault();down=true;try{c.setPointerCapture(e.pointerId)}catch(_){}var p=pt(e);lx=p[0];ly=p[1];x.beginPath();x.arc(lx,ly,1.2,0,7);x.fillStyle='#1d1d1b';x.fill();drew=true});
+    c.addEventListener('pointermove',function(e){if(!down)return;e.preventDefault();var p=pt(e);x.beginPath();x.moveTo(lx,ly);x.lineTo(p[0],p[1]);x.stroke();lx=p[0];ly=p[1];drew=true});
+    function up(){if(!down)return;down=false;if(drew){var d=c.toDataURL('image/jpeg',0.85);P[id]=[{data:d,thumb:d,url:''}];var m=document.getElementById('q'+id);if(m)m.classList.remove('err');prog()}}
+    c.addEventListener('pointerup',up);c.addEventListener('pointercancel',up);c.addEventListener('pointerleave',up);
+  });
+}
 function pick(i,keep){
-  cur=stores[i];kind=cur.kind;
+  cur=stores[i];kind=cur.kind;setPage(1);
   if(!keep){A={};P={};}
   sid='s'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
   var parts=String(cur.team||'').split(/[,;&\n]+/).map(function(x){return x.trim()}).filter(String);var mine=TEAM?parts.filter(function(x){return new RegExp('^T'+TEAM+'\\b').test(x)})[0]:(parts.length===1?parts[0]:'');var inst=String(mine||'').replace(/^T\d+\s*/,'').trim();
@@ -428,7 +449,7 @@ function pick(i,keep){
   $('foot').style.display='block';
   render();
 }
-function clearStore(){cur=null;$('info').style.display='none';['prog','bar','foot'].forEach(function(id){$(id).style.display='none'});$('form').innerHTML=''}
+function clearStore(){setPage(1);cur=null;$('info').style.display='none';['prog','bar','foot'].forEach(function(id){$(id).style.display='none'});$('form').innerHTML=''}
 
 // ---- questions ----
 function vis(q){
@@ -437,16 +458,18 @@ function vis(q){
   return true;
 }
 function answered(q){
-  if(q.type==='photo')return (P[q.id]||[]).length>=(q.min||1);
+  if(q.type==='photo'||q.type==='sign')return (P[q.id]||[]).length>=(q.min||1);
   return A[q.id]&&String(A[q.id]).trim();
 }
 function render(){
   var h='',sec='';
-  Q.filter(vis).forEach(function(q){
+  if(two()&&PAGE===2)h+='<button type="button" class="pg2back" data-back="1">&larr; Back to the questions</button>';
+  Q.filter(function(q){return vis(q)&&onPage(q)}).forEach(function(q){
     if(q.sec&&q.sec!==sec){sec=q.sec;h+='<div class="sec">'+sec+'</div>'}
     h+='<div class="q'+(q.parent&&!q.top?' follow':'')+(q.isNew?' new':'')+'" id="q'+q.id+'">'+(q.isNew?'<span class="newtag">NEW</span>':'')+'<label class="t">'+esc(q.t)+(q.link?' <a href="'+esc(q.link.url)+'" target="_blank" rel="noopener">'+esc(q.link.text)+'</a>':'')+(q.req?' <span class="req">*</span>':'')+'</label>';
     if(q.type==='choice')h+='<div class="yn ch">'+q.opts.map(function(o){return '<button type="button" class="'+(A[q.id]===o?'on y':'')+'" data-a="'+q.id+'" data-v="'+esc(o)+'">'+esc(o)+'</button>'}).join('')+'</div>';
     if(q.type==='multi'){var sel=String(A[q.id]||'').split(', ').filter(String);h+='<div class="yn ch">'+q.opts.map(function(o){return '<button type="button" class="'+(sel.indexOf(o)>=0?'on y':'')+'" data-m="'+q.id+'" data-v="'+esc(o)+'">'+esc(o)+'</button>'}).join('')+'</div>'}
+    if(q.type==='sign')h+='<div class="sig"><canvas data-s="'+q.id+'"></canvas><div class="sl"></div><div class="sh">Sign here with your finger</div><button type="button" class="sc" data-sc="'+q.id+'">Clear</button></div>';
     if(q.type==='yn')h+='<div class="yn"><button type="button" class="'+(A[q.id]==='Yes'?'on y':'')+'" data-a="'+q.id+'" data-v="Yes">Yes</button><button type="button" class="'+(A[q.id]==='No'?'on n':'')+'" data-a="'+q.id+'" data-v="No">No</button></div>';
     if(q.type==='text')h+=(q.long||q.parent)?'<textarea data-t="'+q.id+'">'+esc(A[q.id]||'')+'</textarea>':'<input type="text" data-t="'+q.id+'" value="'+esc(A[q.id]||'')+'">';
     if(q.type==='photo'){
@@ -458,7 +481,7 @@ function render(){
     h+='<div class="msg">'+(q.min?'Please add at least '+q.min+' photos':'Please answer this question')+'</div></div>';
   });
   if(PROJECTS[PROJ].guide)h='<div style="margin:18px 14px 8px;text-align:center"><p style="margin:0 0 10px;font-weight:600;font-size:15px;line-height:1.4">Before you start, open the guide to see exactly what to do for this power audit.</p><a href="'+PROJECTS[PROJ].guide+'" target="_blank" rel="noopener" style="display:block;background:#0f7a55;color:#fff;padding:16px 12px 14px;border-radius:12px;text-decoration:none;box-shadow:0 4px 0 #0a5a3e,0 8px 16px rgba(0,0,0,.2)"><span style="display:block;font:700 24px Barlow Condensed,sans-serif;letter-spacing:.06em;text-transform:uppercase">Power Audit Installer Guide &#8250;</span><span style="display:block;font:600 14px Barlow,sans-serif;margin-top:4px">Tap here to open the guide</span></a></div>'+h;
-  $('form').innerHTML=h;prog();
+  $('form').innerHTML=h;prog();initSig();
 }
 function prog(){
   var req=Q.filter(function(q){return vis(q)&&q.req}),done=req.filter(answered).length;
@@ -491,7 +514,7 @@ function addPhotos(id,files){
 }
 
 // ---- events ----
-$('prj').addEventListener('change',function(){PROJ=this.value;Q=PROJECTS[PROJ].q;setHead();A={};P={};clearStore();fillRetailers();$('plc').innerHTML='<option value="">Choose a retailer first</option>';$('plc').disabled=true;});
+$('prj').addEventListener('change',function(){PROJ=this.value;Q=PROJECTS[PROJ].q;setHead();setPage(1);A={};P={};clearStore();fillRetailers();$('plc').innerHTML='<option value="">Choose a retailer first</option>';$('plc').disabled=true;});
 $('ret').addEventListener('change',function(){clearStore();A={};P={};if(this.value)fillPlaces(this.value);else{$('plc').innerHTML='<option value="">Choose a retailer first</option>';$('plc').disabled=true}});
 $('plc').addEventListener('change',function(){if(this.value==='')clearStore();else pick(+this.value)});
 $('by').addEventListener('input',saveDraft);
@@ -499,9 +522,11 @@ $('form').addEventListener('click',function(e){
   var b=e.target.closest('button');if(!b)return;
   if(b.dataset.a){A[b.dataset.a]=b.dataset.v;saveDraft();render()}
   if(b.dataset.m){var mid=b.dataset.m,sel=String(A[mid]||'').split(', ').filter(String),k=sel.indexOf(b.dataset.v);if(k<0)sel.push(b.dataset.v);else sel.splice(k,1);A[mid]=sel.join(', ');saveDraft();render()}
+  if(b.dataset.sc){delete P[b.dataset.sc];render();return}
+  if(b.dataset.back){setPage(1);render();window.scrollTo(0,0);return}
   if(b.dataset.rm){var s=b.dataset.rm.split(':');P[s[0]].splice(+s[1],1);render()}
 });
-$('form').addEventListener('input',function(e){var t=e.target.dataset&&e.target.dataset.t;if(t){A[t]=e.target.value;saveDraft();prog()}});
+$('form').addEventListener('input',function(e){var t=e.target.dataset&&e.target.dataset.t;if(t){A[t]=e.target.value;var m=e.target.closest('.q');if(m)m.classList.remove('err');saveDraft();prog()}});
 $('form').addEventListener('change',function(e){var p=e.target.dataset&&e.target.dataset.p;if(p){addPhotos(p,e.target.files);e.target.value=''}});
 
 // ---- submit ----
@@ -513,9 +538,10 @@ function say(t,bad){var s=$('status');s.textContent=t;s.className='status'+(bad?
 $('go').addEventListener('click',function(){
   if(busy||!cur)return;
   var first=null;
-  Q.filter(vis).forEach(function(q){var el=$('q'+q.id);var bad=q.req&&!answered(q);el.classList.toggle('err',!!bad);if(bad&&!first)first=el});
-  if(!$('by').value.trim()){$('by').focus();say('Please enter your name.',true);return}
+  Q.filter(function(q){return vis(q)&&onPage(q)}).forEach(function(q){var el=$('q'+q.id);if(!el)return;var bad=q.req&&!answered(q);el.classList.toggle('err',!!bad);if(bad&&!first)first=el});
+  if(!$('by').value.trim()){if(PAGE===2){setPage(1);render()}$('by').focus();say('Please enter your name.',true);return}
   if(first){first.scrollIntoView({behavior:'smooth',block:'center'});say('Some required questions still need an answer.',true);return}
+  if(two()&&PAGE===1){setPage(2);render();say('');window.scrollTo(0,0);return}
   busy=true;$('go').disabled=true;say('Uploading…');
   var jobs=[];Object.keys(P).forEach(function(id){if(vis(Q.filter(function(q){return q.id==+id})[0]))P[id].forEach(function(p){if(!p.url)jobs.push(p)})});
   var n=0,total=jobs.length;
@@ -525,7 +551,7 @@ $('go').addEventListener('click',function(){
     say('Saving checklist…');
     var ans={},photos={};
     Q.filter(vis).forEach(function(q){
-      if(q.type==='photo'){var u=(P[q.id]||[]).map(function(p){return p.url});photos[q.id]=u;ans[q.id]=u.length+' photo'+(u.length===1?'':'s')}
+      if(q.type==='photo'||q.type==='sign'){var u=(P[q.id]||[]).map(function(p){return p.url});photos[q.id]=u;ans[q.id]=u.length+' photo'+(u.length===1?'':'s')}
       else if(A[q.id]!=null)ans[q.id]=A[q.id];
     });
     return post({action:'checklist',submissionId:sid,store:cur.store,retailer:cur.group,address:cur.address,run:cur.run,
