@@ -302,85 +302,48 @@ var QG=[
 {id:357,t:'Why not?',type:'text',parent:356,when:'No',req:1},
 {id:358,sec:'Beauty Endcap Update',t:'Upload photos of the finished Beauty update here, please.',type:'photo',req:1,parent:301,when:'Beauty Endcap Update',top:1}
 ];
-// Shark Floorcare JB (aisle bay, Wet & Dry aisle, Floorcare End). Questions from the install guides in Drive > Shark Floorcare.
+// Shark Floorcare JB (aisle bay). Questions from the install guides in Drive > Shark Floorcare.
 var QF=[
-{id:401,sec:'General',t:'What is the name of the Manager on duty?',type:'text',req:1},
-{id:402,sec:'General',t:'Are you installing the Floorcare aisle bay (Colorspan / Converted)?',type:'yn',req:1},
-{id:403,sec:'General',t:'Are you installing the Wet & Dry aisle run?',type:'yn',req:1},
-{id:404,sec:'General',t:'Are you installing the Floorcare End (end cap)?',type:'yn',req:1},
 {id:410,sec:'Before install',t:'Did you sign into the visitor log?',type:'yn',req:1},
 {id:411,t:'Why not?',type:'text',parent:410,when:'No',req:1},
 {id:412,sec:'Before install',t:'Have you discussed the works with the manager on duty?',type:'yn',req:1},
 {id:413,t:'Why not?',type:'text',parent:412,when:'No',req:1},
+{id:401,sec:'Before install',t:'What is the name of the Manager on duty?',type:'text',req:1},
 {id:414,sec:'Before install',t:'Was the bay empty and ready for you when you arrived (stock cleared)?',type:'yn',req:1},
 {id:415,t:'What was still on the bay? Who cleared it (you or the store) and how long did it take?',type:'text',parent:414,when:'No',req:1},
 {id:416,t:'Please take a photo of the bay as you found it',type:'photo',parent:414,when:'No',req:1},
 {id:417,sec:'Before install',t:'Was the install kit complete and undamaged on arrival?',type:'yn',req:1},
 {id:418,t:'What items were missing or damaged? Have you told Gabriel?',type:'text',parent:417,when:'No',req:1},
-{id:419,sec:'Before install',t:'Upload before photos here, please.',type:'photo',req:1,min:3,hint:'At least 3 photos (left, right, front) of the bay before you start, plus any damage.'},
 
-{id:420,sec:'Floorcare aisle bay',t:'Which fixture is it?',type:'choice',opts:['Colorspan (deeper base)','Converted (shallower base)'],req:1,parent:402,when:'Yes',top:1},
-{id:421,sec:'Floorcare aisle bay',t:'Was there an existing Shark fixture in the bay?',type:'yn',req:1,parent:402,when:'Yes',top:1},
+{id:420,sec:'Floorcare aisle bay',t:'Which Floorcare aisle bay display are you installing?',type:'choice',opts:['Colorspan','Converted'],req:1},
+{id:421,sec:'Floorcare aisle bay',t:'Was there an existing Shark fixture in the bay?',type:'yn',req:1},
 {id:422,t:'Has the old Shark fixture been removed and taken away for disposal?',type:'yn',parent:421,when:'Yes',req:1},
 {id:423,t:'Why not? Where is it now?',type:'text',parent:422,when:'No',req:1},
-{id:424,sec:'Floorcare aisle bay',t:'Have you removed all old display / JB punch panel, shelving, brackets and capping, keeping only the black JB base shelf?',type:'yn',req:1,parent:402,when:'Yes',top:1},
+{id:424,sec:'Floorcare aisle bay',t:'Have you removed all old display / JB punch panel, shelving, brackets and capping, keeping only the black JB base shelf?',type:'yn',req:1},
 {id:425,t:'Why not?',type:'text',parent:424,when:'No',req:1},
-{id:426,sec:'Floorcare aisle bay',t:'Have you returned all JB Hi-Fi equipment to the store?',type:'yn',req:1,parent:402,when:'Yes',top:1},
+{id:426,sec:'Floorcare aisle bay',t:'Have you returned all JB Hi-Fi equipment to the store?',type:'yn',req:1},
 {id:427,t:'Why not?',type:'text',parent:426,when:'No',req:1},
-{id:428,sec:'Floorcare aisle bay',t:'Is the front lighting channel taped on and the wiring threaded under the base to the rear?',type:'yn',req:1,parent:402,when:'Yes',top:1},
+{id:428,sec:'Floorcare aisle bay',t:'Is the front lighting channel taped on and the wiring threaded under the base to the rear?',type:'yn',req:1},
 {id:429,t:'Why not?',type:'text',parent:428,when:'No',req:1},
-{id:430,sec:'Floorcare aisle bay',t:'Is the bottom backing panel in the lowest slot, with the top panel and header sitting with no gaps?',type:'yn',req:1,parent:402,when:'Yes',top:1},
+{id:430,sec:'Floorcare aisle bay',t:'Is the bottom backing panel in the lowest slot, with the top panel and header sitting with no gaps?',type:'yn',req:1},
 {id:431,t:'Why not?',type:'text',parent:430,when:'No',req:1},
-{id:432,sec:'Floorcare aisle bay',t:'Are the header and base lights plugged into the splitter, transformer and JB power board, with the white power board plugged in?',type:'yn',req:1,parent:402,when:'Yes',top:1},
+{id:432,sec:'Floorcare aisle bay',t:'Are the header and base lights plugged into the splitter, transformer and JB power board, with the white power board plugged in?',type:'yn',req:1},
 {id:433,t:'Why not?',type:'text',parent:432,when:'No',req:1},
-{id:434,sec:'Floorcare aisle bay',t:'Have you added the 3 New To Service tags (transformer, black transformer cable, white power board)?',type:'yn',req:1,parent:402,when:'Yes',top:1},
+{id:434,sec:'Floorcare aisle bay',t:'Have you added the 3 New To Service tags (transformer, black transformer cable, white power board)?',type:'yn',req:1},
 {id:435,t:'Why not?',type:'text',parent:434,when:'No',req:1},
 {id:436,t:'Please take a photo of the tags',type:'photo',parent:434,when:'Yes',req:1},
-{id:437,sec:'Floorcare aisle bay',t:'Which planogram did you use?',type:'choice',opts:['No Shark Floorcare End cap in store','Shark Floorcare End cap in store'],req:1,parent:402,when:'Yes',top:1},
-{id:438,sec:'Floorcare aisle bay',t:'Are the magnetic product holders (3 x stick vac, 1 x shelf) and all products on as per the planogram, with cables run down to the power board?',type:'yn',req:1,parent:402,when:'Yes',top:1},
+{id:437,sec:'Floorcare aisle bay',t:'Which planogram did you use?',type:'choice',opts:['Shark Floorcare End cap','Shark Floorcare Aisle'],req:1},
+{id:445,sec:'Floorcare aisle bay',t:'Is any stock for the display missing or not available in the store?',type:'yn',req:1,parent:437,when:'Shark Floorcare Aisle',top:1},
+{id:446,t:'Which models are missing? (tap all that apply)',type:'multi',opts:['IZ373H','IZ400','BU3621','WV203','IA3241','S7001 Steam Mop'],parent:445,when:'Yes',req:1},
+{id:447,sec:'Floorcare aisle bay',t:'Is any stock for the display missing or not available in the store?',type:'yn',req:1,parent:437,when:'Shark Floorcare End cap',top:1},
+{id:448,t:'Which models are missing? (tap all that apply)',type:'multi',opts:['IZ373','IR300','IZ400','WV203','ZU62'],parent:447,when:'Yes',req:1},
+{id:438,sec:'Floorcare aisle bay',t:'Are the magnetic product holders (3 x stick vac, 1 x shelf) and all products on as per the planogram, with cables run down to the power board?',type:'yn',req:1},
 {id:439,t:'Why not? Which products are missing?',type:'text',parent:438,when:'No',req:1},
-{id:440,sec:'Floorcare aisle bay',t:'Is the hand vac dock taped to the shelf with double-sided tape?',type:'yn',req:1,parent:402,when:'Yes',top:1},
+{id:440,sec:'Floorcare aisle bay',t:'Is the hand vac dock taped to the shelf with double-sided tape?',type:'yn',req:1},
 {id:441,t:'Why not?',type:'text',parent:440,when:'No',req:1},
-{id:442,sec:'Floorcare aisle bay',t:'Are the large POS and the plastic ticket holders (for JB tickets) installed?',type:'yn',req:1,parent:402,when:'Yes',top:1},
+{id:442,sec:'Floorcare aisle bay',t:'Are the large POS and the plastic ticket holders (for JB tickets) installed?',type:'yn',req:1},
 {id:443,t:'Why not?',type:'text',parent:442,when:'No',req:1},
-{id:444,sec:'Floorcare aisle bay',t:'Upload photos of the finished aisle bay here, please.',type:'photo',req:1,min:4,hint:'Minimum of 4 photos: front, left, right and a close-up of the products.',parent:402,when:'Yes',top:1},
-
-{id:450,sec:'Wet & Dry aisle',t:'Have you removed all the punch panels (and the store header if needed)?',type:'yn',req:1,parent:403,when:'Yes',top:1},
-{id:451,t:'Why not?',type:'text',parent:450,when:'No',req:1},
-{id:452,sec:'Wet & Dry aisle',t:'Is the base on with the bracket at the rear hanging over the back?',type:'yn',req:1,parent:403,when:'Yes',top:1},
-{id:453,t:'Why not?',type:'text',parent:452,when:'No',req:1},
-{id:454,sec:'Wet & Dry aisle',t:'Did you use the correct top panel (embossed slogan, from the labelled box, NOT the one in the main crate)?',type:'yn',req:1,parent:403,when:'Yes',top:1},
-{id:455,t:'Why not?',type:'text',parent:454,when:'No',req:1},
-{id:456,sec:'Wet & Dry aisle',t:'Is the bottom panel 200mm above the top of the JB base?',type:'yn',req:1,parent:403,when:'Yes',top:1},
-{id:457,t:'What is the gap?',type:'text',parent:456,when:'No',req:1},
-{id:458,sec:'Wet & Dry aisle',t:'Is it 2025mm from the top of the header to the top of the JB base?',type:'yn',req:1,parent:403,when:'Yes',top:1},
-{id:459,t:'What height is it?',type:'text',parent:458,when:'No',req:1},
-{id:460,sec:'Wet & Dry aisle',t:'Have you put the JB header back on the display?',type:'yn',req:1,parent:403,when:'Yes',top:1},
-{id:461,t:'Why not?',type:'text',parent:460,when:'No',req:1},
-{id:462,sec:'Wet & Dry aisle',t:'Are the magnetic graphics, product holders and products on as per the render (S7001 is the only one with a magnetic holder)?',type:'yn',req:1,parent:403,when:'Yes',top:1},
-{id:463,t:'Why not? Which products are missing?',type:'text',parent:462,when:'No',req:1},
-{id:464,sec:'Wet & Dry aisle',t:'Is the shelf installed just above the HX100 with all 4 bolts tightened?',type:'yn',req:1,parent:403,when:'Yes',top:1},
-{id:465,t:'Why not?',type:'text',parent:464,when:'No',req:1},
-{id:466,sec:'Wet & Dry aisle',t:'Is the clear JB shelf stripping attached with the price tickets in?',type:'yn',req:1,parent:403,when:'Yes',top:1},
-{id:467,t:'Why not? (e.g. JB did not supply the stripping)',type:'text',parent:466,when:'No',req:1},
-{id:468,sec:'Wet & Dry aisle',t:'Upload photos of the finished Wet & Dry aisle here, please.',type:'photo',req:1,min:4,hint:'Minimum of 4 photos, including one showing the header height.',parent:403,when:'Yes',top:1},
-
-{id:470,sec:'Floorcare End',t:'Was all the electrical wiring clear from underneath the display base before you moved it in?',type:'yn',req:1,parent:404,when:'Yes',top:1},
-{id:471,t:'Why not?',type:'text',parent:470,when:'No',req:1},
-{id:472,sec:'Floorcare End',t:'Which power did you use?',type:'choice',opts:['JB PB4 power board on site','Supplied PB4 power board and extension'],req:1,parent:404,when:'Yes',top:1},
-{id:473,sec:'Floorcare End',t:'Are the LED cables run down the side at the rear, with the power hatch clutter free?',type:'yn',req:1,parent:404,when:'Yes',top:1},
-{id:474,t:'Why not?',type:'text',parent:473,when:'No',req:1},
-{id:475,sec:'Floorcare End',t:'Are the header logo, header downlight, lightbox and base lighting all lit?',type:'yn',req:1,parent:404,when:'Yes',top:1},
-{id:476,t:"Which lights aren't lit? What have you checked?",type:'text',parent:475,when:'No',req:1},
-{id:477,sec:'Floorcare End',t:'Have you wound the adjustable feet out about 80%?',type:'yn',req:1,parent:404,when:'Yes',top:1},
-{id:478,t:'Why not?',type:'text',parent:477,when:'No',req:1},
-{id:479,sec:'Floorcare End',t:'Did the store give you the products BU3521, IW3611 and IP3251, and are they plugged in with the docks foam-taped to the display?',type:'yn',req:1,parent:404,when:'Yes',top:1},
-{id:480,t:'Which products are missing or not plugged in?',type:'text',parent:479,when:'No',req:1},
-{id:481,sec:'Floorcare End',t:'Are the boiler plate graphics to the left of the products, with no accessories displayed with the docks?',type:'yn',req:1,parent:404,when:'Yes',top:1},
-{id:482,t:'Why not?',type:'text',parent:481,when:'No',req:1},
-{id:483,sec:'Floorcare End',t:'Have you put the new boiler plates on the Shark aisle bay as per the planogram and given the old ones to the store manager?',type:'yn',req:1,parent:404,when:'Yes',top:1},
-{id:484,t:'Why not?',type:'text',parent:483,when:'No',req:1},
-{id:485,sec:'Floorcare End',t:'Upload photos of the finished Floorcare End here, please.',type:'photo',req:1,min:4,hint:'Minimum of 4 photos, with all lights on.',parent:404,when:'Yes',top:1},
+{id:444,sec:'Floorcare aisle bay',t:'Upload photos of the finished aisle bay here, please.',type:'photo',req:1,min:4,hint:'Minimum of 4 photos: front, left, right and a close-up of the products.'},
 
 {id:490,sec:'Completion',t:'Are all cables hidden and the power leads clear of walkways?',type:'yn',req:1},
 {id:491,t:'Why not?',type:'text',parent:490,when:'No',req:1},
@@ -483,6 +446,7 @@ function render(){
     if(q.sec&&q.sec!==sec){sec=q.sec;h+='<div class="sec">'+sec+'</div>'}
     h+='<div class="q'+(q.parent&&!q.top?' follow':'')+(q.isNew?' new':'')+'" id="q'+q.id+'">'+(q.isNew?'<span class="newtag">NEW</span>':'')+'<label class="t">'+esc(q.t)+(q.link?' <a href="'+esc(q.link.url)+'" target="_blank" rel="noopener">'+esc(q.link.text)+'</a>':'')+(q.req?' <span class="req">*</span>':'')+'</label>';
     if(q.type==='choice')h+='<div class="yn ch">'+q.opts.map(function(o){return '<button type="button" class="'+(A[q.id]===o?'on y':'')+'" data-a="'+q.id+'" data-v="'+esc(o)+'">'+esc(o)+'</button>'}).join('')+'</div>';
+    if(q.type==='multi'){var sel=String(A[q.id]||'').split(', ').filter(String);h+='<div class="yn ch">'+q.opts.map(function(o){return '<button type="button" class="'+(sel.indexOf(o)>=0?'on y':'')+'" data-m="'+q.id+'" data-v="'+esc(o)+'">'+esc(o)+'</button>'}).join('')+'</div>'}
     if(q.type==='yn')h+='<div class="yn"><button type="button" class="'+(A[q.id]==='Yes'?'on y':'')+'" data-a="'+q.id+'" data-v="Yes">Yes</button><button type="button" class="'+(A[q.id]==='No'?'on n':'')+'" data-a="'+q.id+'" data-v="No">No</button></div>';
     if(q.type==='text')h+=(q.long||q.parent)?'<textarea data-t="'+q.id+'">'+esc(A[q.id]||'')+'</textarea>':'<input type="text" data-t="'+q.id+'" value="'+esc(A[q.id]||'')+'">';
     if(q.type==='photo'){
@@ -534,6 +498,7 @@ $('by').addEventListener('input',saveDraft);
 $('form').addEventListener('click',function(e){
   var b=e.target.closest('button');if(!b)return;
   if(b.dataset.a){A[b.dataset.a]=b.dataset.v;saveDraft();render()}
+  if(b.dataset.m){var mid=b.dataset.m,sel=String(A[mid]||'').split(', ').filter(String),k=sel.indexOf(b.dataset.v);if(k<0)sel.push(b.dataset.v);else sel.splice(k,1);A[mid]=sel.join(', ');saveDraft();render()}
   if(b.dataset.rm){var s=b.dataset.rm.split(':');P[s[0]].splice(+s[1],1);render()}
 });
 $('form').addEventListener('input',function(e){var t=e.target.dataset&&e.target.dataset.t;if(t){A[t]=e.target.value;saveDraft();prog()}});
