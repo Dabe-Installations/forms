@@ -26,7 +26,7 @@ function collect(main){
     if(!parts.length){var q=it.querySelector(".pk-q");parts.push([q?+q.textContent:1,"box"])}
     if(/CryoGlow/i.test(name))parts.push([1,"Graphics for plinth"]);
     var dn=name.replace(/\s*Topper\b/i,"");
-    parts.forEach(function(p){var k=dn+"|"+p[1];if(!lines[k]){var gr=/Graphics/i.test(p[1]);lines[k]={name:dn,part:p[1],q:0,codes:gr?[]:codes,img:gr?"":photo(name,p[1]),note:(/CryoGlow/i.test(name)&&/plinth/i.test(p[1])&&!gr)?"Double check with the warehouse that the graphics for the plinth are inside. If not, make sure you take them with you.":""};order.push(k)}lines[k].q+=p[0]});
+    parts.forEach(function(p){var k=dn+"|"+p[1];if(!lines[k]){var gr=/Graphics/i.test(p[1]);lines[k]={name:dn,part:p[1],q:0,codes:gr?[]:codes,img:gr?"":photo(name,p[1]),note:gr?"The graphics were missing from the JB plinth box on the first run last week. If you are not sure whether they are in the box, please double check with the warehouse.":""};order.push(k)}lines[k].q+=p[0]});
   });
   return order.map(function(k){var l=lines[k];l.k=k;return l});
 }
