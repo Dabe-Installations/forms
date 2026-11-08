@@ -38,7 +38,7 @@ var CSS=".pg{background:#fff;border:2px solid #1A6B5A;border-radius:16px;margin:
 ".pg-i{flex:none;width:86px;height:86px;border-radius:10px;object-fit:cover;border:1px solid #D5E3DF}"+
 ".pg-f{padding:12px 14px 16px}.pg-cnt{font-size:13.5px;color:#5B6662;margin-bottom:10px;text-align:center}"+
 ".pg-ok{display:block;width:100%;border:0;border-radius:12px;padding:14px;font:800 20px/1 'Barlow Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase;background:#1A6B5A;color:#fff}.pg-ok:disabled{background:#C9D6D1;color:#fff}"+
-".pg-hide{display:none!important}.pg-lock{opacity:.45;pointer-events:none!important;filter:grayscale(.3)}"+
+".pg-hide{display:none!important}.pg-lock{opacity:.45;pointer-events:none!important;filter:grayscale(.3)}.pg-navlock{pointer-events:none!important}.pg-navlock button{opacity:.35}"+
 ".pg-note{margin-top:6px;padding:6px 9px;background:#FFF7E6;border:1px solid #F3D9A0;border-radius:8px;color:#8A5A00;font-size:13px;font-weight:600}"+
 ".pg-why{background:#FDECEC;border:1.5px solid #D93B3B;color:#A61B1B;border-radius:10px;padding:9px 12px;margin:0 0 10px;font-size:13.5px;font-weight:600;text-align:center}"+
 ".pg-lk{text-align:center;color:#5B6662;font-size:13.5px;margin:0 0 10px}"+
@@ -64,7 +64,7 @@ function apply(){
   if(st.ok){
     box.className="pg-re";box.innerHTML="<span>✓ Pick list checked</span><button type='button'>Open pick list again</button>";
     box.querySelector("button").onclick=function(){st.ok=false;save(date,st);apply()};
-    main.querySelectorAll(lockSel).forEach(function(e){e.classList.remove("pg-lock")});document.querySelectorAll("nav").forEach(function(e){e.classList.remove("pg-lock")});var lk=main.querySelector(".pg-lk");if(lk)lk.remove();
+    main.querySelectorAll(lockSel).forEach(function(e){e.classList.remove("pg-lock")});document.querySelectorAll("nav").forEach(function(e){e.classList.remove("pg-navlock")});var lk=main.querySelector(".pg-lk");if(lk)lk.remove();
   }else{
     var total=lines.reduce(function(a,l){return a+l.q},0);
     var h="<div class='pg-h'><b>Pick at Mills first</b><span>"+total+" items · tick each line as it goes in the car</span></div>";
@@ -81,7 +81,7 @@ function apply(){
       m.querySelector(".pg-n2").onclick=function(){m.remove()};
       m.querySelector(".pg-y").onclick=function(){m.remove();st.ok=true;save(date,st);var o=main.querySelector(".pg");if(o)o.remove();apply();window.scrollTo(0,0)};
     };
-    main.querySelectorAll(lockSel).forEach(function(e){e.classList.add("pg-lock")});document.querySelectorAll("nav").forEach(function(e){e.classList.add("pg-lock")});
+    main.querySelectorAll(lockSel).forEach(function(e){e.classList.add("pg-lock")});document.querySelectorAll("nav").forEach(function(e){e.classList.add("pg-navlock")});
   }
   main.insertBefore(box,hero);
   var olk=main.querySelector(".pg-lk");if(olk)olk.remove();
