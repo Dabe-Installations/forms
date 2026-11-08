@@ -578,7 +578,7 @@ loadStores();
 (function(){
  var q;try{q=new URLSearchParams(location.search)}catch(e){q={get:function(){return ''}}}
  var t=(q.get('team')||'').replace(/[^0-9]/g,''),st=q.get('store')||'';
- var lab=t==='5'?'WA Team 1':t==='6'?'WA Team 2':(t?'Team '+t:'Store Report');
+ var lab=t==='5'?'VIC':t==='6'?'WA Team 2':(t?'Team '+t:'Store Report');
  document.getElementById('whoT').textContent=lab;
  if(t){['backl','doneback'].forEach(function(id){var a=document.getElementById(id);a.href='team'+t+'-v2.html';a.hidden=false;a.addEventListener('click',function(e){if(window.opener&&!window.opener.closed){e.preventDefault();try{window.opener.focus()}catch(x){}window.close();setTimeout(function(){location.href=a.href},300)}})})}
  var d=new Date().toLocaleDateString('en-AU',{weekday:'short',day:'numeric',month:'short',timeZone:'Australia/Melbourne'});
