@@ -3,35 +3,67 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<style>html,body{margin:0;background:#0d0d0d}</style>
+<style>html,body{margin:0;background:#fff}</style>
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#0d0d0d">
+<meta name="theme-color" content="#ffffff">
 <title>Store Runs</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700;800&display=swap">
-<link rel="stylesheet" href="master.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..900&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="hub.css">
 </head>
 <body>
-<div class="wrap">
-<header>
-  <div class="hl">
-    <p class="eyebrow">Dabe Labour &middot; Installations &amp; Maintenance</p>
-    <p class="brand"><span>Shark Beauty</span><span class="brand-update">Update</span></p>
-    <h1 id="title">Store runs</h1>
-    <p class="sub">Install crews for the day. Stops are listed in the order each crew will visit.</p>
-    <div class="totals" id="totals"></div>
-  </div>
-  <div class="stsel" role="group" aria-label="State"><button type="button" class="stbtn" onclick="__setST('vic')" data-st="vic">Victoria</button><button type="button" class="stbtn" onclick="__setST('wa')" data-st="wa">Western Australia</button><button type="button" class="stbtn stall on" onclick="__setST('all')" data-st="all">All states</button></div><div class="hr">
-    <div class="count" id="count" aria-live="polite"></div>
-    <nav class="teamnav" aria-label="Team pages"><a class="day" href="team1.html" target="_blank" rel="noopener">Leo P</a><a class="day" href="team2.html" target="_blank" rel="noopener">Stephen V</a><a class="day" href="team3.html" target="_blank" rel="noopener">Deborah</a><a class="day" href="team4.html" target="_blank" rel="noopener">Leo L</a><a class="day" href="team5.html" target="_blank" rel="noopener">Marcos O</a><a class="day" href="team7.html" target="_blank" rel="noopener">WA Team 1</a><a class="day" href="team8.html" target="_blank" rel="noopener">WA Team 2</a></nav>
+<header class="appbar">
+  <div class="wrap ab">
+    <a class="brandlink" href="./" aria-label="Store Runs hub"><img class="mark" src="https://dabe-installations.github.io/shift-timesheet/dabe-mark.png" alt="DABE"><span class="hubname">Store Runs</span></a>
+    <nav class="menu" aria-label="Main">
+      <a class="mi" href="./" aria-current="page">Runs</a>
+      <div class="dd" id="teamdd">
+        <button type="button" class="mi" aria-expanded="false" aria-haspopup="true">Team pages <svg class="car" viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 3.5L5 7l3.5-3.5"/></svg></button>
+        <div class="ddp">
+          <div class="dh">Victoria</div>
+          <a href="team1.html" target="_blank" rel="noopener">Leo P <span>Team 1</span></a>
+          <a href="team2.html" target="_blank" rel="noopener">Stephen V <span>Team 2</span></a>
+          <a href="team3.html" target="_blank" rel="noopener">Deborah <span>Team 3</span></a>
+          <a href="team4.html" target="_blank" rel="noopener">Leo L <span>Team 4</span></a>
+          <a href="team5.html" target="_blank" rel="noopener">Marcos O <span>Team 5</span></a>
+          <div class="dh">Western Australia</div>
+          <a href="team7.html" target="_blank" rel="noopener">WA Team 1 <span>Team 7</span></a>
+          <a href="team8.html" target="_blank" rel="noopener">WA Team 2 <span>Team 8</span></a>
+        </div>
+      </div>
+      <a class="mi" href="https://claude.ai/artifact/Ahi9fbRa1428RZFbprs5Ed" target="_blank" rel="noopener">Dabe Home</a>
+    </nav>
+    <div class="stsel" role="group" aria-label="State"><button type="button" class="stbtn" onclick="__setST('vic')" data-st="vic">Victoria</button><button type="button" class="stbtn" onclick="__setST('wa')" data-st="wa">WA</button><button type="button" class="stbtn stall on" onclick="__setST('all')" data-st="all">All states</button></div>
   </div>
 </header>
-<nav class="days" id="days" aria-label="Choose a day"></nav>
-<p class="legend"><span><span class="tag">HN</span> Harvey Norman</span><span><span class="tag">JB</span> JB Hi-Fi</span><span><span class="tag">TGG</span> The Good Guys</span><span><span class="tag">BETTA</span> Betta</span><span><span class="tag">SEPHORA</span> Sephora</span></p>
-<div class="grid" id="grid"><p class="empty">Loading runs...</p></div>
-<footer>Live from the master sheet. Ticks and notes here update the sheet and each crew's page.</footer>
-</div>
+<section class="hero">
+  <div class="wrap">
+    <div class="hrow">
+      <div class="hl">
+        <p class="eyebrow">Dabe Installations &middot; Store runs</p>
+        <p class="brand"><span>Shark Beauty</span></p>
+        <h1 id="title">Store runs</h1>
+        <p class="sub">Install crews for the day. Stops are listed in the order each crew will visit.</p>
+        <div class="totals" id="totals"></div>
+      </div>
+      <div class="count" id="count" aria-live="polite"></div>
+    </div>
+    <nav class="days" id="days" aria-label="Choose a day"></nav>
+  </div>
+</section>
+<main class="wrap">
+  <p class="legend"><span><span class="tag">HN</span> Harvey Norman</span><span><span class="tag">JB</span> JB Hi-Fi</span><span><span class="tag">TGG</span> The Good Guys</span><span><span class="tag">BETTA</span> Betta</span><span><span class="tag">SEPHORA</span> Sephora</span></p>
+  <div class="grid" id="grid"><p class="empty">Loading runs...</p></div>
+  <footer>Live from the master sheet. Ticks and notes here update the sheet and each crew's page.</footer>
+</main>
+<script>
+(function(){var d=document.getElementById("teamdd"),b=d.querySelector("button");
+b.addEventListener("click",function(e){e.stopPropagation();var o=d.classList.toggle("open");b.setAttribute("aria-expanded",o)});
+document.addEventListener("click",function(e){if(!d.contains(e.target)){d.classList.remove("open");b.setAttribute("aria-expanded","false")}});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"){d.classList.remove("open");b.setAttribute("aria-expanded","false")}});})();
+</script>
 <script src="master.js"></script>
 </body>
 </html>
