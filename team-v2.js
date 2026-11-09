@@ -20,9 +20,10 @@ function photo(name,part){
 function trip(main){if(TEAM!=="4")return "";var t=[].map.call(main.querySelectorAll("article.st"),function(a){return a.textContent}).join(" ");if(/Warrnambool/i.test(t))return "first";if(/Mildura|Swan Hill|Bendigo|Shepparton|Albury/i.test(t))return "later";return ""}
 function collect(main){
   if(trip(main)==="first"){var I=IMGS();return [
-    {k:"A|top",name:"HN Facial Pro Topper",part:"Topper boxes: 1 plinth + 2 Facial Pro dummy unit boxes per store",q:18,codes:["FIM904178","POSMSHARK482"],img:I.hnp||"",note:"6 stores: Warrnambool, Ararat, Mildura, Bendigo, Shepparton, Albury. 1 code covers all 3 boxes of a topper."},
-    {k:"A|bl",name:"BL/HN Beauty update",part:"Box (1 per store)",q:4,codes:["FIO900407","POSMSHARK441"],img:"",note:"4 stores: Swan Hill, Bendigo, Shepparton, Albury"},
-    {k:"A|tgg",name:"TGG Beauty update",part:"Box (1 per store)",q:2,codes:["FIO900406","POSMSHARK440"],img:"",note:"2 stores: TGG Bendigo, TGG Shepparton"}]}
+    {k:"A|dummy",name:"HN Facial Pro",part:"Facial Pro dummy unit boxes",q:12,codes:["FIM904178","POSMSHARK482"],img:I.dummy||"",note:""},
+    {k:"A|plinth",name:"HN Facial Pro",part:"Display plinth",q:6,codes:["FIM904178","POSMSHARK482"],img:I.hnp||"",note:""},
+    {k:"A|bl",name:"BL/HN Beauty update",part:"Box",q:4,codes:["FIO900407","POSMSHARK441"],img:"",note:""},
+    {k:"A|tgg",name:"TGG Beauty update",part:"Box",q:2,codes:["FIO900406","POSMSHARK440"],img:"",note:""}]}
   var lines={},order=[];
   main.querySelectorAll("article.st .pk .pk-i").forEach(function(it){
     var st=it.closest("article.st"),done=st&&st.classList.contains("done");
@@ -83,7 +84,7 @@ function apply(){
     main.querySelectorAll(lockSel).forEach(function(e){e.classList.remove("pg-lock")});document.querySelectorAll("nav").forEach(function(e){e.classList.remove("pg-navlock")});var lk=main.querySelector(".pg-lk");if(lk)lk.remove();
   }else{
     var total=lines.reduce(function(a,l){return a+l.q},0);
-    var h=(TEST?"<div class='pg-test'>Test mode · ticks and photos here don't affect the real pick list</div>":"")+"<div class='pg-h'><b>Pick at Mills first</b><span>"+total+(trip(main)==="first"?" boxes for all 4 days":" items")+" · tick each line as it goes in the car</span></div>";
+    var h=(TEST?"<div class='pg-test'>Test mode · ticks and photos here don't affect the real pick list</div>":"")+"<div class='pg-h'><b>Pick at Mills first</b><span>"+total+" items · tick each line as it goes in the car</span></div>";
     lines.forEach(function(l){var on=!!ticks[l.k];
       h+="<div class='pg-l"+(on?" on":"")+"' data-k='"+esc(l.k)+"'><span class='pg-c'>"+(on?"✓":"")+"</span><div class='pg-t'><div class='pg-n'>"+esc(l.name)+"</div><div class='pg-p'><b>"+l.q+" ×</b> "+esc(l.part)+"</div>"+(l.codes.length?"<div class='pg-cd'>"+l.codes.map(esc).join(" · ")+"</div>":"")+(l.note?"<div class='pg-note'>"+esc(l.note)+"</div>":"")+"</div>"+(l.img?"<img class='pg-i' src='"+l.img+"' alt=''>":"")+"</div>"});
     var n=lines.filter(function(l){return ticks[l.k]}).length,all=n==lines.length,ph=st.photos||[],okp=ph.length>=2;
