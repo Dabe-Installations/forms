@@ -139,7 +139,51 @@ function judge(v,why,opt){
   return "attn";
 }
 
+/* Project Store Reports (9 Nov 2026): Cryo / Facial Topper, Floorcare, Power Audit, Coffee... Every question in order, follow-up answers under their question, photos as pictures. */
+function buildProject(R,sheetNote){
+  var META={"Submitted":1,"Store":1,"Retailer":1,"Address":1,"Run":1,"Installer":1,"Install Date":1,"Submission ID":1,"Photo folder":1,"_project":1,"_heads":1};
+  var heads=(R._heads||Object.keys(R)).filter(function(k){return !META[k]&&k});
+  function lab(k){return String(k).replace(/^\d+\s+/,"")}
+  function isYN(v){return v==="Yes"||v==="No"}
+  function ids(v){return String(v||"").split(/\s+/).map(function(u){var m=/\/d\/([-\w]{20,})|[?&]id=([-\w]{20,})/.exec(u);return m?(m[1]||m[2]):null}).filter(Boolean)}
+  var GOODNO=/\bany damage\b|anything missing|any issues|any problems/i;
+  var rows=[],photos=[],ok=0,attn=0,info="";
+  for(var i=0;i<heads.length;i++){
+    var k=heads[i],v=String(R[k]==null?"":R[k]).trim();if(!v)continue;
+    var ph=ids(v);
+    if(ph.length&&/^https?:/.test(v)){photos.push({t:lab(k),ids:ph});continue}
+    if(isYN(v)){
+      var why="",nk=heads[i+1],nv=nk?String(R[nk]==null?"":R[nk]).trim():"";
+      var good=GOODNO.test(lab(k))?"No":"Yes",st=v===good?"ok":"attn";
+      if(nk&&nv&&!isYN(nv)&&!ids(nv).length&&(st==="attn"||/^(why|describe|which|what)/i.test(lab(nk)))){why=nv;i++}
+      if(st==="ok")ok++;else attn++;
+      var label=good==="No"?(v==="No"?"None":"Reported"):(v==="Yes"?"Yes":"No");
+      rows.push('<div class="row"><div class="q">'+esc(lab(k))+'</div><span class="badge '+(st==="ok"?"b-ok":"b-attn")+'">'+label+'</span>'+(why?'<div class="why">'+esc(why)+'</div>':'')+'</div>');
+    }else{
+      rows.push('<div class="row"><div class="q">'+esc(lab(k))+'</div><span class="badge b-val">'+esc(v)+'</span></div>');
+    }
+  }
+  var total=ok+attn;
+  var banner=attn===0
+    ?'<div class="result"><div class="big">'+ok+'/'+total+'</div><div class="txt"><b>Install completed &ndash; no issues</b>Every checklist item was confirmed by the installer on site.</div></div>'
+    :'<div class="result attn"><div class="big">'+attn+'</div><div class="txt"><b>'+(attn===1?'Item needs':'Items need')+' attention</b>'+ok+' of '+total+' checklist items confirmed; see the flagged rows below.</div></div>';
+  var store=R["Store"]||"",code=String(store).split(/\s+/)[0].toUpperCase();
+  var h='<div class="hero"><div class="top"><div><div class="eyebrow">Dabe Labour &middot; Installation Report &middot; '+esc(R._project)+'</div><h1>'+esc(store)+'</h1>'+
+    '<div class="addr"><span class="pill">'+esc(code)+'</span>'+esc(R["Address"])+'</div></div><img class="logo" src="logo.png" alt="Dabe Labour" onerror="this.style.display=\'none\'"></div></div>'+
+    '<div class="facts"><div class="fact"><div class="k">Install date</div><div class="v">'+esc(R["Install Date"]||String(R["Submitted"]).split(",")[0])+'</div></div>'+
+    '<div class="fact"><div class="k">Installer</div><div class="v">'+esc(R["Installer"])+'</div></div>'+
+    '<div class="fact"><div class="k">Run</div><div class="v">'+esc(R["Run"]||"–")+'</div></div>'+
+    '<div class="fact"><div class="k">Submitted</div><div class="v">'+esc(R["Submitted"]||"–")+'</div></div></div>'+banner+
+    (rows.length?'<section><h2>Checklist</h2>'+rows.join("")+'</section>':'');
+  if(sheetNote)h+='<section><h2>Installer notes</h2><div class="note"><div class="who">'+esc(R["Installer"])+' &middot; on site</div>'+esc(sheetNote)+'</div></section>';
+  photos.forEach(function(g){h+='<section><h2>'+esc(g.t.replace(/\s*here,?\s*please\.?$/i,"").replace(/^Upload\s+/i,"").replace(/^./,function(c){return c.toUpperCase()}))+' ('+g.ids.length+')</h2><div class="photos">'+g.ids.map(function(id,i){
+      var view="https://drive.google.com/file/d/"+id+"/view",th="https://drive.google.com/thumbnail?id="+id+"&sz=w800";
+      return '<a class="ph" href="'+view+'" target="_blank" rel="noopener"><div class="fb">Photo '+(i+1)+'<span>Tap to open</span></div><img src="'+th+'" alt="Photo '+(i+1)+'" loading="lazy" onerror="this.remove()"><div class="n">Photo '+(i+1)+'</div></a>'}).join("")+'</div></section>'});
+  h+='<footer>Submitted '+esc(R["Submitted"])+'<br><b>Dabe Labour</b> &middot; Installations &amp; Maintenance</footer>';
+  return h;
+}
 function build(R,sheetNote){
+  if(R&&R._project)return buildProject(R,sheetNote);
   var ok=0,na=0,attn=0,rows="";
   GROUPS.forEach(function(g){
     var inner="";
