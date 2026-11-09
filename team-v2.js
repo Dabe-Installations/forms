@@ -17,8 +17,18 @@ function photo(name,part){
   if(/plinth/i.test(part)){if(/^JB|CryoGlow/i.test(name))return IMG.jbp||"";if(/^HN|Facial Pro Topper/i.test(name))return IMG.hnp||""}
   return "";
 }
-function trip(main){if(TEAM!=="4")return "";var t=[].map.call(main.querySelectorAll("article.st"),function(a){return a.textContent}).join(" ");if(/Warrnambool/i.test(t))return "first";if(/Mildura|Swan Hill|Bendigo|Shepparton|Albury/i.test(t))return "later";return ""}
+function trip(main){var t=[].map.call(main.querySelectorAll("article.st"),function(a){return a.textContent}).join(" ");if(TEAM==="5"){if(/Traralgon/i.test(t))return "first5";if(/Wonthaggi/i.test(t))return "later";return ""}if(TEAM!=="4")return "";if(/Warrnambool/i.test(t))return "first";if(/Mildura|Swan Hill|Bendigo|Shepparton|Albury/i.test(t))return "later";return ""}
 function collect(main){
+  /* Marcos, Gippsland trip 10-11 Nov 2026: pick everything for both days at Mills on day 1 (13 boxes). Day 2 has no pick list. */
+  if(trip(main)==="first5"){var J=IMGS();return [
+    {k:"B|hnd",name:"HN Facial Pro",part:"Facial Pro dummy unit boxes",q:2,codes:["FIM904178","POSMSHARK482"],img:J.dummy||"",note:""},
+    {k:"B|hnp",name:"HN Facial Pro",part:"Display plinth",q:1,codes:["FIM904178","POSMSHARK482"],img:J.hnp||"",note:""},
+    {k:"B|bl",name:"BL/HN Beauty update",part:"Box",q:1,codes:["FIO900407","POSMSHARK441"],img:"",note:""},
+    {k:"B|1200",name:"1200 BL/HN Beauty update",part:"Box",q:1,codes:["FIO900415","POSMSHARK450"],img:"",note:""},
+    {k:"B|jbd",name:"JB CryoGlow",part:"Facial Pro dummy unit boxes",q:4,codes:["FIM904169","POSMSHARK485"],img:J.dummy||"",note:""},
+    {k:"B|jbp",name:"JB CryoGlow",part:"Display plinth",q:2,codes:["FIM904169","POSMSHARK485"],img:J.jbp||"",note:""},
+    {k:"B|jbg",name:"JB CryoGlow",part:"Graphics for plinth",q:2,codes:[],img:"",note:"The graphics were missing from the JB plinth box on the first run last week. If you are not sure whether they are in the box, please double check with the warehouse."},
+    {k:"B|jbb",name:"JB Beauty update",part:"Box",q:2,codes:["FIO900408","POSMSHARK442"],img:"",note:""}]}
   if(trip(main)==="first"){var I=IMGS();return [
     {k:"A|dummy",name:"HN Facial Pro",part:"Facial Pro dummy unit boxes",q:12,codes:["FIM904178","POSMSHARK482"],img:I.dummy||"",note:""},
     {k:"A|plinth",name:"HN Facial Pro",part:"Display plinth",q:6,codes:["FIM904178","POSMSHARK482"],img:I.hnp||"",note:""},
