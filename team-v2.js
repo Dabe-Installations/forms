@@ -162,3 +162,33 @@ log(what,{store:s,link:href&&!/^javascript/i.test(href)?href:""})},true);
 document.addEventListener("change",function(e){var t=e.target;if(t&&t.type==="file"&&t.files&&t.files.length){log("Chose "+t.files.length+" photo"+(t.files.length>1?"s":"")+" to upload",{store:storeOf(t),detail:t.closest(".pg")?"pick list":""})}},true);
 setTimeout(send,3000);
 }();
+
+/* Install Pack card (10 Nov 2026): a Day Instructions row whose text is "INSTALL PACK" with the pack link in Booking Link shows as the Install Pack card (all teams). */
+!function(){"use strict";
+var CSS=".card.instr.ipk{padding:0!important;border:2px solid #1A6B5A!important;border-radius:18px!important;overflow:hidden;box-shadow:0 4px 14px rgba(14,63,53,.12)}"+
+".ipk-h{background:#0E3F35;color:#fff;padding:16px 18px 15px;display:flex;gap:12px;align-items:center}"+
+".ipk-ic{flex:none;width:46px;height:46px;border-radius:12px;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-size:24px}"+
+".ipk-h small{display:block;font-weight:700;font-size:12px;line-height:1.1;letter-spacing:.14em;text-transform:uppercase;color:#8FD3BF;margin-bottom:5px}"+
+".ipk-h b{display:block;font:800 30px/1 'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.02em}"+
+".ipk-b{padding:16px 18px 18px}.ipk-b p{font-size:16px;line-height:1.5;margin:0 0 12px}"+
+".ipk-l{list-style:none;margin:0 0 14px;padding:0}.ipk-l li{display:flex;gap:10px;align-items:center;padding:9px 0;border-top:1px solid #E3ECE8;font-weight:600;font-size:15.5px}.ipk-l li:first-child{border-top:0}"+
+".ipk-l i{flex:none;width:30px;height:30px;border-radius:50%;background:#E8F2EF;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:15px}"+
+".ipk-w{background:#FFF7E6;border:1.5px solid #F3D9A0;border-radius:12px;padding:12px 14px;color:#6B4600;font-size:15px;line-height:1.45;margin-bottom:16px}"+
+".ipk-w b{display:block;font:800 17px/1 'Barlow Condensed',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#8A5A00;margin-bottom:6px}"+
+".ipk-btn{display:block;background:#1A6B5A;color:#fff!important;border-radius:14px;padding:16px;text-align:center;text-decoration:none!important;box-shadow:0 3px 0 #0E3F35}"+
+".ipk-btn b{display:block;font:800 24px/1 'Barlow Condensed',sans-serif;letter-spacing:.05em;text-transform:uppercase}.ipk-btn span{display:block;font-size:13px;color:#CFEDE3;margin-top:5px}";
+function style(){if(document.getElementById("ipk-css"))return;var s=document.createElement("style");s.id="ipk-css";s.textContent=CSS;document.head.appendChild(s)}
+function card(u){return "<div class='ipk-h'><div class='ipk-ic'>📘</div><div><small>Before you start, please read</small><b>Your Install Pack</b></div></div>"+
+"<div class='ipk-b'><p>We've put together an <b>install pack</b> for your shift. It has everything you need for today:</p>"+
+"<ul class='ipk-l'><li><i>🗺️</i>The steps of your day, store by store</li><li><i>🛠️</i>The install guides for every display</li><li><i>⚠️</i>Important notes from the client</li></ul>"+
+"<div class='ipk-w'><b>Please read it before you start</b>Read all of it and take your time. You're paid to read it. If you're not 100% sure about something, ask Gabriel. Don't assume: mistakes mean going back to the store at our own cost.</div>"+
+"<a class='ipk-btn' href='"+u.replace(/'/g,"%27")+"' target='_blank' rel='noopener'><b>▶ Open your install pack ◀</b><span>Tap here · opens the PDF</span></a></div>"}
+function run(){var main=document.querySelector("main");if(!main)return;
+  main.querySelectorAll("section.card.instr:not([data-ipk])").forEach(function(c){
+    var ps=c.querySelectorAll("p"),a=c.querySelector("a[href]");
+    if(!ps.length||!a||!/^\s*install pack\s*$/i.test(ps[0].textContent))return;
+    style();c.setAttribute("data-ipk","1");c.classList.add("ipk");c.innerHTML=card(a.getAttribute("href"))})}
+function start(){var main=document.querySelector("main");if(!main){setTimeout(start,300);return}
+  new MutationObserver(function(){setTimeout(run,0)}).observe(main,{childList:true,subtree:true});run()}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start);else start();
+}();
