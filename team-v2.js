@@ -47,7 +47,7 @@ function collect(main){
     var dn=name.replace(/\s*Topper\b/i,"");
     parts.forEach(function(p){var k=dn+"|"+p[1];if(!lines[k]){var gr=/Graphics/i.test(p[1]);lines[k]={name:dn,part:p[1],q:0,codes:gr?[]:codes,img:gr?"":photo(name,p[1]),note:gr?"The graphics were missing from the JB plinth box on the first run last week. If you are not sure whether they are in the box, please double check with the warehouse.":""};order.push(k)}lines[k].q+=p[0]});
   });
-  /* 11 Nov 2026: Deborah (Team 3) already has 1 HN Facial Pro set in her car */var pd=main.querySelector("[data-pickday]");if(TEAM==="3"&&pd&&pd.getAttribute("data-pickday")==="Wed 11 Nov")order.forEach(function(k){var l=lines[k];if(/^HN Facial Pro/i.test(l.name)){l.q=Math.max(0,l.q-(/plinth/i.test(l.part)?1:2));l.note="Only pick 1 HN Facial Pro set today (2 dummy unit boxes + 1 plinth). You already have the other one in your car."}});
+  /* 11 Nov 2026: Deborah (Team 3) already has 1 HN Facial Pro plinth in her car */var pd=main.querySelector("[data-pickday]");if(TEAM==="3"&&pd&&pd.getAttribute("data-pickday")==="Wed 11 Nov")order.forEach(function(k){var l=lines[k];if(/^HN Facial Pro/i.test(l.name)&&/plinth/i.test(l.part)){l.q=Math.max(0,l.q-1);l.note="Only pick 1 display plinth today. You already have the other one in your car."}});
   return order.map(function(k){var l=lines[k];l.k=k;return l});
 }
 var CSS=".pg{background:#fff;border:2px solid #1A6B5A;border-radius:16px;margin:0 0 14px;overflow:hidden;box-shadow:0 4px 14px rgba(14,63,53,.12)}"+
