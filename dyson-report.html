@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Dyson H2 Revisit Stores</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px)}[hidden]{display:none!important}img{max-width:100%}
+/* Layout: one phone-width column; each check is its own block, answered top to bottom in store. */
+:root{
+  --bg:#ffffff; --card:#ffffff; --ink:#14211b; --mut:#5b6a62; --line:#d6e0db;
+  --g:#0e7954; --gsoft:#e2f2ea; --warn:#fff1b8; --warnline:#d4a600; --warnink:#4a3a00; --err:#b3261e;
+  --f-head:'Barlow Condensed','Arial Narrow',Arial,sans-serif; --f-body:'Barlow','Segoe UI',Arial,sans-serif; color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:17px/1.45 var(--f-body);margin:0;padding-block:0 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.top{background:#fff;margin:0 calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:26px max(16px,env(safe-area-inset-left,0px)) 14px;border-bottom:4px solid #0e7954}
+.top img{display:block;width:380px;max-width:88%;margin:0 auto}
+h1{font:700 32px/1.05 var(--f-head);margin:6px 0 0;text-wrap:balance}
+.eb{font:600 13px var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--g)}
+.sub{color:var(--mut);margin:4px 0 0;font-size:16px}
+.blk{background:var(--card);box-shadow:0 1px 3px rgba(14,121,84,.08);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.blk.bad{border-color:var(--err)}
+.q{font-weight:600;font-size:18px}
+.q .no{font:700 20px var(--f-head);color:var(--g);margin-right:8px}
+.hint{color:var(--mut);font-size:15px}
+.req{color:var(--err)}
+label.lbl{font-size:14px;font-weight:600;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+input[type=text],select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:11px 12px}
+textarea{min-height:84px;resize:vertical}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:3px solid var(--g);outline-offset:2px}
+.yn{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.yn button{font:600 18px var(--f-body);padding:12px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.yn button[aria-pressed="true"]{background:var(--g);border-color:var(--g);color:#fff}
+.fu{display:flex;flex-direction:column;gap:8px;border-left:3px solid var(--g);padding-left:12px}
+.info{background:var(--gsoft);border-radius:10px;padding:10px 12px;font-size:15px}
+.chip{display:inline-block;margin:6px 6px 0 0;background:var(--warn);border-left:3px solid var(--warnline);color:var(--warnink);padding:2px 8px;border-radius:4px;font-size:14px}
+.photos{display:flex;flex-direction:column;gap:8px}
+.pbtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 17px var(--f-body);padding:12px;border-radius:10px;border:2px dashed var(--g);color:var(--g);background:transparent;cursor:pointer}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px}
+.thumbs div{position:relative}
+.thumbs img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;display:block}
+.thumbs button{position:absolute;top:4px;right:4px;border:0;border-radius:50%;width:26px;height:26px;background:rgba(0,0,0,.6);color:#fff;cursor:pointer;font-size:15px;line-height:1}
+.count{font-size:14px;color:var(--mut)}
+canvas{width:100%;height:170px;border:1px solid var(--line);border-radius:8px;background:#fff;touch-action:none}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.link{background:none;border:0;color:var(--g);font:600 15px var(--f-body);cursor:pointer;padding:0}
+.sec{font:700 22px var(--f-head);margin:10px 0 0}
+.submit{font:700 22px var(--f-head);letter-spacing:.04em;padding:16px;border-radius:12px;border:0;background:var(--g);color:#fff;cursor:pointer}
+.errmsg{color:var(--err);font-size:15px;font-weight:600}
+.done{text-align:center;padding:28px 16px}
+.done h2{font:700 30px var(--f-head);margin:0 0 6px}
+.sum{text-align:left;font-size:15px}
+.sum dt{color:var(--mut);margin-top:8px}.sum dd{margin:0;font-weight:500}
+@media (prefers-reduced-motion:no-preference){.yn button{transition:background .12s}}
+.hero{position:relative;overflow:hidden;background:#0b4f38;color:#fff;border-radius:16px;padding:26px 22px 22px;margin-top:16px}
+.hero:before{content:"";position:absolute;right:-80px;top:-70px;width:260px;height:260px;border:42px solid rgba(255,255,255,.06);border-radius:50%}
+.hey{display:inline-block;background:rgba(255,255,255,.14);border-radius:99px;padding:6px 12px;font:600 13px/1 var(--f-body);letter-spacing:.12em;text-transform:uppercase}
+.gday{font:700 64px/.9 var(--f-head);text-transform:uppercase;margin-top:18px;letter-spacing:-.01em}
+.weapon{font:700 34px/1 var(--f-head);text-transform:uppercase;color:#8fd3bf;letter-spacing:.06em;margin-top:6px}
+.hline{height:3px;background:#8fd3bf;border-radius:2px;margin:18px 0 12px;opacity:.6}
+.rname{font:600 20px var(--f-head);letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.85)}
+@media (max-width:380px){.gday{font-size:52px}.weapon{font-size:28px}}
+.status{background:var(--gsoft);border-radius:10px;padding:12px 14px;font-weight:600}.status.bad{background:#fde8e6;color:var(--err)}.submit:disabled{opacity:.6}
+</style>
+</head>
+<body>
+<header class="top"><img src="Dabe-Banner-v9-Transparent.png" alt="Dabe Installations"></header>
+<form class="wrap" id="f" novalidate>
+  <section class="hero">
+    <span class="hey">Thu 12 Nov · Afternoon run</span>
+    <div class="gday">G'day Matt</div>
+    <div class="weapon">The Weapon</div>
+    <div class="hline"></div>
+    <div class="rname">Dyson H2 Revisit Stores</div>
+  </section>
+  <div id="qs" style="display:flex;flex-direction:column;gap:18px"></div>
+  <div class="status" id="status" hidden></div>
+  <button class="submit" type="submit">Submit</button>
+</form>
+<section class="wrap" id="donebox" hidden>
+  <div class="blk"><h1>Sent ✓</h1><p style="margin:0;color:var(--mut)">Thanks Matt, your report and photos are saved.</p><dl class="sum" id="sum"></dl><button type="button" class="submit" id="again">New report</button></div>
+</section>
+<script>
+const STORES=["JB Epping Plaza", "JB Greensborough", "JB Doncaster", "JB Chirnside Park HOME", "HN Chirnside Park", "JB Eastland", "JB Knox", "JB The Glen", "HN Chadstone"];
+const API='https://script.google.com/macros/s/AKfycbwhukeUTwuzCmxGAM4JS4uoXKxSLdZuNTOfDj5AvQblT5PkR_oeqNghL8rneAyfBeIWOg/exec';
+const Q=[
+ {k:'store',t:'What is the Retailer and store name?',type:'text',select:STORES},
+ {k:'stock',t:'Have you checked all Dyson Fixtures for missing stock?',type:'yn',follow:{No:{t:'Why?',type:'text'}}},
+ {k:'req',t:'Did you request missing stock from the store team?',type:'yn',follow:{No:{t:'why',type:'text'},Yes:{t:'What was the store team members name?',type:'text'}}},
+ {k:'hj',t:'Did you check the Hushjet is power and if needed connect to power?',type:'yn',follow:{No:{t:'why',type:'text'}}},
+ {k:'screws',t:'Are the Hushjet product screws taped to underside of display?',type:'yn',follow:{Yes:{t:'Take a photo showing this',type:'photo',req:true},No:{t:'Take a photo showing this',type:'photo',req:true}}},
+ {k:'tix',t:'Did you check for any missing tickets, graphics?',type:'yn',follow:{Yes:{t:'What is missing',type:'text'}}},
+ {k:'tixnote',t:'Note any missing tickets or graphics plus sizes',type:'text'},
+ {k:'done',t:'Take completion photos of all fixtures ensuring no rubbish or tools etc are captured in the photo.',type:'photo'},
+];
+const state={},photos={};
+function esc(t){return String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function photoUI(key){const w=document.createElement('div');w.className='photos';
+ w.innerHTML=`<label class="pbtn" for="ph_${key}">+ Photo</label><input type="file" id="ph_${key}" accept="image/*" multiple hidden><div class="thumbs"></div>`;
+ photos[key]=photos[key]||[];const inp=w.querySelector('input'),th=w.querySelector('.thumbs');
+ const draw=()=>{th.innerHTML='';photos[key].forEach((u,i)=>{const d=document.createElement('div');d.innerHTML=`<img src="${u}" alt=""><button type="button" aria-label="Remove">×</button>`;d.querySelector('button').onclick=()=>{photos[key].splice(i,1);draw()};th.appendChild(d)})};
+ inp.onchange=()=>{[...inp.files].forEach(f=>{const r=new FileReader();r.onload=()=>{photos[key].push(r.result);draw()};r.readAsDataURL(f)});inp.value=''};draw();return w}
+const host=document.getElementById('qs');
+Q.forEach(q=>{const b=document.createElement('div');b.className='blk';b.dataset.k=q.k;
+ b.innerHTML=`<div class="q">${esc(q.t)} <span class="req">*</span></div>`;
+ if(q.type==='yn'){const yn=document.createElement('div');yn.className='yn';const fu=document.createElement('div');
+  ['Yes','No'].forEach(v=>{const bt=document.createElement('button');bt.type='button';bt.textContent=v;bt.setAttribute('aria-pressed','false');
+   bt.onclick=()=>{state[q.k]=v;yn.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===bt));fu.innerHTML='';fu.className='';const f=q.follow&&q.follow[v];
+    if(f){fu.className='fu';const fk=q.k+'_'+v;fu.innerHTML=`<label class="lbl" style="text-transform:none;letter-spacing:0;font-size:16px">${esc(f.t)}${f.req?' <span class="req">*</span>':''}</label>`;
+     if(f.type==='photo')fu.appendChild(photoUI(fk));else{const t=document.createElement('input');t.type='text';t.id='f_'+fk;fu.appendChild(t)}}};yn.appendChild(bt)});
+  b.appendChild(yn);b.appendChild(fu)}
+ else if(q.type==='text'){const t=document.createElement(q.select?'select':'textarea');if(q.select)t.innerHTML='<option value=""></option>'+q.select.map(n=>'<option>'+esc(n)+'</option>').join('');t.id='f_'+q.k;b.appendChild(t)}
+ else b.appendChild(photoUI(q.k));
+ host.appendChild(b)});
+document.getElementById('f').onsubmit=e=>{e.preventDefault();const bad=[];document.querySelectorAll('.blk').forEach(b=>b.classList.remove('bad'));
+ Q.forEach(q=>{const b=document.querySelector(`.blk[data-k="${q.k}"]`);let ok=true;
+  if(q.type==='yn'){if(!state[q.k])ok=false;else{const f=q.follow&&q.follow[state[q.k]];if(f&&f.req&&!(photos[q.k+'_'+state[q.k]]||[]).length)ok=false}}
+  else if(q.type==='text')ok=!!document.getElementById('f_'+q.k).value.trim();
+  else ok=(photos[q.k]||[]).length>0;
+  if(!ok){b.classList.add('bad');bad.push(b)}});
+ if(bad.length){bad[0].scrollIntoView({behavior:'smooth',block:'center'});return}
+ const store=document.getElementById('f_store').value;const rows=[];const uploads=[];
+ Q.forEach(q=>{let v;if(q.type==='photo'){v={photos:q.k};}else v=q.type==='yn'?state[q.k]:document.getElementById('f_'+q.k).value;rows.push([q.t,v]);
+  const f=q.type==='yn'&&q.follow&&q.follow[state[q.k]];if(f){const fk=q.k+'_'+state[q.k];rows.push([f.t,f.type==='photo'?{photos:fk}:(document.getElementById('f_'+fk).value||'—')])}});
+ send(store,rows)};
+async function shrink(u){const im=new Image();im.src=u;await im.decode();const s=Math.min(1,1600/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext('2d').drawImage(im,0,0,c.width,c.height);return c.toDataURL('image/jpeg',.82).split(',')[1]}
+async function post(o){const r=await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(o)});const j=await r.json();if(!j.ok)throw new Error(j.error||'Upload failed');return j}
+async function send(store,rows){const btn=document.querySelector('#f .submit'),st=document.getElementById('status');btn.disabled=true;st.hidden=false;st.className='status';
+ const total=rows.reduce((n,r)=>n+(r[1]&&r[1].photos?(photos[r[1].photos]||[]).length:0),0);let done=0;
+ try{for(const r of rows){if(r[1]&&r[1].photos){const names=[];for(const u of photos[r[1].photos]||[]){st.textContent='Uploading photo '+(done+1)+' of '+total+'…';const j=await post({action:'photo',store,data:await shrink(u)});names.push(j.name);done++}r[1]=names.join(', ')||'—'}}
+  st.textContent='Saving report…';await post({action:'report',store,rows});
+  document.getElementById('sum').innerHTML='<dt>Photos</dt><dd>'+total+' saved</dd>'+rows.map(r=>`<dt>${esc(r[0])}</dt><dd>${esc(r[1])}</dd>`).join('');
+  document.getElementById('f').hidden=true;document.getElementById('donebox').hidden=false;scrollTo(0,0)}
+ catch(err){st.className='status bad';st.textContent='Not sent: '+err.message+'. Check your signal and press Submit again.';btn.disabled=false}}
+document.getElementById('again').onclick=()=>location.reload();
+</script>
+
+</body>
+</html>
