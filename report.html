@@ -235,13 +235,13 @@ function show(list,i,sheetNote){document.title="Store Report – "+list[i]["Stor
   if(!pin()){msg("Please sign in on the Hub first","This report is private. Open the Hub once on this device, then tap the report button again.");return}
   var p=pin();
   Promise.all([
-    fetch(API+"?action=checklistReport&store="+encodeURIComponent(store)+"&pin="+encodeURIComponent(p)).then(function(r){return r.json()}),
+    fetch(API+"?action=checklistReport&store="+encodeURIComponent(store)+(qs("project")?"&project="+encodeURIComponent(qs("project")):"")+"&pin="+encodeURIComponent(p)).then(function(r){return r.json()}),
     fetch(API+"?team=all&pin="+encodeURIComponent(p)).then(function(r){return r.json()}).catch(function(){return {}})
   ]).then(function(res){
     var j=res[0],all=res[1];
     if(!j.ok){msg(j.error==="pin"?"Password not accepted":"Could not load the report",j.error==="pin"?"Open the Hub and enter your password again.":"Please try again in a moment.");return}
     var list=j.reports||[];
-    if(!list.length){msg("No report yet for "+store,"The installer has not submitted the Store Report for this store.");return}
+    if(!list.length){msg("No report for "+store+(qs("project")?" ("+qs("project")+")":""),"There is no report for this store"+(qs("project")?" for this project":"")+".");return}
     var note="";
     try{(all.rows||[]).forEach(function(r){if(String(r.store).toLowerCase()===store.toLowerCase()&&r.comment&&!note)note=String(r.comment).trim()})}catch(e){}
     var sel=document.getElementById("pick");
