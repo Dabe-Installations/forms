@@ -370,6 +370,18 @@ html{overflow-y:scroll}
   }
 
   var curState="all";
+  // a link can open the page on chosen buttons, e.g. ...#k=KEY&month=all&project=JB%20Magnets&state=all
+  // month = all or 2026-11, project = the button's name, state = all, VIC or WA
+  (function(){
+    function hp(n){var m=(location.hash||"").match(new RegExp("[#&]"+n+"=([^&]*)")); if(!m) return ""; try{return decodeURIComponent(m[1].replace(/\+/g," ")).trim()}catch(e){return ""}}
+    var m=hp("month").toLowerCase(), p=hp("project"), s=hp("state").toUpperCase();
+    if(m==="all"||/^\d{4}-\d{2}$/.test(m)) curMonth=m;
+    if(p) curProj=p;
+    if(s==="VIC"||s==="WA"){
+      curState=s;
+      Array.prototype.forEach.call(document.querySelectorAll("#tabs button"),function(x){x.classList.toggle("on",x.getAttribute("data-st")===s)});
+    }
+  })();
   function stateOf(r){
     var m=String(r.Run||"").match(/^\s*(VIC|WA|QLD|NSW|SA|TAS|NT|ACT)\b/i);
     if(!m) m=String(r.Address||"").match(/\b(VIC|WA|QLD|NSW|SA|TAS|NT|ACT)\s+\d{4}\b/i);
@@ -393,7 +405,7 @@ html{overflow-y:scroll}
     var mdata=data.filter(function(r){return curMonth==="all"||mk(r)===curMonth});
     var pc={}, porder=[];
     mdata.forEach(function(r){var p=projOf(r); if(!pc[p]){pc[p]=0;porder.push(p)} pc[p]++});
-    if(curProj!=="all"&&!pc[curProj]) curProj="all";
+    if(curProj!=="all"&&!pc[curProj]){ var lp=curProj.toLowerCase(); curProj=porder.filter(function(x){return x.toLowerCase()===lp})[0]||"all" }
     var pt=document.getElementById("ptabs");
     if(porder.length>1){
       pt.innerHTML='<button type="button" data-pj="all"'+(curProj==="all"?' class="on"':'')+'>All projects<small>'+mdata.length+'</small></button>'+
