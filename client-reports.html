@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" type="image/png" href="icon-192.png">
-<title>Store Reports – Dabe Installations</title>
+<title>Install Reports – Dabe Installations</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..112,500..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -112,7 +112,7 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
 .rbtn:hover{filter:brightness(.95)}
 @media print{
   .rbar{display:none}
-  body.one .stats,body.one .tools,body.one .foot,body.one .day:not(.pday),body.one .card:not(.printing),body.one .day h2 small,body.one .hero p,body.one .hero .btn{display:none}
+  body.one .stats,body.one .fbar,body.one .fupd,body.one .foot,body.one .day:not(.pday),body.one .card:not(.printing),body.one .day h2 small,body.one .hero p,body.one .hero .btn{display:none}
 }
 
 /* ---- Dabe look, 20 Nov 2026: white page, centred header with the Dabe banner, teal instead of black ---- */
@@ -169,14 +169,25 @@ html{overflow-y:scroll}
 .stat{border-top:1px solid var(--line)}
 .stat,.card,.msg,.audit,.tools input,.tabs button,.btn,.rbtn{box-shadow:0 1px 2px rgba(18,77,65,.07),0 5px 14px rgba(18,77,65,.09)}
 @media print{.stat,.card,.msg,.audit,.tools input,.tabs button,.btn,.rbtn{box-shadow:none}}
+/* ---- 20 Nov 2026: Month / Project / State drop-downs and search in one row (replaces the rows of buttons) ---- */
+.fbar{display:grid;grid-template-columns:1fr 1.4fr 1fr 1.6fr;gap:12px;align-items:end;margin:4px 0 0}
+.fbar label{display:block;font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 6px 2px}
+.fbar select,.fbar input{width:100%;font:inherit;color:var(--ink);padding:11px 14px;border:1px solid var(--line);border-radius:8px;background:#fff;box-shadow:0 1px 2px rgba(18,77,65,.07),0 5px 14px rgba(18,77,65,.09)}
+.fbar select{font-weight:600;padding-right:38px;appearance:none;-webkit-appearance:none;cursor:pointer;text-overflow:ellipsis}
+.fbar .sel{position:relative}
+.fbar .sel:after{content:"";position:absolute;right:16px;top:50%;width:8px;height:8px;border-right:2px solid var(--green);border-bottom:2px solid var(--green);transform:translateY(-70%) rotate(45deg);pointer-events:none}
+.fbar select:focus,.fbar input:focus{outline:2px solid var(--green);outline-offset:0}
+.fupd{text-align:right;font-size:.82rem;color:var(--muted);margin:8px 2px 0;min-height:1.2em}
+@media(max-width:900px){.fbar{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.fbar{grid-template-columns:1fr}}
+@media print{.fbar,.fupd{display:none}}
 </style>
 </head>
 <body>
 <header class="hero"><div class="top">
   <img class="logo rise" src="Dabe-Banner-v9-Transparent.png" alt="Dabe Installations" width="580" height="122">
   <div>
-    <div class="eyebrow rise" style="animation-delay:.12s">Install reports</div>
-    <h1 class="rise" style="animation-delay:.2s">Store Reports</h1>
+    <h1 class="rise" style="animation-delay:.12s">Install Reports</h1>
     <p class="rise" style="animation-delay:.28s">Every completed store report and power audit, newest first. This page updates by itself as the install teams submit their reports.</p>
   </div>
   <button class="btn rise" style="animation-delay:.36s" id="print" type="button">Save as PDF</button>
@@ -189,17 +200,13 @@ html{overflow-y:scroll}
     <div class="stat"><b id="sDays">0</b><span>Days</span></div>
     <div class="stat"><b id="sFlag">0</b><span>With missing / damaged items</span></div>
   </section>
-  <div class="tabs mtabs" id="mtabs" hidden></div>
-  <div class="tabs ptabs" id="ptabs" hidden></div>
-  <div class="tabs" id="tabs" hidden>
-    <button type="button" data-st="all" class="on">All states<small id="nAll"></small></button>
-    <button type="button" data-st="VIC">Victoria<small id="nVIC"></small></button>
-    <button type="button" data-st="WA">Western Australia<small id="nWA"></small></button>
+  <div class="fbar" id="fbar" hidden>
+    <div><label for="fMonth">Month</label><div class="sel"><select id="fMonth"></select></div></div>
+    <div><label for="fProj">Project</label><div class="sel"><select id="fProj"></select></div></div>
+    <div><label for="fState">State</label><div class="sel"><select id="fState"></select></div></div>
+    <div><label for="q">Search</label><input id="q" type="search" placeholder="Store or address" aria-label="Search reports"></div>
   </div>
-  <div class="tools" id="tools" hidden>
-    <input id="q" type="search" placeholder="Search by store or address" aria-label="Search reports">
-    <span class="upd" id="upd"></span>
-  </div>
+  <p class="fupd" id="upd"></p>
   <div id="app"><div class="msg"><h3>Loading reports&hellip;</h3><p>One moment.</p></div></div>
   <p class="foot">Photos open in Google Drive. Dabe Installations Pty Ltd</p>
 </main>
@@ -212,6 +219,8 @@ html{overflow-y:scroll}
   var CK = "dabeClientReports", lastTxt = "", stale = false, entered = false, t0 = Date.now();
   document.documentElement.classList.add("entering");
   function endEnter(){document.documentElement.classList.remove("entering")}
+  // header pieces: drop the entrance once it has played, so it does not play again after saving a PDF
+  setTimeout(function(){Array.prototype.forEach.call(document.querySelectorAll(".hero .rise"),function(el){el.classList.remove("rise");el.style.animationDelay=""})},2500);
 
   function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
   function msg(h,p){app.innerHTML='<div class="msg"><h3>'+esc(h)+'</h3><p>'+esc(p)+'</p></div>'}
@@ -240,7 +249,7 @@ html{overflow-y:scroll}
     });
     data.sort(function(a,b){return (+b._ts||0)-(+a._ts||0)});
   }
-  function hideAll(){["stats","mtabs","ptabs","tabs","tools"].forEach(function(id){document.getElementById(id).hidden=true})}
+  function hideAll(){document.getElementById("upd").textContent="";["stats","fbar"].forEach(function(id){document.getElementById(id).hidden=true})}
   // the last list this browser loaded is remembered, so the page shows at once and then checks for new reports
   function fromMemory(k){
     try{
@@ -377,15 +386,17 @@ html{overflow-y:scroll}
     var m=hp("month").toLowerCase(), p=hp("project"), s=hp("state").toUpperCase();
     if(m==="all"||/^\d{4}-\d{2}$/.test(m)) curMonth=m;
     if(p) curProj=p;
-    if(s==="VIC"||s==="WA"){
-      curState=s;
-      Array.prototype.forEach.call(document.querySelectorAll("#tabs button"),function(x){x.classList.toggle("on",x.getAttribute("data-st")===s)});
-    }
+    if(s==="VIC"||s==="WA") curState=s;
   })();
   function stateOf(r){
     var m=String(r.Run||"").match(/^\s*(VIC|WA|QLD|NSW|SA|TAS|NT|ACT)\b/i);
     if(!m) m=String(r.Address||"").match(/\b(VIC|WA|QLD|NSW|SA|TAS|NT|ACT)\s+\d{4}\b/i);
     return m?m[1].toUpperCase():"VIC";
+  }
+  function opts(id,list,cur){     // fills one drop-down: list = [[value,label,count],...]
+    var el=document.getElementById(id);
+    el.innerHTML=list.map(function(o){return '<option value="'+esc(o[0])+'"'+(o[0]===cur?' selected':'')+'>'+esc(o[1])+' ('+o[2]+')</option>'}).join("");
+    el.value=cur;
   }
   function render(){
     var mc={}, morder=[];
@@ -396,33 +407,20 @@ html{overflow-y:scroll}
       curMonth=mc[nm]?nm:(morder.length?morder[0]:"all");
     }
     if(curMonth!=="all"&&!mc[curMonth]) curMonth=morder.length?morder[0]:"all";
-    var mt=document.getElementById("mtabs");
-    if(morder.length>1){
-      mt.innerHTML=morder.map(function(m){return '<button type="button" data-mo="'+esc(m)+'"'+(curMonth===m?' class="on"':'')+'>'+esc(monthLabel(m))+'<small>'+mc[m]+'</small></button>'}).join("")+
-        '<button type="button" data-mo="all"'+(curMonth==="all"?' class="on"':'')+'>All months<small>'+data.length+'</small></button>';
-      mt.hidden=false;
-    } else mt.hidden=true;
+    opts("fMonth",[["all","All months",data.length]].concat(morder.map(function(m){return [m,monthLabel(m),mc[m]]})),curMonth);
     var mdata=data.filter(function(r){return curMonth==="all"||mk(r)===curMonth});
     var pc={}, porder=[];
     mdata.forEach(function(r){var p=projOf(r); if(!pc[p]){pc[p]=0;porder.push(p)} pc[p]++});
     if(curProj!=="all"&&!pc[curProj]){ var lp=curProj.toLowerCase(); curProj=porder.filter(function(x){return x.toLowerCase()===lp})[0]||"all" }
-    var pt=document.getElementById("ptabs");
-    if(porder.length>1){
-      pt.innerHTML='<button type="button" data-pj="all"'+(curProj==="all"?' class="on"':'')+'>All projects<small>'+mdata.length+'</small></button>'+
-        porder.map(function(p){return '<button type="button" data-pj="'+esc(p)+'"'+(curProj===p?' class="on"':'')+'>'+esc(p)+'<small>'+pc[p]+'</small></button>'}).join("");
-      pt.hidden=false;
-    } else pt.hidden=true;
+    opts("fProj",[["all","All projects",mdata.length]].concat(porder.map(function(p){return [p,p,pc[p]]})),curProj);
     var pdata=mdata.filter(function(r){return curProj==="all"||projOf(r)===curProj});
     var cnt={all:pdata.length,VIC:0,WA:0};
     pdata.forEach(function(r){var st=stateOf(r); cnt[st]=(cnt[st]||0)+1});
-    document.getElementById("nAll").textContent=cnt.all;
-    document.getElementById("nVIC").textContent=cnt.VIC;
-    document.getElementById("nWA").textContent=cnt.WA;
-    document.getElementById("tabs").hidden=false;
+    opts("fState",[["all","All states",cnt.all],["VIC","Victoria",cnt.VIC],["WA","Western Australia",cnt.WA]],curState);
+    document.getElementById("fbar").hidden=false;
     var view=pdata.filter(function(r){return curState==="all"||stateOf(r)===curState});
     var term=(document.getElementById("q").value||"").toLowerCase().trim();
     document.getElementById("stats").hidden=false;
-    document.getElementById("tools").hidden=false;
     var stores={}, days={}, nf=0;
     view.forEach(function(r){stores[String(r.Store).toLowerCase()]=1; days[dk(r)||"?"]=1; if(flagged(r)) nf++});
     document.getElementById("sReports").textContent=view.length;
@@ -465,7 +463,7 @@ html{overflow-y:scroll}
   function enter(){
     if(entered) return; entered=true;
     var sl=Array.prototype.slice;
-    var els=sl.call(document.querySelectorAll(".stat,#mtabs,#ptabs,#tabs,#tools")).filter(function(el){return !el.hidden})
+    var els=sl.call(document.querySelectorAll(".stat,#fbar>div")).filter(function(el){return !el.hidden})
             .concat(sl.call(app.querySelectorAll(".day>h2,.card")).slice(0,14));
     var base=Math.max(0,700-(Date.now()-t0));
     els.forEach(function(el,i){ el.style.animationDelay=(base+i*100)+"ms"; el.classList.add("rise") });
@@ -519,22 +517,9 @@ html{overflow-y:scroll}
     b.setAttribute("aria-expanded",opened[id]?"true":"false");
   });
   document.getElementById("q").addEventListener("input",function(){ if(data.length) render() });
-  document.getElementById("tabs").addEventListener("click",function(e){
-    var b=e.target.closest("button[data-st]"); if(!b) return;
-    curState=b.getAttribute("data-st");
-    Array.prototype.forEach.call(document.querySelectorAll("#tabs button"),function(x){x.classList.toggle("on",x===b)});
-    if(data.length) render();
-  });
-  document.getElementById("mtabs").addEventListener("click",function(e){
-    var b=e.target.closest("button[data-mo]"); if(!b) return;
-    curMonth=b.getAttribute("data-mo");
-    if(data.length) render();
-  });
-  document.getElementById("ptabs").addEventListener("click",function(e){
-    var b=e.target.closest("button[data-pj]"); if(!b) return;
-    curProj=b.getAttribute("data-pj");
-    if(data.length) render();
-  });
+  document.getElementById("fMonth").addEventListener("change",function(){ curMonth=this.value; if(data.length) render() });
+  document.getElementById("fProj").addEventListener("change",function(){ curProj=this.value; if(data.length) render() });
+  document.getElementById("fState").addEventListener("change",function(){ curState=this.value; if(data.length) render() });
   document.getElementById("print").addEventListener("click",function(){endOne();window.print()});
 
   load(true);
