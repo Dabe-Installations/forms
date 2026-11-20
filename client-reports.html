@@ -5,17 +5,17 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" type="image/png" href="icon-192.png">
-<title>Store Reports – Dabe Labour</title>
+<title>Store Reports – Dabe Installations</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..112,500..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --black:#1F1E1D; --ink:#161716; --muted:#5c625f; --line:#e3e5e2; --page:#eef0ed; --card:#fff;
-  --green:#1a6b5a; --green-deep:#145248; --green-soft:#e6f2ee; --green-text:#3fb99c;
+  --black:#0d0d0d; --ink:#0d0d0d; --muted:#5c6763; --line:#e2e8e5; --page:#fff; --card:#fff;
+  --green:#1a6b5a; --green-deep:#124d41; --green-soft:#e3efeb; --green-text:#1a6b5a;
   --amber:#f5b800; --amber-soft:#fff6d6; --amber-ink:#7a5a00;
-  --grey-soft:#f1f2f0;
-  --f-display:"Barlow Condensed","Arial Narrow",sans-serif;
-  --f-body:"Barlow","Segoe UI",Arial,sans-serif;
+  --grey-soft:#f4f7f6;
+  --f-display:"Archivo","Arial",sans-serif;
+  --f-body:"Instrument Sans","Segoe UI",Arial,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
@@ -114,12 +114,54 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
   .rbar{display:none}
   body.one .stats,body.one .tools,body.one .foot,body.one .day:not(.pday),body.one .card:not(.printing),body.one .day h2 small,body.one .hero p,body.one .hero .btn{display:none}
 }
+
+/* ---- Dabe look, 20 Nov 2026: white page, centred header with the Dabe banner, teal instead of black ---- */
+h1,h2,h3,h4,.name,.btn,.rbtn,.tabs button,.stat b{font-stretch:108%}
+.hero{background:#fff;color:var(--ink);padding:26px 20px 24px;border-bottom:4px solid var(--green);text-align:center}
+.hero .top{display:block;max-width:760px}
+.hero .logo{display:block;width:400px;max-width:88%;height:auto;margin:0 auto 18px}
+.eyebrow{font-size:.74rem;font-weight:700;letter-spacing:.18em;color:var(--green)}
+.hero h1{font-size:2.1rem;font-weight:800;letter-spacing:0;color:var(--ink);margin-top:6px}
+.hero p{color:var(--muted);margin:8px auto 0;max-width:560px}
+.btn{background:var(--green);color:#fff;border-radius:8px;margin-top:16px;font-size:.8rem;letter-spacing:.08em;padding:11px 20px}
+.btn:hover,.rbtn:hover{filter:none;background:var(--green-deep)}
+.rbtn{background:var(--green);color:#fff;border-radius:8px;font-size:.72rem;letter-spacing:.08em;padding:8px 14px}
+.stats{margin:22px 0 18px}
+.stat{border-radius:10px;border-top:3px solid var(--green);text-align:center;padding:16px}
+.stat b{font-size:1.9rem;font-weight:800;color:var(--green-deep)}
+.stat span{font-family:var(--f-body);font-size:.7rem;letter-spacing:.1em;display:block;margin-top:6px}
+.tabs{justify-content:center;margin-bottom:12px}
+.tabs button{font-size:14px;font-weight:700;letter-spacing:.03em;padding:9px 16px;border:1.5px solid var(--green);color:var(--green-deep)}
+.tabs button small{font-size:12px;margin-left:7px}
+.ptabs button{font-size:13px;padding:8px 14px;border-color:var(--green);color:var(--green-deep)}
+.tabs button.on,.ptabs button.on{background:var(--green);border-color:var(--green);color:#fff}
+.tools{max-width:640px;margin:4px auto 6px}
+.tools input{border-radius:8px}
+.day h2{font-size:1.02rem;letter-spacing:.05em;font-weight:800}
+.day h2 small{font-family:var(--f-body);font-size:.72rem;letter-spacing:.1em}
+.card{border-radius:10px;overflow:hidden}
+.card>button:hover{background:var(--grey-soft)}
+.card .name{font-size:1.02rem;letter-spacing:.01em;font-weight:700}
+.card .addr{font-size:.86rem}
+.proj{font-family:var(--f-body);font-size:.66rem;font-weight:700;letter-spacing:.12em}
+.chip{font-family:var(--f-body);font-size:.66rem;letter-spacing:.08em;border-radius:999px;padding:4px 10px}
+.pill{font-family:var(--f-body);font-size:.74rem;border-radius:999px}
+.photos b{font-family:var(--f-body);font-weight:700;font-size:.72rem}
+.photos a{font-family:var(--f-body);font-size:.72rem;border-radius:8px}
+.photos a.th img{border-radius:5px}
+.qa .why{border-radius:8px}
+.msg{border-radius:10px}.msg h3{font-size:1.1rem}
+.audit{border-radius:10px}.audit h4{font-size:1rem}
+.foot{border-top:1px solid var(--line);padding-top:16px}
+@media(max-width:700px){.hero h1{font-size:1.7rem}.tabs{justify-content:flex-start}}
+@media print{.hero{padding-top:0}.hero .logo{width:300px}}
 </style>
 </head>
 <body>
 <header class="hero"><div class="top">
+  <img class="logo" src="Dabe-Banner-v9-Transparent.png" alt="Dabe Installations" width="400" height="84">
   <div>
-    <div class="eyebrow">Dabe Labour &middot; Install reports</div>
+    <div class="eyebrow">Install reports</div>
     <h1>Store Reports</h1>
     <p>Every completed store report and power audit, newest first. This page updates by itself as the install teams submit their reports.</p>
   </div>
@@ -178,7 +220,7 @@ body{font-family:var(--f-body);background:var(--page);color:var(--ink);line-heig
       return fetch(api+"?action=clientReports&token="+encodeURIComponent(k)).then(function(r){return r.json()});
     }).then(function(j){
       if(!j||!j.ok){
-        if(j&&j.error==="token") msg("This link is not valid","Please ask Dabe Labour for a fresh link.");
+        if(j&&j.error==="token") msg("This link is not valid","Please ask Dabe Installations for a fresh link.");
         else msg("Reports are not available just now","Please try again in a few minutes.");
         return;
       }
