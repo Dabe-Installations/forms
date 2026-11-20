@@ -330,12 +330,12 @@ html{overflow-y:scroll}
       if(/photos?$/i.test(q.label)) return;           // Beauty photos shown as links below
       if(!q.val) return;
       var lab=q.label.charAt(0).toUpperCase()+q.label.slice(1), a;
-      var warnWhenYes=WARN_YES.test(q.label);
-      if(isYes(q.val)) a='<span class="pill '+(warnWhenYes?'n':'y')+'">Yes</span>';
-      else if(isNo(q.val)) a='<span class="pill '+(warnWhenYes?'y':'n')+'">No</span>';
+      var warnWhenYes=WARN_YES.test(q.label), plain=/^comments$/i.test(q.label);   // comments are shown as written
+      if(!plain&&isYes(q.val)) a='<span class="pill '+(warnWhenYes?'n':'y')+'">Yes</span>';
+      else if(!plain&&isNo(q.val)) a='<span class="pill '+(warnWhenYes?'y':'n')+'">No</span>';
       else a='<span class="a">'+esc(q.val)+'</span>';
       var rest=q.val.replace(/^(yes|no)\b[\s,:-]*/i,"");
-      if((isYes(q.val)||isNo(q.val))&&rest) a+=' <span class="a">'+esc(rest)+'</span>';
+      if(!plain&&(isYes(q.val)||isNo(q.val))&&rest) a+=' <span class="a">'+esc(rest)+'</span>';
       h+='<div class="qa"><div class="q">'+esc(lab)+'</div><div>'+a+'</div></div>';
     });
     [["Tag photo links","Tag photos"],["Display photo links","Display photos"]].forEach(function(p){
