@@ -181,19 +181,71 @@ html{overflow-y:scroll}
 @media(max-width:900px){.fbar{grid-template-columns:1fr 1fr}}
 @media(max-width:520px){.fbar{grid-template-columns:1fr}}
 @media print{.fbar,.fupd{display:none}}
+/* ---- 20 Nov 2026: PDF layout. No browser header/footer text, project name on top, scope of work,
+   small Dabe header on later pages, Dabe footer and faded logo watermark on every page ---- */
+.pf{display:block;width:100%;border-collapse:collapse;border-spacing:0}
+.pf>tbody,.pf>tbody>tr,.pf>tbody>tr>td{display:block;padding:0}
+.pf>thead,.pf>tfoot,.pf-wm,.pf-head,.pf-foot,.pproj,.pscope{display:none}
+@page{size:A4;margin:0}          /* no page margin = the browser has no room to print its own date / link lines */
+@media print{
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  html{overflow:visible}
+  .pf{display:table}
+  .pf>thead{display:table-header-group}.pf>tfoot{display:table-footer-group}.pf>tbody{display:table-row-group}
+  .pf>thead>tr,.pf>tbody>tr,.pf>tfoot>tr{display:table-row}
+  .pf>thead>tr>td,.pf>tbody>tr>td,.pf>tfoot>tr>td{display:table-cell;padding:0}
+  .pf-hs{height:25mm}.pf-fs{height:20mm}
+  .pf-head{display:flex;position:fixed;z-index:1;top:7mm;left:12mm;right:12mm;height:13mm;align-items:center;justify-content:space-between;gap:8mm;border-bottom:2px solid var(--green);padding-bottom:2.5mm}
+  .pf-head img{height:9.5mm;width:auto;display:block}
+  .pf-head span{font-family:var(--f-display);font-stretch:108%;font-weight:700;font-size:8.5pt;letter-spacing:.07em;text-transform:uppercase;color:var(--green-deep);text-align:right}
+  .pf-foot{display:flex;position:fixed;z-index:1;bottom:6mm;left:12mm;right:12mm;height:10mm;align-items:center;justify-content:space-between;gap:8mm;border-top:2px solid var(--green);padding-top:2.5mm;font-size:8pt;color:var(--muted)}
+  .pf-foot img{height:7mm;width:auto;display:block}
+  .pf-foot b{font-family:var(--f-display);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--green-deep);font-size:7.5pt}
+  /* watermark only where the page is empty: the bottom of page 1 on a short report, the empty half of a photo page */
+  body.one.wm1 .pf-wm{display:flex;position:absolute;z-index:-1;top:168mm;left:0;right:0;height:96mm;align-items:center;justify-content:center;opacity:.09}
+  .pf-wm img,.pwm img{width:130mm;height:auto;display:block}
+  .pwm{grid-column:1/3;display:flex;align-items:center;justify-content:center;opacity:.09}
+  /* first page: the big header sits over the small one */
+  .hero{position:relative;z-index:2;top:-25mm;margin-bottom:-25mm;padding:9mm 12mm 5mm;background:#fff}
+  .hero .logo{width:400px;margin-bottom:5mm}
+  .hero p,.hero .btn{display:none}
+  .pproj{display:block;font-family:var(--f-display);font-stretch:108%;font-weight:800;font-size:2.1rem;line-height:1.05;text-transform:uppercase;color:var(--green)}
+  body.hasproj .hero h1{font-size:.95rem;font-weight:700;letter-spacing:.2em;color:var(--muted);margin-top:2.5mm}
+  .wrap{max-width:none;padding:0 12mm}
+  .pscope{display:block;margin:6mm 0 0;padding:3.5mm 5mm;background:var(--green-soft);border-left:1.2mm solid var(--green);border-radius:2mm;font-size:10.5pt;line-height:1.45;break-inside:avoid}
+  .pscope b{display:block;font-size:7.5pt;letter-spacing:.14em;text-transform:uppercase;color:var(--green-deep);margin-bottom:1mm}
+  .stats{margin-top:6mm}
+  .day{margin-top:7mm}
+  .card{background:transparent;border:0;border-radius:0;overflow:visible}
+  .card>button{padding:3mm 0;border-bottom:1px solid var(--line)}
+  .detail{border-top:0;padding:1mm 0 4mm}
+  .foot{display:none}
+  /* big photos: 4 to a page, 2 across and 2 down */
+  body.one .bigp{break-before:auto}
+  .ppage{break-before:page;height:248mm;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:4mm 6mm}
+  .bigp figure{margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:0}
+  .bigp img{height:110mm;width:100%;object-fit:contain;background:transparent}
+  .bigp figcaption{font-size:.72rem;margin-top:2mm}
+}
 </style>
 </head>
 <body>
+<div class="pf-wm" aria-hidden="true"><img src="Dabe-Banner-v9-Transparent.png" alt=""></div>
+<div class="pf-head" aria-hidden="true"><img src="Dabe-Banner-v9-Transparent.png" alt=""><span id="phText"></span></div>
+<div class="pf-foot" aria-hidden="true"><img src="Dabe-Banner-v9-Transparent.png" alt=""><span>Dabe Installations Pty Ltd &middot; Melbourne, VIC</span></div>
+<table class="pf"><thead><tr><td><div class="pf-hs"></div></td></tr></thead><tfoot><tr><td><div class="pf-fs"></div></td></tr></tfoot><tbody><tr><td>
 <header class="hero"><div class="top">
   <img class="logo rise" src="Dabe-Banner-v9-Transparent.png" alt="Dabe Installations" width="580" height="122">
   <div>
-    <h1 class="rise" style="animation-delay:.12s">Install Reports</h1>
+    <div class="pproj" id="pproj"></div>
+    <h1 class="rise" style="animation-delay:.12s" id="ptitle">Install Reports</h1>
     <p class="rise" style="animation-delay:.28s">Every completed store report and power audit, newest first. This page updates by itself as the install teams submit their reports.</p>
   </div>
   <button class="btn rise" style="animation-delay:.36s" id="print" type="button">Save as PDF</button>
 </div></header>
 
 <main class="wrap">
+  <div class="pscope" id="pscope" hidden></div>
   <section class="stats" id="stats" hidden>
     <div class="stat"><b id="sReports">0</b><span>Reports in</span></div>
     <div class="stat"><b id="sStores">0</b><span>Stores</span></div>
@@ -210,6 +262,7 @@ html{overflow-y:scroll}
   <div id="app"><div class="msg"><h3>Loading reports&hellip;</h3><p>One moment.</p></div></div>
   <p class="foot">Photos open in Google Drive. Dabe Installations Pty Ltd</p>
 </main>
+</td></tr></tbody></table>
 
 <script>
 (function(){
@@ -474,8 +527,27 @@ html{overflow-y:scroll}
   }
 
   var oldTitle=document.title;
+  // What each project is about, printed under the green line on the PDF. Key = project name in small letters.
+  var SCOPE={
+    "jb magnets":"We are revisiting the selected stores to make sure every display has all of its correct products, the correct images displaying on the TV and the correct magnets installed."
+  };
+  // fills the PDF-only parts: project name, scope of work, the small header on later pages
+  function frame(proj,right,single){
+    var has=!!proj&&proj!=="all", sc=document.getElementById("pscope"), txt=has?SCOPE[String(proj).toLowerCase()]:"";
+    document.getElementById("pproj").textContent=has?proj:"";
+    document.body.classList.toggle("hasproj",has);
+    sc.innerHTML=txt?"<b>Scope of work</b>"+esc(txt):""; sc.hidden=!txt;
+    document.getElementById("phText").textContent=right;
+    document.getElementById("ptitle").textContent=single?"Install Report":"Install Reports";
+  }
+  function frameAll(){
+    var m=document.getElementById("fMonth"), mt=m.options.length?m.options[m.selectedIndex].text.replace(/\s*\(\d+\)$/,""):"";
+    frame(curProj,(curProj==="all"?"Install reports":curProj)+(mt?" \u00b7 "+mt:""),false);
+  }
+  window.addEventListener("beforeprint",function(){ if(!document.body.classList.contains("one")) frameAll() });
   function endOne(){
-    document.body.classList.remove("one");
+    document.getElementById("ptitle").textContent="Install Reports";
+    document.body.classList.remove("one","wm1");
     Array.prototype.forEach.call(document.querySelectorAll(".printing,.pday"),function(x){x.classList.remove("printing","pday")});
     Array.prototype.forEach.call(document.querySelectorAll(".bigp"),function(x){x.parentNode.removeChild(x)});
     document.title=oldTitle;
@@ -489,7 +561,9 @@ html{overflow-y:scroll}
       card.classList.add("printing"); if(day) day.classList.add("pday");
       document.body.classList.add("one");
       var nm=card.querySelector(".name"), dh=day&&day.querySelector("h2");
-      document.title=(nm?nm.textContent:"Store report")+" - "+(dh?dh.firstChild.textContent:"")+" - Store Report";
+      var pj=String(card.getAttribute("data-id")||"").split("|").pop()||"", sn=nm?nm.textContent:"Store", dn=dh?dh.firstChild.textContent:"";
+      document.title=sn+" - "+dn+" - "+(pj?pj+" - ":"")+"Install Report";
+      frame(pj,[pj,sn,dn].filter(function(x){return x}).join(" \u00b7 "),true);
       // big photos at the end of this report, 2 per page
       var figs="", imgs=[];
       Array.prototype.forEach.call(card.querySelectorAll(".photos"),function(row){
@@ -499,10 +573,16 @@ html{overflow-y:scroll}
         });
       });
       if(figs){
-        var bp=document.createElement("div"); bp.className="bigp"; bp.innerHTML='<h3>Photos</h3>'+figs;
+        var fl=figs.split("</figure>").filter(function(x){return x}).map(function(x){return x+"</figure>"}), pages="";
+        for(var fi=0;fi<fl.length;fi+=4){
+          var grp=fl.slice(fi,fi+4);       // 4 photos to a page; a page with only one row gets the watermark in the empty half
+          pages+='<div class="ppage">'+grp.join("")+(grp.length<=2?'<div class="pwm"><img src="Dabe-Banner-v9-Transparent.png" alt=""></div>':'')+'</div>';
+        }
+        var bp=document.createElement("div"); bp.className="bigp"; bp.innerHTML=pages;
         card.querySelector(".detail").appendChild(bp);
         imgs=Array.prototype.slice.call(card.querySelectorAll("img"));
       }
+      document.body.classList.toggle("wm1",card.querySelectorAll(".detail .qa").length<=4);   // short report = empty space on page 1
       var old=pb.textContent; pb.textContent="Preparing PDF..."; pb.disabled=true;
       var waits=imgs.map(function(im){ im.loading="eager"; return im.complete?Promise.resolve():new Promise(function(r){im.onload=im.onerror=r}) });
       Promise.race([Promise.all(waits),new Promise(function(r){setTimeout(r,15000)})]).then(function(){
@@ -520,7 +600,7 @@ html{overflow-y:scroll}
   document.getElementById("fMonth").addEventListener("change",function(){ curMonth=this.value; if(data.length) render() });
   document.getElementById("fProj").addEventListener("change",function(){ curProj=this.value; if(data.length) render() });
   document.getElementById("fState").addEventListener("change",function(){ curState=this.value; if(data.length) render() });
-  document.getElementById("print").addEventListener("click",function(){endOne();window.print()});
+  document.getElementById("print").addEventListener("click",function(){endOne();frameAll();window.print()});
 
   load(true);
   setInterval(function(){load(false)},REFRESH_MS);
